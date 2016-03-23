@@ -13,6 +13,7 @@ import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
+import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.research.ResearchPage;
 import thaumcraft.common.config.ConfigItems;
@@ -24,6 +25,7 @@ import thaumic.tinkerer.common.lib.LibItemNames;
 import thaumic.tinkerer.common.lib.LibResearch;
 import thaumic.tinkerer.common.registry.ItemBase;
 import thaumic.tinkerer.common.registry.ThaumicTinkererCraftingBenchRecipe;
+import thaumic.tinkerer.common.registry.ThaumicTinkererInfusionRecipe;
 import thaumic.tinkerer.common.registry.ThaumicTinkererRecipe;
 import thaumic.tinkerer.common.research.IRegisterableResearch;
 import thaumic.tinkerer.common.research.ResearchHelper;
@@ -49,9 +51,9 @@ public class ItemShareBook extends ItemBase {
 
     @Override
     public IRegisterableResearch getResearchItem() {
-        IRegisterableResearch research = (TTResearchItem) new TTResearchItem(LibResearch.KEY_SHARE_TOME, new AspectList(), 0, -1, 0, new ItemStack(this)).setStub().setAutoUnlock().setRound();
+        IRegisterableResearch research = (TTResearchItem) new TTResearchItem(LibResearch.KEY_SHARE_TOME, new AspectList().add(Aspect.MIND, 15).add(Aspect.MAGIC, 12).add(Aspect.EXCHANGE, 9).add(Aspect.CRAFT, 6), 0, -1, 4, new ItemStack(this)).setWarp(3).setStub().setParentsHidden("INFUSION").setConcealed().setRound();
         if (ConfigHandler.enableSurvivalShareTome)
-            ((TTResearchItem) research).setPages(new ResearchPage("0"), ResearchHelper.recipePage(LibResearch.KEY_SHARE_TOME));
+            ((TTResearchItem) research).setPages(new ResearchPage("0"), ResearchHelper.infusionPage(LibResearch.KEY_SHARE_TOME));
         else ((TTResearchItem) research).setPages(new ResearchPage("0"));
         return research;
     }
@@ -59,11 +61,9 @@ public class ItemShareBook extends ItemBase {
     @Override
     public ThaumicTinkererRecipe getRecipeItem() {
         if (ConfigHandler.enableSurvivalShareTome) {
-            return new ThaumicTinkererCraftingBenchRecipe(LibResearch.KEY_SHARE_TOME, new ItemStack(this),
-                    " S ", "PTP", " P ",
-                    'S', new ItemStack(ConfigItems.itemInkwell),
-                    'T', new ItemStack(ConfigItems.itemThaumonomicon),
-                    'P', new ItemStack(Items.paper));
+            return new ThaumicTinkererInfusionRecipe(LibResearch.KEY_SHARE_TOME, new ItemStack(this), 6,
+                    new AspectList().add(Aspect.MIND, 32).add(Aspect.MAGIC, 32).add(Aspect.CRAFT, 16).add(Aspect.EXCHANGE, 16), new ItemStack(Items.skull, 1, 3),
+                    new ItemStack(Items.nether_star), new ItemStack(Items.paper), new ItemStack(ConfigItems.itemInkwell), new ItemStack(ConfigItems.itemThaumonomicon), new ItemStack(Items.paper));
         }
         return null;
     }

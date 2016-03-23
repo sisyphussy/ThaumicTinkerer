@@ -83,14 +83,14 @@ public class BlockTransvectorInterface extends BlockCamo {
 
     @Override
     public IRegisterableResearch getResearchItem() {
-        return (IRegisterableResearch) new TTResearchItem(LibResearch.KEY_INTERFACE, new AspectList().add(Aspect.ENTROPY, 4).add(Aspect.ORDER, 4), -4, 2, 1, new ItemStack(ThaumicTinkerer.registry.getFirstBlockFromClass(BlockTransvectorInterface.class))).setParents(LibResearch.KEY_DARK_QUARTZ)
+        return (IRegisterableResearch) new TTResearchItem(LibResearch.KEY_INTERFACE, new AspectList().add(Aspect.ENTROPY, 15).add(Aspect.ORDER, 12).add(Aspect.EARTH, 9).add(Aspect.MAGIC, 6).add(Aspect.ENERGY, 3), -4, 2, 4, new ItemStack(ThaumicTinkerer.registry.getFirstBlockFromClass(BlockTransvectorInterface.class))).setParents(LibResearch.KEY_DARK_QUARTZ).setParents("INFUSION")
                 .setPages(new ResearchPage("0"), ResearchHelper.arcaneRecipePage(LibResearch.KEY_INTERFACE), new ResearchPage("1"), ResearchHelper.arcaneRecipePage(LibResearch.KEY_INTERFACE + "1"), new ResearchPage("2"));
 
     }
 
     @Override
     public ThaumicTinkererRecipe getRecipeItem() {
-        return new ThaumicTinkererArcaneRecipe(LibResearch.KEY_INTERFACE, LibResearch.KEY_INTERFACE, new ItemStack(ThaumicTinkerer.registry.getFirstBlockFromClass(BlockTransvectorInterface.class)), new AspectList().add(Aspect.ORDER, 12).add(Aspect.ENTROPY, 16),
+        return new ThaumicTinkererArcaneRecipe(LibResearch.KEY_INTERFACE, LibResearch.KEY_INTERFACE, new ItemStack(ThaumicTinkerer.registry.getFirstBlockFromClass(BlockTransvectorInterface.class)), new AspectList().add(Aspect.ORDER, 32).add(Aspect.ENTROPY, 32).add(Aspect.EARTH, 32),
                 "BRB", "LEL", "BRB",
                 'B', new ItemStack(ConfigBlocks.blockCosmeticSolid, 1, 6),
                 'E', new ItemStack(Items.ender_pearl),
