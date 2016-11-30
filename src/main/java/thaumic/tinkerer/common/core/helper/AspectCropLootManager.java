@@ -119,9 +119,7 @@ public class AspectCropLootManager {
         addAspectLoot(Aspect.MIND, new ItemStack(Items.paper, 64), 15);
         addAspectLoot(Aspect.MIND, new ItemStack(Items.book, 32), 10);
         addAspectLoot(Aspect.MIND, new ItemStack(Blocks.bookshelf, 16), 5);
-        for (Enchantment enchant : Enchantment.enchantmentsBookList) {
-            addAspectLoot(Aspect.MIND, Items.enchanted_book.getEnchantedItemStack(new EnchantmentData(enchant, 1)), 1);
-        }
+
 
         addAspectLoot(Aspect.FLESH, new ItemStack(ConfigItems.itemResource, 16, 5), 4);
         addAspectLoot(Aspect.FLESH, new ItemStack(ConfigItems.itemResource, 16, 5), 1);
