@@ -72,7 +72,7 @@ archivesBaseName = "ThaumicTinkerer"
 
 minecraft {
     version = "1.7.10-10.13.4.1614-1.7.10"
-    //minecraftVersion="1.7.2"
+    //minecraftVersion="1.7.10"
     runDir = "eclipse"
     replace '${version}', project.version
     //coreMod("tconstruct.preloader.TConstructLoaderContainer")
