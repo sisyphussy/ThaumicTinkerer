@@ -46,6 +46,7 @@ public final class ConfigHandler {
     public static int bedrockDimensionID = 19;
     public static boolean enableCake = true;
     public static boolean enableFire = true;
+    public static boolean enableFireMechanics = true;
     public static boolean cropsAllowBonemeal = true;
 
     public static int potionFireId = 86;
@@ -104,7 +105,12 @@ public final class ConfigHandler {
         useOreDictMetal = propOreDict.getBoolean(true);
 
         Property propImbuedFire = config.get(Configuration.CATEGORY_GENERAL, "imbuedFire.enabled", true);
+        propImbuedFire.comment = "Set to false to disable imbued fire.";
         enableFire = propImbuedFire.getBoolean(true);
+
+        Property propImbuedFireSpread = config.get(Configuration.CATEGORY_GENERAL, "imbuedFireSpread.enabled", true);
+        propImbuedFireSpread.comment = "Set to false to disable imbued fire spreading/acting mechanism.";
+        enableFireMechanics = propImbuedFireSpread.getBoolean(true);
 
         Property propImbuedFireCake = config.get(Configuration.CATEGORY_GENERAL, "imbuedFire.cake.enabled", true);
         propImbuedFireCake.comment = "Set to false to disable imbued fire making cake. For those people who don't like cake";
