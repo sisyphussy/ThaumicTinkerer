@@ -90,7 +90,7 @@ public abstract class BlockFireBase extends BlockFire implements ITTinkererBlock
     }
 
     public int tickRate(World p_149738_1_) {
-        return 200;
+        return ConfigHandler.enableFireMechanics ? 200 : 0x7ffffff0;
     }
 
     public void setBlockWithTransmutationTarget(World world, int x, int y, int z, int meta, Block block) {
@@ -104,7 +104,7 @@ public abstract class BlockFireBase extends BlockFire implements ITTinkererBlock
 
     public void updateTick(World world, int x, int y, int z, Random rand) {
 
-        if (world.getGameRules().getGameRuleBooleanValue("doFireTick") && ConfigHandler.enableFire) {
+        if (world.getGameRules().getGameRuleBooleanValue("doFireTick") && ConfigHandler.enableFire && ConfigHandler.enableFireMechanics) {
 
             if (world.isRaining() && (world.canLightningStrikeAt(x, y, z) || world.canLightningStrikeAt(x - 1, y, z) || world.canLightningStrikeAt(x + 1, y, z) || world.canLightningStrikeAt(x, y, z - 1) || world.canLightningStrikeAt(x, y, z + 1))) {
                 world.setBlockToAir(x, y, z);
