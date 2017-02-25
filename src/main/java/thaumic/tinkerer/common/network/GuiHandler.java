@@ -31,6 +31,7 @@ import thaumic.tinkerer.common.block.tile.container.kami.ContainerIchorPouch;
 import thaumic.tinkerer.common.block.tile.container.kami.ContainerWarpGate;
 import thaumic.tinkerer.common.block.tile.kami.TileWarpGate;
 import thaumic.tinkerer.common.block.tile.tablet.TileAnimationTablet;
+import thaumic.tinkerer.common.core.handler.ConfigHandler;
 import thaumic.tinkerer.common.lib.LibGuiIDs;
 
 public class GuiHandler implements IGuiHandler {
@@ -52,6 +53,7 @@ public class GuiHandler implements IGuiHandler {
                 return new ContainerAspectAnalyzer((TileAspectAnalyzer) tile, player.inventory);
 
             case LibGuiIDs.GUI_ID_ICHOR_POUCH:
+            	if (!isDimensionAllowed(player)) return null;
                 return new ContainerIchorPouch(player);
 
             case LibGuiIDs.GUI_ID_WARP_GATE:
@@ -79,6 +81,7 @@ public class GuiHandler implements IGuiHandler {
                 return new GuiAspectAnalyzer((TileAspectAnalyzer) tile, player.inventory);
 
             case LibGuiIDs.GUI_ID_ICHOR_POUCH:
+            	if (!isDimensionAllowed(player)) return null;
                 return new GuiIchorPouch(new ContainerIchorPouch(player));
 
             case LibGuiIDs.GUI_ID_WARP_GATE:
@@ -90,6 +93,14 @@ public class GuiHandler implements IGuiHandler {
                 return new GuiRemotePlacer((TileRPlacer) tile, player.inventory);
         }
         return null;
+    }
+    
+    public static boolean isDimensionAllowed (EntityPlayer player) {
+    	Integer currentDimID = (player.worldObj.provider.dimensionId);
+        for (String id : ConfigHandler.forbiddenDimensions) {
+        	if (id.equals(currentDimID.toString())) return false;
+        }
+        return true;
     }
 
 }
