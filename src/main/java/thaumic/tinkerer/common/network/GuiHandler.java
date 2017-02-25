@@ -53,7 +53,7 @@ public class GuiHandler implements IGuiHandler {
                 return new ContainerAspectAnalyzer((TileAspectAnalyzer) tile, player.inventory);
 
             case LibGuiIDs.GUI_ID_ICHOR_POUCH:
-            	if (!isDimensionAllowed(player)) return null;
+                if (!isDimensionAllowed(player)) return null;
                 return new ContainerIchorPouch(player);
 
             case LibGuiIDs.GUI_ID_WARP_GATE:
@@ -81,7 +81,7 @@ public class GuiHandler implements IGuiHandler {
                 return new GuiAspectAnalyzer((TileAspectAnalyzer) tile, player.inventory);
 
             case LibGuiIDs.GUI_ID_ICHOR_POUCH:
-            	if (!isDimensionAllowed(player)) return null;
+                if (!isDimensionAllowed(player)) return null;
                 return new GuiIchorPouch(new ContainerIchorPouch(player));
 
             case LibGuiIDs.GUI_ID_WARP_GATE:
@@ -96,9 +96,9 @@ public class GuiHandler implements IGuiHandler {
     }
 
     public static boolean isDimensionAllowed (EntityPlayer player) {
-    	Integer currentDimID = (player.worldObj.provider.dimensionId);
+        Integer currentDimID = (player.worldObj.provider.dimensionId);
         for (String id : ConfigHandler.forbiddenDimensions) {
-        	if (id.equals(currentDimID.toString())) return false;
+            if (id.equals(currentDimID.toString())) return false;
         }
         return true;
     }
