@@ -94,7 +94,7 @@ public class GuiHandler implements IGuiHandler {
         }
         return null;
     }
-    
+
     public static boolean isDimensionAllowed (EntityPlayer player) {
     	Integer currentDimID = (player.worldObj.provider.dimensionId);
         for (String id : ConfigHandler.forbiddenDimensions) {

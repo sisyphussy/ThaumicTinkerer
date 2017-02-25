@@ -45,7 +45,7 @@ public final class ConfigHandler {
     public static int endDimensionID = 1;
     public static int bedrockDimensionID = 19;
     public static String[] forbiddenDimensions;
-    
+
     public static boolean enableCake = true;
     public static boolean enableFire = true;
     public static boolean enableFireMechanics = true;
