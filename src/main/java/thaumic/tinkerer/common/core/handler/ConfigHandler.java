@@ -44,6 +44,8 @@ public final class ConfigHandler {
     public static int netherDimensionID = -1;
     public static int endDimensionID = 1;
     public static int bedrockDimensionID = 19;
+    public static String[] forbiddenDimensions;
+
     public static boolean enableCake = true;
     public static boolean enableFire = true;
     public static boolean enableFireMechanics = true;
@@ -55,6 +57,7 @@ public final class ConfigHandler {
     public static int potionAirId = 90;
     private static Configuration config;
 
+    
     public static void loadConfig(File configFile) {
         config = new Configuration(configFile);
 
@@ -70,6 +73,8 @@ public final class ConfigHandler {
         config.addCustomCategoryComment(CATEGORY_KAMI_GENERAL, comment);
 
         config.load();
+
+        forbiddenDimensions = config.getStringList("Forbidden Dimensions", Configuration.CATEGORY_GENERAL, new String[]{""}, "Disallow Bottomless Pouch inventory for certain dimension ID's");
 
         Property propEnableKami = config.get(Configuration.CATEGORY_GENERAL, "kami.forceenabled", true);
         propEnableKami.comment = "Set to true to enable all kami stuff (note, either this OR the kami mod file will work)";
