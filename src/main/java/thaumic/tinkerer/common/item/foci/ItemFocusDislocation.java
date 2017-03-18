@@ -38,6 +38,7 @@ import thaumcraft.common.config.ConfigItems;
 import thaumcraft.common.items.wands.ItemWandCasting;
 import thaumic.tinkerer.client.core.helper.IconHelper;
 import thaumic.tinkerer.common.ThaumicTinkerer;
+import thaumic.tinkerer.common.core.handler.ConfigHandler;
 import thaumic.tinkerer.common.core.helper.ItemNBTHelper;
 import thaumic.tinkerer.common.lib.LibItemNames;
 import thaumic.tinkerer.common.lib.LibResearch;
@@ -72,6 +73,15 @@ public class ItemFocusDislocation extends ItemModFocus {
     public void registerIcons(IIconRegister par1IconRegister) {
         super.registerIcons(par1IconRegister);
         ornament = IconHelper.forItem(par1IconRegister, this, "Orn");
+    }
+
+    private static boolean isBlockAllowed (Block block) {
+    	String currentBlock = Block.blockRegistry.getNameForObject(block);
+    	for (String blacklistedBlock : ConfigHandler.blockBlacklist) {
+    		if (currentBlock.equals(blacklistedBlock))
+    			return false;
+    	}
+    	return true;
     }
 
     @Override
@@ -123,7 +133,7 @@ public class ItemFocusDislocation extends ItemModFocus {
                     }
                     world.playSoundAtEntity(player, "thaumcraft:wand", 0.5F, 1F);
                 }
-            } else if (!blacklist.contains(block) && !ThaumcraftApi.portableHoleBlackList.contains(block) && block != null && block.getBlockHardness(world, mop.blockX, mop.blockY, mop.blockZ) != -1F && wand.consumeAllVis(itemstack, player, getCost(tile), true, false)) {
+            } else if (!blacklist.contains(block) && isBlockAllowed(block) && !ThaumcraftApi.portableHoleBlackList.contains(block) && block != null && block.getBlockHardness(world, mop.blockX, mop.blockY, mop.blockZ) != -1F && wand.consumeAllVis(itemstack, player, getCost(tile), true, false)) {
                 if (!world.isRemote) {
                     world.removeTileEntity(mop.blockX, mop.blockY, mop.blockZ);
                     world.setBlock(mop.blockX, mop.blockY, mop.blockZ, Blocks.air, 0, 1 | 2);
@@ -246,11 +256,9 @@ public class ItemFocusDislocation extends ItemModFocus {
         return visUsage;
     }
 
-
     static {
         blacklist.add(Blocks.piston_extension);
         blacklist.add(Blocks.piston_head);
-
     }
 
     @Override
