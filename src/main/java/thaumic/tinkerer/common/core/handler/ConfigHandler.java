@@ -45,6 +45,7 @@ public final class ConfigHandler {
     public static int endDimensionID = 1;
     public static int bedrockDimensionID = 19;
     public static String[] forbiddenDimensions;
+    public static String[] blockBlacklist;
 
     public static boolean enableCake = true;
     public static boolean enableFire = true;
@@ -75,6 +76,10 @@ public final class ConfigHandler {
         config.load();
 
         forbiddenDimensions = config.getStringList("Forbidden Dimensions", Configuration.CATEGORY_GENERAL, new String[]{""}, "Disallow Bottomless Pouch inventory for certain dimension ID's");
+
+        Property propBlockBlacklist = config.get(Configuration.CATEGORY_GENERAL, "Focus of Dislocation Blacklist", new String[]{"avaritiaddons:CompressedChest", "avaritiaddons:InfinityChest"});
+        propBlockBlacklist.comment = "These blocks will be disallowed for Focus of Dislocation";
+        blockBlacklist = propBlockBlacklist.getStringList();
 
         Property propEnableKami = config.get(Configuration.CATEGORY_GENERAL, "kami.forceenabled", true);
         propEnableKami.comment = "Set to true to enable all kami stuff (note, either this OR the kami mod file will work)";
