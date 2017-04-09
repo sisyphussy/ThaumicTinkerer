@@ -19,15 +19,15 @@ public enum EnumOreFrequency {
     ALUMINUM("oreAluminum", 617),
     AMBER("oreAmber", 161),
     APATITE("oreApatite", 269),
-    BLUE_TOPAZ("oreBlueTopaz", 238),
-    CERTUS_QUARTZ("oreCertusQuartz", 234),
-    CHIMERITE("oreChimerite", 270),
+    TOPAZ("oreTopaz", 238),
+    SILICON("oreSilicon", 234),
+    ILMENITE("oreIlmenite", 270),
     CINNABAR("oreCinnabar", 172),
     COAL("oreCoal", 2648),
     COPPER("oreCopper", 603),
     DIAMOND("oreDiamond", 67),
     EMERALD("oreEmerald", 48),
-    DARK_IRON("oreFzDarkIron", 61),
+    TANZANITE("oreTanzanite", 61),
     GOLD("oreGold", 164),
     AIR("oreInfusedAir", 94),
     EARTH("oreInfusedEarth", 35),
@@ -38,17 +38,17 @@ public enum EnumOreFrequency {
     IRON("oreIron", 1503),
     LAPIS("oreLapis", 57),
     LEAD("oreLead", 335),
-    NICKEL("oreNickel", 72),
+    //DRACONIUM("oreDraconium", 72),
     PERIDOT("orePeridot", 79),
     REDSTONE("oreRedstone", 364),
     RUBY("oreRuby", 57),
-    SALT("oreSaltpeter", 768),
+    //METEORICIRON("oreMeteoricIron", 86),
     SAPPHIRE("oreSapphire", 70),
-    SILVER("oreSilver", 416),
-    SULFUR("oreSulfur", 105),
+    MALACHITE("oreMalachite", 416),
+    DESH("oreDesh", 105),
     TIN("oreTin", 507),
-    URANIUM("oreUranium", 112),
-    VINETUM("oreVinteum", 392);
+    URANIUM("oreUranium", 112);
+    //ELECTROTINE("oreElectrotine", 392);
 
     public int freq;
     public String name;
