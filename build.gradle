@@ -68,7 +68,15 @@ apply plugin: 'forge'
 
 
 group = "thaumic.tinkerer" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
-archivesBaseName = "ThaumicTinkerer"
+
+
+ext.configFile = file('build.properties')
+
+ext.config = parseConfig(configFile)
+
+version = "${config.version}-${config.build_number}"
+//version = "${config.version}"
+archivesBaseName = config.mod_name
 
 minecraft {
     version = "1.7.10-10.13.4.1614-1.7.10"
@@ -81,12 +89,14 @@ minecraft {
 
 
 }
-version = "2.5-${minecraft.version}"
-if (System.getenv("BUILD_NUMBER")!=null)
-    version = "$version-${System.getenv().BUILD_NUMBER}"
-if (project.hasProperty("releaseType"))
-    if (project.releaseType == "ALPHA")
-        version = "alpha-" + version
+
+//version = 'project.version'
+//if (System.getenv("BUILD_NUMBER")!=null)
+//    version = "$version-${System.getenv().BUILD_NUMBER}"
+//if (project.hasProperty("releaseType"))
+//    if (project.releaseType == "ALPHA")
+//        version = "alpha-" + version
+		
 //curse {
 //	projectId="75598"
 //	version = "2.5-${minecraft.version}"
@@ -117,6 +127,7 @@ if (project.hasProperty("releaseType"))
     }
 // some crazy stuff to make sure the chicken stuff is in the mods folder...
 // because it wont work otherwise...  because FML doesnt laod coremods from the classpath
+
 task copyChicken(type: Copy, dependsOn: "extractUserDev") {
     from { configurations.compile }
     include "**/*Chicken*.jar", "**/*NotEnoughItems*.jar"
@@ -128,6 +139,7 @@ task copyChicken(type: Copy, dependsOn: "extractUserDev") {
 }
 //tasks.setupDevWorkspace.dependsOn copyChicken
 //tasks.setupDecompWorkspace.dependsOn copyChicken
+
 processResources
         {
             // replace stuff in mcmod.info, nothing else
@@ -147,7 +159,19 @@ jar {
         attributes 'FMLCorePlugin': 'thaumic.tinkerer.preloader.ThaumicTLoaderContainer'
         attributes 'FMLCorePluginContainsFMLMod': 'true'
     }
+	//rename the default output, for some better... sanity with scipts
+    archiveName = "${baseName} ${version}.${extension}"
 }
+
+def parseConfig(File config) {
+    config.withReader {
+        def prop = new Properties()
+        prop.load(it)
+        return (new ConfigSlurper().parse(prop))
+    }
+}
+
+
 task deobfJar(type: Jar) {
     from sourceSets.main.output
     classifier = 'dev'
