@@ -25,6 +25,7 @@ import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import thaumcraft.api.IGoggles;
@@ -76,8 +77,9 @@ public class ItemRevealingHelm extends ItemArmor implements IRepairable, IReveal
     }
 
     @Override
-    public void addInformation(ItemStack stack, EntityPlayer par2EntityPlayer, List list, boolean par4) {
-        list.add(StatCollector.translateToLocal("tc.visdiscount") + ": " + 5 + "%");
+    public void addInformation(final ItemStack stack, final EntityPlayer player, final List list, final boolean par4) {
+
+        list.add(EnumChatFormatting.DARK_PURPLE + StatCollector.translateToLocal("tc.visdiscount") + ": " + this.getVisDiscount(stack, player, null) + "%");
     }
 
     @Override
