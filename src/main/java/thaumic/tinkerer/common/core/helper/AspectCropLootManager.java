@@ -167,12 +167,12 @@ public class AspectCropLootManager {
         addAspectLoot(Aspect.LIGHT, new ItemStack(ThaumicTinkerer.registry.getFirstItemFromClass(ItemBrightNitor.class)));
 
         addAspectLoot(Aspect.MECHANISM, new ItemStack(Blocks.piston, 8));
-        addAspectLoot(Aspect.MECHANISM, "gear");
+        //addAspectLoot(Aspect.MECHANISM, "gear");
 
         addAspectLoot(Aspect.CROP, new ItemStack(Items.wheat, 32));
 
         addAspectLoot(Aspect.METAL, new ItemStack(Items.iron_ingot, 4), 100);
-        addAspectLoot(Aspect.METAL, "iron");
+        //addAspectLoot(Aspect.METAL, "iron");
 
 
         addAspectLoot(Aspect.DEATH, new ItemStack(Items.bone, 32));
