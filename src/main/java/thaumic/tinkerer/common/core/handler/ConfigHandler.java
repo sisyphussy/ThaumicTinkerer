@@ -29,14 +29,11 @@ public final class ConfigHandler {
 
     private static final String CATEGORY_POTIONS = "potions";
     private static final String CATEGORY_ENCHANTMENTS = "enchantments";
-    private static final String CATEGORY_KAMI_ITEMS = "item.kami";
-    private static final String CATEGORY_KAMI_BLOCKS = "block.kami";
     private static final String CATEGORY_KAMI_GENERAL = "general.kami";
     public static boolean enableKami = false;
     public static boolean enableFlight = true;
     public static boolean useTootlipIndicators = true;
     public static boolean enableSurvivalShareTome = true;
-    public static boolean enableEasymodeResearch = false;
     public static boolean enableDebugCommands = false;
     public static boolean useOreDictMetal = true;
     public static boolean repairTConTools = false;
@@ -64,13 +61,9 @@ public final class ConfigHandler {
 
         new ConfigCategory(CATEGORY_POTIONS);
         new ConfigCategory(CATEGORY_ENCHANTMENTS);
-        new ConfigCategory(CATEGORY_KAMI_ITEMS);
-        new ConfigCategory(CATEGORY_KAMI_BLOCKS);
         new ConfigCategory(CATEGORY_KAMI_GENERAL);
 
-        String comment = "These will only be used if KAMI is loaded. (KAMI is a separate download you can find in the Thaumic Tinkerer thread)";
-        config.addCustomCategoryComment(CATEGORY_KAMI_ITEMS, comment);
-        config.addCustomCategoryComment(CATEGORY_KAMI_BLOCKS, comment);
+        String comment = "These will only be used if KAMI is enabled.";
         config.addCustomCategoryComment(CATEGORY_KAMI_GENERAL, comment);
 
         config.load();
@@ -82,8 +75,8 @@ public final class ConfigHandler {
         blockBlacklist = propBlockBlacklist.getStringList();
 
         Property propEnableKami = config.get(Configuration.CATEGORY_GENERAL, "kami.forceenabled", true);
-        propEnableKami.comment = "Set to true to enable all kami stuff (note, either this OR the kami mod file will work)";
-        enableKami = Loader.isModLoaded("ThaumicTinkererKami") || propEnableKami.getBoolean(true);
+        propEnableKami.comment = "Set to true to enable all KAMI stuff";
+        enableKami = propEnableKami.getBoolean(true);
 
         Property propEnableTooltips = config.get(Configuration.CATEGORY_GENERAL, "tooltipIndicators.enabled", true);
         propEnableTooltips.comment = "Set to false to disable the [TT] tooltips in the thauminomicon.";
@@ -92,11 +85,6 @@ public final class ConfigHandler {
         Property propEnableSurvivalShareTome = config.get(Configuration.CATEGORY_GENERAL, "shareTome.survival.enabled", true);
         propEnableSurvivalShareTome.comment = "Set to false to disable the crafting recipe for the Tome of Research Sharing.";
         enableSurvivalShareTome = propEnableSurvivalShareTome.getBoolean(true);
-
-        Property propEasymodeResearch = config.get(Configuration.CATEGORY_GENERAL, "research.easymode.enabled", false);
-        propEasymodeResearch.comment = "Set to true to enable Easy Research (getting research notes = instant discovery). For those who don't like research. (DEPRECATED: Please use thaumcraft.cfg to edit this now, all this does is alter that)";
-        enableEasymodeResearch = propEasymodeResearch.getBoolean(false);
-        Config.researchDifficulty = (enableEasymodeResearch) ? -1 : Config.researchDifficulty;
 
         Property propDebugCommands = config.get(Configuration.CATEGORY_GENERAL, "debugCommands.enabled", false);
         propDebugCommands.comment = "Set to true to enable debugging commands.";
@@ -193,7 +181,7 @@ public final class ConfigHandler {
         config.save();
     }
 
-    private static int loadEnchant(String label, int deafultID) {
-        return config.get(CATEGORY_ENCHANTMENTS, "id_enchant." + label, deafultID).getInt(deafultID);
+    private static int loadEnchant(String label, int defaultID) {
+        return config.get(CATEGORY_ENCHANTMENTS, "id_enchant." + label, defaultID).getInt(defaultID);
     }
 }
