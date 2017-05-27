@@ -43,6 +43,11 @@ public class ItemFocusShadowbeam extends ItemModKamiFocus {
 
         EntityRegistry.registerModEntity(Beam.class, "ShadowbeamStaffBeam", 0, ThaumicTinkerer.instance, 0, 0, false);
     }
+    
+    public String getSortingHelper(ItemStack itemstack)
+    {
+      return "TTKSH" + super.getSortingHelper(itemstack);
+    }
 
     @Override
     public void onUsingFocusTick(ItemStack stack, EntityPlayer player, int count) {
@@ -124,11 +129,6 @@ public class ItemFocusShadowbeam extends ItemModKamiFocus {
         return new ThaumicTinkererInfusionRecipe(LibResearch.KEY_FOCUS_SHADOWBEAM, new ItemStack(this), 12, new AspectList().add(Aspect.DARKNESS, 65).add(Aspect.ELDRITCH, 32).add(Aspect.MAGIC, 50).add(Aspect.WEAPON, 32), new ItemStack(ConfigItems.itemFocusShock),
                 new ItemStack(ThaumicTinkerer.registry.getFirstItemFromClass(ItemKamiResource.class)), new ItemStack(Items.arrow), new ItemStack(Items.diamond), new ItemStack(ConfigItems.itemFocusExcavation), new ItemStack(ThaumicTinkerer.registry.getFirstItemFromClass(ItemFocusDeflect.class)), new ItemStack(ThaumicTinkerer.registry.getFirstItemFromClass(ItemKamiResource.class)));
 
-    }
-
-    @Override
-    public String getSortingHelper(ItemStack paramItemStack) {
-        return "SHADOWBEAM";
     }
 
     public static class Particle extends FXSparkle {

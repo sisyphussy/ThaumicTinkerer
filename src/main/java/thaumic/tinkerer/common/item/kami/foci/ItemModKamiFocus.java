@@ -163,8 +163,6 @@ public abstract class ItemModKamiFocus extends ItemFocusBasic implements ITTinke
         return ConfigHandler.enableKami;
     }
 
-    @Override
-    public abstract String getSortingHelper(ItemStack paramItemStack);
 
     @Override
     public boolean onFocusBlockStartBreak(ItemStack paramItemStack, int paramInt1, int paramInt2, int paramInt3, EntityPlayer paramEntityPlayer) {

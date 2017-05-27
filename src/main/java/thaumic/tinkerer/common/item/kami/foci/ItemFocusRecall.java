@@ -46,6 +46,11 @@ public class ItemFocusRecall extends ItemModKamiFocus {
     public ItemFocusRecall() {
         super();
     }
+    
+    public String getSortingHelper(ItemStack itemstack)
+    {
+      return "TTKCR" + super.getSortingHelper(itemstack);
+    }
 
     @Override
     protected boolean hasDepth() {
@@ -114,11 +119,6 @@ public class ItemFocusRecall extends ItemModKamiFocus {
         return new FocusUpgradeType[] { FocusUpgradeType.frugal};
       }
       return null;
-    }
-
-    @Override
-    public String getSortingHelper(ItemStack paramItemStack) {
-        return "RECALL";
     }
 
     @Override

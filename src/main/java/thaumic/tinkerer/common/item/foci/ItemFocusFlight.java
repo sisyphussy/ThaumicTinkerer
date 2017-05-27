@@ -68,9 +68,9 @@ public class ItemFocusFlight extends ItemModFocus {
         return itemstack;
     }
 
-    @Override
-    public String getSortingHelper(ItemStack itemstack) {
-        return "FLIGHT";
+    public String getSortingHelper(ItemStack itemstack)
+    {
+      return "TTFL" + super.getSortingHelper(itemstack);
     }
 
     @Override

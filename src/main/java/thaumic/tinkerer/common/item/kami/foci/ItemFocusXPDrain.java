@@ -38,6 +38,11 @@ public class ItemFocusXPDrain extends ItemModKamiFocus {
     public boolean isVisCostPerTick(ItemStack stack) {
         return true;
     }
+    
+    public String getSortingHelper(ItemStack itemstack)
+    {
+      return "TTKXP" + super.getSortingHelper(itemstack);
+    }
 
     @Override
     public void onUsingFocusTick(ItemStack paramItemStack, EntityPlayer paramEntityPlayer, int paramInt) {
@@ -109,11 +114,6 @@ public class ItemFocusXPDrain extends ItemModKamiFocus {
         return TTCommonProxy.kamiRarity;
     }
 
-
-    @Override
-    public String getSortingHelper(ItemStack paramItemStack) {
-        return "XPDRAIN";
-    }
 
     @Override
     public String getItemName() {

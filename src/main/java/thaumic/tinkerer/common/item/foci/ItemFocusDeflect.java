@@ -128,9 +128,9 @@ public class ItemFocusDeflect extends ItemModFocus {
             protectFromProjectiles(p, stack);
     }
 
-    @Override
-    public String getSortingHelper(ItemStack paramItemStack) {
-        return "DEFLECT";
+    public String getSortingHelper(ItemStack itemstack)
+    {
+      return "TTDF" + super.getSortingHelper(itemstack);
     }
 
     @Override

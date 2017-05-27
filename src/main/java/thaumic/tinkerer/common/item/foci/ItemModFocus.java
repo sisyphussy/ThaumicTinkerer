@@ -44,9 +44,6 @@ public abstract class ItemModFocus extends ItemFocusBasic implements ITTinkererI
 
     public ItemModFocus() {
         super();
-        setMaxDamage(1);
-        setNoRepair();
-        setMaxStackSize(1);
     }
 
     protected boolean hasOrnament() {
@@ -164,8 +161,6 @@ public abstract class ItemModFocus extends ItemFocusBasic implements ITTinkererI
         // NO-OP
     }
 
-    @Override
-    public abstract String getSortingHelper(ItemStack paramItemStack);
 
     @Override
     public boolean onFocusBlockStartBreak(ItemStack paramItemStack, int paramInt1, int paramInt2, int paramInt3, EntityPlayer paramEntityPlayer) {
@@ -175,6 +170,8 @@ public abstract class ItemModFocus extends ItemFocusBasic implements ITTinkererI
     public boolean canApplyUpgrade(ItemStack focusstack, EntityPlayer player, FocusUpgradeType type, int rank) {
         return true;
     }
+    
+    
 
 
 }

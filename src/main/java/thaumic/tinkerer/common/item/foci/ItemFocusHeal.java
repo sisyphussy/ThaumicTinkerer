@@ -96,9 +96,9 @@ public class ItemFocusHeal extends ItemModFocus {
         return true;
     }
 
-    @Override
-    public String getSortingHelper(ItemStack paramItemStack) {
-        return "HEAL";
+    public String getSortingHelper(ItemStack itemstack)
+    {
+      return "TTHE" + super.getSortingHelper(itemstack);
     }
 
     @Override
