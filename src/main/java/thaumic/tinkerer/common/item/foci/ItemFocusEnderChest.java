@@ -23,6 +23,7 @@ import net.minecraft.world.World;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.research.ResearchPage;
+import thaumcraft.api.wands.FocusUpgradeType;
 import thaumcraft.common.config.Config;
 import thaumcraft.common.config.ConfigBlocks;
 import thaumcraft.common.config.ConfigItems;
@@ -43,8 +44,7 @@ public class ItemFocusEnderChest extends ItemModFocus {
     public static final AspectList visUsage = new AspectList().add(Aspect.ENTROPY, 100).add(Aspect.ORDER, 100);
 
     @Override
-    public void addInformation(ItemStack stack, EntityPlayer player, List list,
-                               boolean par4) {
+    public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean par4) {
         super.addInformation(stack, player, list, par4);
         if (Loader.isModLoaded("EnderStorage")) {
             EnderStorageFunctions.addFocusInformation(stack, player, list, par4);
@@ -89,6 +89,28 @@ public class ItemFocusEnderChest extends ItemModFocus {
     public AspectList getVisCost(ItemStack stack) {
         return visUsage;
     }
+    
+    @Override
+    public FocusUpgradeType[] getPossibleUpgradesByRank(ItemStack itemstack, int rank)
+    {
+      switch (rank)
+      {
+      case 1: 
+        return new FocusUpgradeType[] { FocusUpgradeType.frugal};
+      case 2: 
+        return new FocusUpgradeType[] { FocusUpgradeType.frugal};
+      case 3: 
+        return new FocusUpgradeType[] { FocusUpgradeType.frugal};
+      case 4: 
+        return new FocusUpgradeType[] { FocusUpgradeType.frugal};
+      case 5: 
+        return new FocusUpgradeType[] { FocusUpgradeType.frugal};
+      }
+      return null;
+    }
+    
+    
+    
 
     @Override
     public String getItemName() {

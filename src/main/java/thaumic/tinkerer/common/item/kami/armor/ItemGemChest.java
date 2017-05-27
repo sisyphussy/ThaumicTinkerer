@@ -78,7 +78,7 @@ public class ItemGemChest extends ItemIchorclothArmorAdv {
         if (armor.getItemDamage() == 1 || !ThaumicTinkerer.proxy.armorStatus(player))
             return;
 
-        ItemFocusDeflect.protectFromProjectiles(player);
+        ItemFocusDeflect.protectFromProjectiles(player, null);
     }
 
     @Override

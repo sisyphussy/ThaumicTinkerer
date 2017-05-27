@@ -41,7 +41,7 @@ import thaumic.tinkerer.common.research.ResearchHelper;
 
 public class ItemFocusRecall extends ItemModKamiFocus {
 
-    AspectList cost = new AspectList().add(Aspect.AIR, 4000).add(Aspect.EARTH, 4000).add(Aspect.ORDER, 4000);
+    private static final AspectList visUsage = new AspectList().add(Aspect.AIR, 4000).add(Aspect.EARTH, 4000).add(Aspect.ORDER, 4000);
 
     public ItemFocusRecall() {
         super();
@@ -94,8 +94,26 @@ public class ItemFocusRecall extends ItemModKamiFocus {
 
     @Override
     public AspectList getVisCost(ItemStack stack) {
-
-        return cost;
+        return visUsage;
+    }
+    
+    @Override
+    public FocusUpgradeType[] getPossibleUpgradesByRank(ItemStack itemstack, int rank)
+    {
+      switch (rank)
+      {
+      case 1: 
+        return new FocusUpgradeType[] { FocusUpgradeType.frugal};
+      case 2: 
+        return new FocusUpgradeType[] { FocusUpgradeType.frugal};
+      case 3: 
+        return new FocusUpgradeType[] { FocusUpgradeType.frugal};
+      case 4: 
+        return new FocusUpgradeType[] { FocusUpgradeType.frugal};
+      case 5: 
+        return new FocusUpgradeType[] { FocusUpgradeType.frugal};
+      }
+      return null;
     }
 
     @Override
