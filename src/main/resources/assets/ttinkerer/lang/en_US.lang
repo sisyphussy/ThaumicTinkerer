@@ -231,7 +231,7 @@ ttresearch.page.DARK_QUARTZ.0=Smokey Quartz is pretty much Quartz, but negative.
 
 # -- TOME OF KNOWLEDGE SHARING
 ttresearch.name.SHARE_TOME=Tome of Knowledge Sharing
-ttresearch.lore.SHARE_TOME=What's mine is yours and yours is mine
+ttresearch.lore.SHARE_TOME=Published research for peer review
 ttresearch.page.SHARE_TOME.0=If one day you happen to want to share your knowledge with the rest of the world, this is the item for you.<BR><BR>By simply right clicking on this tome and handing it to someone else, they'll get all the research you've discovered so far.<BR><BR>(Note: Case there being no recipe on the right of this, the recipe is disabled and the item is creative only)
 
 # -- TRANSVECTOR INTERFACE
@@ -259,7 +259,7 @@ ttresearch.page.GASEOUS_LIGHT.0=You have studied the intricacies of the light, a
 
 # -- GASEOUS TENEBRAE
 ttresearch.name.GASEOUS_SHADOW=Gaseous Tenebrae
-ttresearch.lore.GASEOUS_SHADOW=Invisible shadows
+ttresearch.lore.GASEOUS_SHADOW=Hidden shadows
 ttresearch.page.GASEOUS_SHADOW.0=You have studied the intricacies of the Shadow, and found out a way to create gaseous darkness by infusing a phial with the raw shadow.<BR><BR>This phial contains a concentrated extract of Gaseous Tenebrae, that can be released through a right click, and will spread relatively fast in the nearby area, darkening it.
 
 # -- FUME DISSIPATOR
