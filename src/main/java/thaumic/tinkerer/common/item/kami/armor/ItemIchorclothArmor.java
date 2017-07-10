@@ -28,7 +28,9 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.ISpecialArmor;
 import net.minecraftforge.common.util.EnumHelper;
+import thaumcraft.api.IRunicArmor;
 import thaumcraft.api.IVisDiscountGear;
+import thaumcraft.api.IWarpingGear;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.research.ResearchPage;
@@ -51,7 +53,7 @@ import thaumic.tinkerer.common.research.ResearchHelper;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ItemIchorclothArmor extends ItemArmor implements IVisDiscountGear, ISpecialArmor, ITTinkererItem {
+public class ItemIchorclothArmor extends ItemArmor implements IVisDiscountGear, ISpecialArmor, ITTinkererItem, IWarpingGear, IRunicArmor {
 
     static ItemArmor.ArmorMaterial material = EnumHelper.addArmorMaterial(
             "ICHOR", 0, new int[]{3, 8, 6, 3}, 20);
@@ -213,4 +215,14 @@ public class ItemIchorclothArmor extends ItemArmor implements IVisDiscountGear, 
         }
         return null;
     }
+
+	@Override
+	public int getWarp(ItemStack arg0, EntityPlayer arg1) {
+		return 3;
+	}
+
+	@Override
+	public int getRunicCharge(ItemStack arg0) {
+		return 0;
+	}
 }

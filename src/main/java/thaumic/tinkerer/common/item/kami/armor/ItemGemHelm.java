@@ -38,22 +38,19 @@ import thaumic.tinkerer.common.research.IRegisterableResearch;
 import thaumic.tinkerer.common.research.KamiResearchItem;
 import thaumic.tinkerer.common.research.ResearchHelper;
 
-public class ItemGemHelm extends ItemIchorclothArmorAdv implements IGoggles,
-        IRevealer {
+public class ItemGemHelm extends ItemIchorclothArmorAdv implements IGoggles, IRevealer {
 
     public ItemGemHelm() {
         super(0);
     }
 
     @Override
-    public boolean showNodes(ItemStack paramItemStack,
-                             EntityLivingBase paramEntityLivingBase) {
+    public boolean showNodes(ItemStack paramItemStack, EntityLivingBase paramEntityLivingBase) {
         return true;
     }
 
     @Override
-    public boolean showIngamePopups(ItemStack paramItemStack,
-                                    EntityLivingBase paramEntityLivingBase) {
+    public boolean showIngamePopups(ItemStack paramItemStack, EntityLivingBase paramEntityLivingBase) {
         return true;
     }
 
@@ -75,21 +72,18 @@ public class ItemGemHelm extends ItemIchorclothArmorAdv implements IGoggles,
             if (effect != null && effect.duration <= 202)
                 effect.duration = 202;
             else
-                player.addPotionEffect(new PotionEffect(Potion.nightVision.id,
-                        202, 0, true));
+                player.addPotionEffect(new PotionEffect(Potion.nightVision.id, 202, 0, true));
         }
         if (player.isInsideOfMaterial(Material.lava)
                 && ThaumicTinkerer.proxy.armorStatus(player)
                 && armor.getItemDamage() == 0) {
             player.setAir(300);
-            PotionEffect effect = player
-                    .getActivePotionEffect(Potion.blindness);
+            PotionEffect effect = player.getActivePotionEffect(Potion.blindness);
 
             if (effect != null && effect.duration <= 202)
                 effect.duration = 202;
             else
-                player.addPotionEffect(new PotionEffect(Potion.blindness.id,
-                        202, 0, true));
+                player.addPotionEffect(new PotionEffect(Potion.blindness.id, 202, 0, true));
         }
         int food = player.getFoodStats().getFoodLevel();
         if (food > 0 && food < 18 && player.shouldHeal()
@@ -113,8 +107,7 @@ public class ItemGemHelm extends ItemIchorclothArmorAdv implements IGoggles,
                 new ItemStack(this)).setParents(
                 LibResearch.KEY_ICHORCLOTH_ARMOR).setPages(
                 new ResearchPage("0"),
-                ResearchHelper
-                        .infusionPage(LibResearch.KEY_ICHORCLOTH_HELM_GEM));
+                ResearchHelper.infusionPage(LibResearch.KEY_ICHORCLOTH_HELM_GEM));
 
     }
 
@@ -127,10 +120,8 @@ public class ItemGemHelm extends ItemIchorclothArmorAdv implements IGoggles,
                         .add(Aspect.LIGHT, 64).add(Aspect.FLESH, 16)
                         .add(Aspect.MIND, 16), new ItemStack(ThaumicTinkerer.registry.getItemFromClassAndName(ItemIchorclothArmor.class, LibItemNames.ICHOR_HELM)),
                 new ItemStack(Items.diamond, 1),
-                new ItemStack(ThaumicTinkerer.registry
-                        .getFirstItemFromClass(ItemKamiResource.class)),
-                new ItemStack(ThaumicTinkerer.registry
-                        .getFirstItemFromClass(ItemKamiResource.class)),
+                new ItemStack(ThaumicTinkerer.registry.getFirstItemFromClass(ItemKamiResource.class)),
+                new ItemStack(ThaumicTinkerer.registry.getFirstItemFromClass(ItemKamiResource.class)),
                 new ItemStack(ConfigItems.itemThaumonomicon), new ItemStack(
                 ConfigItems.itemFocusPrimal), new ItemStack(
                 Items.golden_helmet), new ItemStack(Items.potionitem,
