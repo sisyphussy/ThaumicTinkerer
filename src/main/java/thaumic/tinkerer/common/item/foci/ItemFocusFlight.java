@@ -68,9 +68,9 @@ public class ItemFocusFlight extends ItemModFocus {
         return itemstack;
     }
 
-    @Override
-    public String getSortingHelper(ItemStack itemstack) {
-        return "FLIGHT";
+    public String getSortingHelper(ItemStack itemstack)
+    {
+      return "TTFL" + super.getSortingHelper(itemstack);
     }
 
     @Override
@@ -89,8 +89,22 @@ public class ItemFocusFlight extends ItemModFocus {
     }
 
     @Override
-    public FocusUpgradeType[] getPossibleUpgradesByRank(ItemStack itemStack, int i) {
-        return new FocusUpgradeType[]{FocusUpgradeType.treasure, FocusUpgradeType.potency};
+    public FocusUpgradeType[] getPossibleUpgradesByRank(ItemStack itemstack, int rank)
+    {
+      switch (rank)
+      {
+      case 1: 
+        return new FocusUpgradeType[] { FocusUpgradeType.frugal};
+      case 2: 
+        return new FocusUpgradeType[] { FocusUpgradeType.frugal};
+      case 3: 
+        return new FocusUpgradeType[] { FocusUpgradeType.frugal};
+      case 4: 
+        return new FocusUpgradeType[] { FocusUpgradeType.frugal};
+      case 5: 
+        return new FocusUpgradeType[] { FocusUpgradeType.frugal};
+      }
+      return null;
     }
 
     @Override

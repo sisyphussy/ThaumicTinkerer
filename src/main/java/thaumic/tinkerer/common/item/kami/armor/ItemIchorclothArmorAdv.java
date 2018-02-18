@@ -22,6 +22,7 @@ import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
+import thaumcraft.api.aspects.Aspect;
 import thaumic.tinkerer.client.core.handler.kami.ToolModeHUDHandler;
 import thaumic.tinkerer.client.lib.LibResources;
 import thaumic.tinkerer.common.registry.ThaumicTinkererRecipe;
@@ -74,6 +75,12 @@ public abstract class ItemIchorclothArmorAdv extends ItemIchorclothArmor {
     public String getArmorTexture(ItemStack stack, Entity entity, int slot, String type) {
         return slot == 2 ? LibResources.MODEL_ARMOR_ICHOR_GEM_2 : LibResources.MODEL_ARMOR_ICHOR_GEM_1;
     }
+    
+    @Override
+    public int getVisDiscount(ItemStack arg0, EntityPlayer arg1, Aspect arg2) {
+        return 6;
+    }
+    
 
     boolean ticks() {
         return false;

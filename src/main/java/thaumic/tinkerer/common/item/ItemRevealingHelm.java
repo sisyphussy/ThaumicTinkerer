@@ -25,10 +25,12 @@ import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import thaumcraft.api.IGoggles;
 import thaumcraft.api.IRepairable;
+import thaumcraft.api.IRunicArmor;
 import thaumcraft.api.IVisDiscountGear;
 import thaumcraft.api.ThaumcraftApi;
 import thaumcraft.api.aspects.Aspect;
@@ -51,7 +53,7 @@ import thaumic.tinkerer.common.research.TTResearchItem;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ItemRevealingHelm extends ItemArmor implements IRepairable, IRevealer, IGoggles, IVisDiscountGear, ITTinkererItem {
+public class ItemRevealingHelm extends ItemArmor implements IRepairable, IRevealer, IGoggles, IVisDiscountGear, IRunicArmor, ITTinkererItem {
 
     public ItemRevealingHelm() {
         super(ThaumcraftApi.armorMatThaumium, 2, 0);
@@ -76,8 +78,9 @@ public class ItemRevealingHelm extends ItemArmor implements IRepairable, IReveal
     }
 
     @Override
-    public void addInformation(ItemStack stack, EntityPlayer par2EntityPlayer, List list, boolean par4) {
-        list.add(StatCollector.translateToLocal("tc.visdiscount") + ": " + 5 + "%");
+    public void addInformation(final ItemStack stack, final EntityPlayer player, final List list, final boolean par4) {
+
+        list.add(EnumChatFormatting.DARK_PURPLE + StatCollector.translateToLocal("tc.visdiscount") + ": " + this.getVisDiscount(stack, player, null) + "%");
     }
 
     @Override
@@ -99,6 +102,11 @@ public class ItemRevealingHelm extends ItemArmor implements IRepairable, IReveal
     public int getVisDiscount(ItemStack Itemstack, EntityPlayer Player, Aspect Aspect) {
         return 5;
     }
+    
+	@Override
+	public int getRunicCharge(ItemStack arg0) {
+		return 0;
+	}
 
     @Override
     public ArrayList<Object> getSpecialParameters() {
@@ -146,4 +154,6 @@ public class ItemRevealingHelm extends ItemArmor implements IRepairable, IReveal
             p_77648_2_.addChatComponentMessage(new ChatComponentText("Tile Entity: null"));
         return super.onItemUse(p_77648_1_, p_77648_2_, p_77648_3_, p_77648_4_, p_77648_5_, p_77648_6_, p_77648_7_, p_77648_8_, p_77648_9_, p_77648_10_);
     }
+
+
 }

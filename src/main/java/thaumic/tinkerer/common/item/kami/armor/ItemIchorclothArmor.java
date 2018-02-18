@@ -24,10 +24,13 @@ import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.ISpecialArmor;
 import net.minecraftforge.common.util.EnumHelper;
+import thaumcraft.api.IRunicArmor;
 import thaumcraft.api.IVisDiscountGear;
+import thaumcraft.api.IWarpingGear;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.research.ResearchPage;
@@ -50,8 +53,7 @@ import thaumic.tinkerer.common.research.ResearchHelper;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ItemIchorclothArmor extends ItemArmor implements IVisDiscountGear,
-        ISpecialArmor, ITTinkererItem {
+public class ItemIchorclothArmor extends ItemArmor implements IVisDiscountGear, ISpecialArmor, ITTinkererItem, IWarpingGear, IRunicArmor {
 
     static ItemArmor.ArmorMaterial material = EnumHelper.addArmorMaterial(
             "ICHOR", 0, new int[]{3, 8, 6, 3}, 20);
@@ -76,17 +78,14 @@ public class ItemIchorclothArmor extends ItemArmor implements IVisDiscountGear,
     }
 
     @Override
-    public String getArmorTexture(ItemStack stack, Entity entity, int slot,
-                                  String type) {
-        return slot == 2 ? LibResources.MODEL_ARMOR_ICHOR_2
-                : LibResources.MODEL_ARMOR_ICHOR_1;
+    public String getArmorTexture(ItemStack stack, Entity entity, int slot, String type) {
+        return slot == 2 ? LibResources.MODEL_ARMOR_ICHOR_2 : LibResources.MODEL_ARMOR_ICHOR_1;
     }
 
     @Override
-    public void addInformation(ItemStack stack, EntityPlayer par2EntityPlayer,
-                               List list, boolean par4) {
-        list.add(StatCollector.translateToLocal("tc.visdiscount") + ": "
-                + (armorType == 3 ? 3 : 4) + "%");
+    public void addInformation(final ItemStack stack, final EntityPlayer player, final List list, final boolean par4) 
+    {
+        list.add(EnumChatFormatting.DARK_PURPLE + StatCollector.translateToLocal("tc.visdiscount") + ": " + this.getVisDiscount(stack, player, null) + "%");
     }
 
     @Override
@@ -100,10 +99,8 @@ public class ItemIchorclothArmor extends ItemArmor implements IVisDiscountGear,
     }
 
     @Override
-    public ArmorProperties getProperties(EntityLivingBase player,
-                                         ItemStack armor, DamageSource source, double damage, int slot) {
-        return new ArmorProperties(0, getArmorMaterial()
-                .getDamageReductionAmount(slot) * 0.0425, Integer.MAX_VALUE);
+    public ArmorProperties getProperties(EntityLivingBase player, ItemStack armor, DamageSource source, double damage, int slot) {
+        return new ArmorProperties(0, getArmorMaterial().getDamageReductionAmount(slot) * 0.0425, Integer.MAX_VALUE);
     }
 
     @Override
@@ -112,14 +109,13 @@ public class ItemIchorclothArmor extends ItemArmor implements IVisDiscountGear,
     }
 
     @Override
-    public void damageArmor(EntityLivingBase entity, ItemStack stack,
-                            DamageSource source, int damage, int slot) {
+    public void damageArmor(EntityLivingBase entity, ItemStack stack, DamageSource source, int damage, int slot) {
         // NO-OP
     }
 
     @Override
     public int getVisDiscount(ItemStack arg0, EntityPlayer arg1, Aspect arg2) {
-        return armorType == 3 ? 3 : 4;
+        return 5;
     }
 
     @Override
@@ -219,4 +215,14 @@ public class ItemIchorclothArmor extends ItemArmor implements IVisDiscountGear,
         }
         return null;
     }
+
+	@Override
+	public int getWarp(ItemStack arg0, EntityPlayer arg1) {
+		return 3;
+	}
+
+	@Override
+	public int getRunicCharge(ItemStack arg0) {
+		return 0;
+	}
 }

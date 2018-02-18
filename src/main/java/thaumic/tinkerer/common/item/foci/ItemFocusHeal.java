@@ -17,6 +17,7 @@ package thaumic.tinkerer.common.item.foci;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
@@ -53,7 +54,7 @@ public class ItemFocusHeal extends ItemModFocus {
         if (!wand.consumeAllVis(stack, p, visUsage, false, false) || !p.shouldHeal())
             return;
 
-        int potency = this.getUpgradeLevel(stack, FocusUpgradeType.potency);
+        int potency = wand.getFocusPotency(stack);
 
         if (!playerHealData.containsKey(p.getGameProfile().getName()))
             playerHealData.put(p.getGameProfile().getName(), 0);
@@ -67,8 +68,11 @@ public class ItemFocusHeal extends ItemModFocus {
             playerHealData.put(p.getGameProfile().getName(), 0);
 
             wand.consumeAllVis(stack, p, visUsage, true, false);
-            p.heal(1);
+            p.heal(1 + potency);
             p.worldObj.playSoundAtEntity(p, "thaumcraft:wand", 0.5F, 1F);
+            //System.out.println("potency"+potency);
+            //System.out.println("progress"+progress);
+            //System.out.println("progress"+progress+" >= "+30+" - potency"+potency+" * 10 / 3"+" ("+(30-potency*10/3));
         }
     }
 
@@ -92,9 +96,9 @@ public class ItemFocusHeal extends ItemModFocus {
         return true;
     }
 
-    @Override
-    public String getSortingHelper(ItemStack paramItemStack) {
-        return "HEAL";
+    public String getSortingHelper(ItemStack itemstack)
+    {
+      return "TTHE" + super.getSortingHelper(itemstack);
     }
 
     @Override
@@ -108,9 +112,28 @@ public class ItemFocusHeal extends ItemModFocus {
     }
 
     @Override
-    public FocusUpgradeType[] getPossibleUpgradesByRank(ItemStack itemStack, int i) {
-        return new FocusUpgradeType[]{FocusUpgradeType.treasure, FocusUpgradeType.potency};
+    public FocusUpgradeType[] getPossibleUpgradesByRank(ItemStack itemstack, int rank)
+    {
+      switch (rank)
+      {
+      case 1: 
+        return new FocusUpgradeType[] { FocusUpgradeType.frugal, FocusUpgradeType.potency };
+      case 2: 
+        return new FocusUpgradeType[] { FocusUpgradeType.frugal, FocusUpgradeType.potency};
+      case 3: 
+        return new FocusUpgradeType[] { FocusUpgradeType.frugal, FocusUpgradeType.potency};
+      case 4: 
+        return new FocusUpgradeType[] { FocusUpgradeType.frugal, FocusUpgradeType.potency};
+      case 5: 
+        return new FocusUpgradeType[] { FocusUpgradeType.frugal, FocusUpgradeType.potency };
+      }
+      return null;
     }
+    
+    //public static FocusUpgradeType chainlightning = new FocusUpgradeType(17, new ResourceLocation("thaumcraft", "textures/foci/chainlightning.png"), "focus.upgrade.chainlightning.name", "focus.upgrade.chainlightning.text", new AspectList().add(Aspect.WEATHER, 1));
+    //public static FocusUpgradeType earthshock = new FocusUpgradeType(18, new ResourceLocation("thaumcraft", "textures/foci/earthshock.png"), "focus.upgrade.earthshock.name", "focus.upgrade.earthshock.text", new AspectList().add(Aspect.WEATHER, 1));
+
+    
 
     @Override
     public String getItemName() {

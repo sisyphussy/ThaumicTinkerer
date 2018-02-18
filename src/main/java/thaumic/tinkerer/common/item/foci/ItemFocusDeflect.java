@@ -49,7 +49,7 @@ import java.util.List;
 public class ItemFocusDeflect extends ItemModFocus {
 
     public static List<Class<?>> DeflectBlacklist = new ArrayList<Class<?>>();
-    AspectList visUsage = new AspectList().add(Aspect.ORDER, 8).add(Aspect.AIR, 4);
+    private static final AspectList visUsage = new AspectList().add(Aspect.ORDER, 8).add(Aspect.AIR, 4);
 
 
     public static void  setupBlackList()
@@ -61,8 +61,14 @@ public class ItemFocusDeflect extends ItemModFocus {
         }
 
     }
-    public static void protectFromProjectiles(EntityPlayer p) {
-        List<Entity> projectiles = p.worldObj.getEntitiesWithinAABB(IProjectile.class, AxisAlignedBB.getBoundingBox(p.posX - 4, p.posY - 4, p.posZ - 4, p.posX + 3, p.posY + 3, p.posZ + 3));
+    public static void protectFromProjectiles(EntityPlayer p, ItemStack stack) {
+    	int range = 0;
+    	if (stack != null) {
+    		ItemWandCasting wand = (ItemWandCasting) stack.getItem();
+    		range = wand.getFocusEnlarge(stack); 
+    	}
+    	
+        List<Entity> projectiles = p.worldObj.getEntitiesWithinAABB(IProjectile.class, AxisAlignedBB.getBoundingBox(p.posX - (4 + range), p.posY - (4 + range), p.posZ - (4 + range), p.posX + (3 + range), p.posY + (3 + range), p.posZ + (3 + range)));
 
         for (Entity e : projectiles) {
             if (CheckBlackList(e) || ProjectileHelper.getOwner(e) == p)
@@ -79,8 +85,22 @@ public class ItemFocusDeflect extends ItemModFocus {
     }
 
     @Override
-    public FocusUpgradeType[] getPossibleUpgradesByRank(ItemStack focusstack, int rank) {
-        return new FocusUpgradeType[]{FocusUpgradeType.frugal};
+    public FocusUpgradeType[] getPossibleUpgradesByRank(ItemStack itemstack, int rank)
+    {
+      switch (rank)
+      {
+      case 1: 
+        return new FocusUpgradeType[] { FocusUpgradeType.frugal};
+      case 2: 
+        return new FocusUpgradeType[] { FocusUpgradeType.frugal, FocusUpgradeType.enlarge};
+      case 3: 
+        return new FocusUpgradeType[] { FocusUpgradeType.frugal};
+      case 4: 
+        return new FocusUpgradeType[] { FocusUpgradeType.frugal, FocusUpgradeType.enlarge};
+      case 5: 
+        return new FocusUpgradeType[] { FocusUpgradeType.frugal};
+      }
+      return null;
     }
 
     private static boolean CheckBlackList(Entity entity) {
@@ -105,12 +125,12 @@ public class ItemFocusDeflect extends ItemModFocus {
         ItemWandCasting wand = (ItemWandCasting) stack.getItem();
 
         if (wand.consumeAllVis(stack, p, getVisCost(stack), true, false))
-            protectFromProjectiles(p);
+            protectFromProjectiles(p, stack);
     }
 
-    @Override
-    public String getSortingHelper(ItemStack paramItemStack) {
-        return "DEFLECT";
+    public String getSortingHelper(ItemStack itemstack)
+    {
+      return "TTDF" + super.getSortingHelper(itemstack);
     }
 
     @Override
@@ -126,14 +146,10 @@ public class ItemFocusDeflect extends ItemModFocus {
 
     @Override
     public AspectList getVisCost(ItemStack stack) {
-        float modifier=this.getUpgradeLevel(stack,FocusUpgradeType.frugal)*0.10f;
-        AspectList cost=visUsage.copy();
-        for(Aspect a:visUsage.getAspects())
-        {
-            cost.remove(a, (int) Math.round(cost.getAmount(a)*modifier));
-        }
-        return cost;
+        return visUsage;
     }
+    
+    
 
 
     @Override

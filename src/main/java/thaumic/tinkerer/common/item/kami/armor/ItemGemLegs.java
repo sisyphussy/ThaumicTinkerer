@@ -62,8 +62,7 @@ public class ItemGemLegs extends ItemIchorclothArmorAdv {
         if (effect != null && effect.duration <= 202)
             effect.duration = 202;
         else
-            player.addPotionEffect(new PotionEffect(Potion.fireResistance.id,
-                    202, 10, true));
+            player.addPotionEffect(new PotionEffect(Potion.fireResistance.id, 202, 10, true));
         ItemBrightNitor.meta = 1;
         ((ItemBrightNitor)ThaumicTinkerer.registry.getFirstItemFromClass(ItemBrightNitor.class)).onUpdate(null, player.worldObj, player, 0, false);
         ItemBrightNitor.meta = 0;

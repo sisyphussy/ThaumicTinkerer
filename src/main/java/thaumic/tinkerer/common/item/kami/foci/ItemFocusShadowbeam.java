@@ -36,20 +36,25 @@ import thaumic.tinkerer.common.research.ResearchHelper;
 
 public class ItemFocusShadowbeam extends ItemModKamiFocus {
 
-    AspectList cost = new AspectList().add(Aspect.ORDER, 25).add(Aspect.ENTROPY, 25).add(Aspect.AIR, 15);
+    private static final AspectList visUsage = new AspectList().add(Aspect.ORDER, 25).add(Aspect.ENTROPY, 25).add(Aspect.AIR, 15);
 
     public ItemFocusShadowbeam() {
         super();
 
         EntityRegistry.registerModEntity(Beam.class, "ShadowbeamStaffBeam", 0, ThaumicTinkerer.instance, 0, 0, false);
     }
+    
+    public String getSortingHelper(ItemStack itemstack)
+    {
+      return "TTKSH" + super.getSortingHelper(itemstack);
+    }
 
     @Override
     public void onUsingFocusTick(ItemStack stack, EntityPlayer player, int count) {
         ItemWandCasting wand = (ItemWandCasting) stack.getItem();
+        int potency = wand.getFocusPotency(stack); //TODO verify effect
 
         if (!player.worldObj.isRemote && wand.consumeAllVis(stack, player, getVisCost(stack), true, false)) {
-            int potency = 0;
 
             if (player.worldObj.rand.nextInt(10) == 0)
                 player.worldObj.playSoundAtEntity(player, "thaumcraft:brain", 0.5F, 1F);
@@ -76,7 +81,26 @@ public class ItemFocusShadowbeam extends ItemModKamiFocus {
 
     @Override
     public AspectList getVisCost(ItemStack stack) {
-        return cost;
+        return visUsage;
+    }
+    
+    @Override
+    public FocusUpgradeType[] getPossibleUpgradesByRank(ItemStack itemstack, int rank)
+    {
+      switch (rank)
+      {
+      case 1: 
+        return new FocusUpgradeType[] { FocusUpgradeType.frugal/*, FocusUpgradeType.potency*/};
+      case 2: 
+        return new FocusUpgradeType[] { FocusUpgradeType.frugal/*, FocusUpgradeType.potency*/};
+      case 3: 
+        return new FocusUpgradeType[] { FocusUpgradeType.frugal/*, FocusUpgradeType.potency*/};
+      case 4: 
+        return new FocusUpgradeType[] { FocusUpgradeType.frugal/*, FocusUpgradeType.potency*/};
+      case 5: 
+        return new FocusUpgradeType[] { FocusUpgradeType.frugal/*, FocusUpgradeType.potency*/};
+      }
+      return null;
     }
 
 
@@ -105,11 +129,6 @@ public class ItemFocusShadowbeam extends ItemModKamiFocus {
         return new ThaumicTinkererInfusionRecipe(LibResearch.KEY_FOCUS_SHADOWBEAM, new ItemStack(this), 12, new AspectList().add(Aspect.DARKNESS, 65).add(Aspect.ELDRITCH, 32).add(Aspect.MAGIC, 50).add(Aspect.WEAPON, 32), new ItemStack(ConfigItems.itemFocusShock),
                 new ItemStack(ThaumicTinkerer.registry.getFirstItemFromClass(ItemKamiResource.class)), new ItemStack(Items.arrow), new ItemStack(Items.diamond), new ItemStack(ConfigItems.itemFocusExcavation), new ItemStack(ThaumicTinkerer.registry.getFirstItemFromClass(ItemFocusDeflect.class)), new ItemStack(ThaumicTinkerer.registry.getFirstItemFromClass(ItemKamiResource.class)));
 
-    }
-
-    @Override
-    public String getSortingHelper(ItemStack paramItemStack) {
-        return "SHADOWBEAM";
     }
 
     public static class Particle extends FXSparkle {

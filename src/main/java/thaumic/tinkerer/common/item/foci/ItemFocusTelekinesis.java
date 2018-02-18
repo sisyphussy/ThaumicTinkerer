@@ -64,10 +64,10 @@ public class ItemFocusTelekinesis extends ItemModFocus {
             }
         }
     }
-
-    @Override
-    public String getSortingHelper(ItemStack itemstack) {
-        return "TELEKINESIS";
+    
+    public String getSortingHelper(ItemStack itemstack)
+    {
+      return "TTTE" + super.getSortingHelper(itemstack);
     }
 
     @Override
@@ -86,14 +86,30 @@ public class ItemFocusTelekinesis extends ItemModFocus {
     }
 
     @Override
-    public FocusUpgradeType[] getPossibleUpgradesByRank(ItemStack itemStack, int i) {
-        return new FocusUpgradeType[0];
-    }
-
-    @Override
     public boolean isVisCostPerTick(ItemStack stack) {
         return true;
     }
+    
+    //TODO add range upgrades
+    @Override
+    public FocusUpgradeType[] getPossibleUpgradesByRank(ItemStack itemstack, int rank)
+    {
+      switch (rank)
+      {
+      case 1: 
+        return new FocusUpgradeType[] { FocusUpgradeType.frugal};
+      case 2: 
+        return new FocusUpgradeType[] { FocusUpgradeType.frugal};
+      case 3: 
+        return new FocusUpgradeType[] { FocusUpgradeType.frugal};
+      case 4: 
+        return new FocusUpgradeType[] { FocusUpgradeType.frugal};
+      case 5: 
+        return new FocusUpgradeType[] { FocusUpgradeType.frugal};
+      }
+      return null;
+    }
+    
 
     @Override
     public String getItemName() {

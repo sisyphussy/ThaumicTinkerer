@@ -31,12 +31,17 @@ import java.util.List;
 
 public class ItemFocusXPDrain extends ItemModKamiFocus {
 
-    AspectList cost = new AspectList();
+    AspectList visUsage = new AspectList();
     private int lastGiven = 0;
 
     @Override
     public boolean isVisCostPerTick(ItemStack stack) {
         return true;
+    }
+    
+    public String getSortingHelper(ItemStack itemstack)
+    {
+      return "TTKXP" + super.getSortingHelper(itemstack);
     }
 
     @Override
@@ -89,14 +94,19 @@ public class ItemFocusXPDrain extends ItemModKamiFocus {
 
     @Override
     protected void addVisCostTooltip(AspectList cost, ItemStack stack, EntityPlayer player, List list, boolean par4) {
+    	list.add(StatCollector.translateToLocal(isVisCostPerTick(stack) ? "item.Focus.cost2" : "item.Focus.cost1"));
         list.add(" " + EnumChatFormatting.GREEN + StatCollector.translateToLocal("ttmisc.experience") + EnumChatFormatting.WHITE + " x " + getXpUse(stack));
     }
 
     @Override
     public AspectList getVisCost(ItemStack stack) {
-        return cost;
+        return visUsage;
     }
 
+    @Override
+    public boolean canApplyUpgrade(ItemStack focusstack, EntityPlayer player, FocusUpgradeType type, int rank) {
+        return false;
+    }
 
 
     @Override
@@ -104,11 +114,6 @@ public class ItemFocusXPDrain extends ItemModKamiFocus {
         return TTCommonProxy.kamiRarity;
     }
 
-
-    @Override
-    public String getSortingHelper(ItemStack paramItemStack) {
-        return "XPDRAIN";
-    }
 
     @Override
     public String getItemName() {

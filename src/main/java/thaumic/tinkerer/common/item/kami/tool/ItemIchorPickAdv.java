@@ -22,6 +22,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
@@ -141,7 +142,7 @@ public class ItemIchorPickAdv extends ItemIchorPick implements IAdvancedTool {
 
     @Override
     public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4) {
-        par3List.add(ToolHandler.getToolModeStr(this, par1ItemStack));
+        par3List.add(EnumChatFormatting.DARK_AQUA + ToolHandler.getToolModeStr(this, par1ItemStack));
     }
 
     @Override

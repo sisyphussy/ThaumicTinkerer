@@ -74,7 +74,7 @@ public class EnderStorageFunctions {
     }
 
     public static String getSortingHelper(ItemStack focus) {
-        String base = "ENDERCHEST";
+        String base = "TTEC";
         if (!focus.hasTagCompound())
             return base + "-VANILLA";
         boolean vanilla = !focus.getTagCompound().getBoolean("ender");

@@ -95,24 +95,21 @@ public abstract class ItemModKamiFocus extends ItemFocusBasic implements ITTinke
 
     @Override
     public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean par4) {
+    	super.addInformation(stack, player, list, par4);
         AspectList cost = getVisCost(stack);
         if (cost != null) {
-            list.add(StatCollector.translateToLocal(isVisCostPerTick(stack) ? "item.Focus.cost2" : "item.Focus.cost1"));
+            //list.add(StatCollector.translateToLocal(isVisCostPerTick(stack) ? "item.Focus.cost2" : "item.Focus.cost1"));
             addVisCostTooltip(cost, stack, player, list, par4);
         }
     }
 
     protected void addVisCostTooltip(AspectList cost, ItemStack stack, EntityPlayer player, List list, boolean par4) {
-        for (Aspect aspect : cost.getAspectsSorted()) {
+        /*for (Aspect aspect : cost.getAspectsSorted()) {
             float amount = cost.getAmount(aspect) / 100.0F;
             list.add(" " + '\u00a7' + aspect.getChatcolor() + aspect.getName() + '\u00a7' + "r x " + amount);
-        }
+        }*/
     }
 
-    @Override
-    public int getItemEnchantability() {
-        return 5;
-    }
 
     @Override
     public EnumRarity getRarity(ItemStack itemstack) {
@@ -166,8 +163,6 @@ public abstract class ItemModKamiFocus extends ItemFocusBasic implements ITTinke
         return ConfigHandler.enableKami;
     }
 
-    @Override
-    public abstract String getSortingHelper(ItemStack paramItemStack);
 
     @Override
     public boolean onFocusBlockStartBreak(ItemStack paramItemStack, int paramInt1, int paramInt2, int paramInt3, EntityPlayer paramEntityPlayer) {
@@ -175,8 +170,8 @@ public abstract class ItemModKamiFocus extends ItemFocusBasic implements ITTinke
     }
 
     @Override
-    public FocusUpgradeType[] getPossibleUpgradesByRank(ItemStack itemStack, int i) {
-        return new FocusUpgradeType[]{FocusUpgradeType.frugal};
+    public boolean canApplyUpgrade(ItemStack focusstack, EntityPlayer player, FocusUpgradeType type, int rank) {
+        return true;
     }
 
 }

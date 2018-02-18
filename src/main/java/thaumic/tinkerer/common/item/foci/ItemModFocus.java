@@ -44,9 +44,6 @@ public abstract class ItemModFocus extends ItemFocusBasic implements ITTinkererI
 
     public ItemModFocus() {
         super();
-        setMaxDamage(1);
-        setNoRepair();
-        setMaxStackSize(1);
     }
 
     protected boolean hasOrnament() {
@@ -93,12 +90,13 @@ public abstract class ItemModFocus extends ItemFocusBasic implements ITTinkererI
     public ThaumicTinkererRecipe getRecipeItem() {
         return null;
     }
-
+    /*
     @Override
     public boolean isItemTool(ItemStack par1ItemStack) {
         return true;
     }
-
+    */
+    /*
     @Override
     public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean par4) {
         AspectList cost = getVisCost(stack);
@@ -107,7 +105,7 @@ public abstract class ItemModFocus extends ItemFocusBasic implements ITTinkererI
             addVisCostTooltip(cost, stack, player, list, par4);
         }
     }
-
+	*/
     protected void addVisCostTooltip(AspectList cost, ItemStack stack, EntityPlayer player, List list, boolean par4) {
         for (Aspect aspect : cost.getAspectsSorted()) {
             float amount = cost.getAmount(aspect) / 100.0F;
@@ -115,10 +113,6 @@ public abstract class ItemModFocus extends ItemFocusBasic implements ITTinkererI
         }
     }
 
-    @Override
-    public int getItemEnchantability() {
-        return 5;
-    }
 
     @Override
     public EnumRarity getRarity(ItemStack itemstack) {
@@ -167,15 +161,17 @@ public abstract class ItemModFocus extends ItemFocusBasic implements ITTinkererI
         // NO-OP
     }
 
-    @Override
-    public abstract String getSortingHelper(ItemStack paramItemStack);
 
     @Override
     public boolean onFocusBlockStartBreak(ItemStack paramItemStack, int paramInt1, int paramInt2, int paramInt3, EntityPlayer paramEntityPlayer) {
         return false;
     }
 
-
+    public boolean canApplyUpgrade(ItemStack focusstack, EntityPlayer player, FocusUpgradeType type, int rank) {
+        return true;
+    }
+    
+    
 
 
 }

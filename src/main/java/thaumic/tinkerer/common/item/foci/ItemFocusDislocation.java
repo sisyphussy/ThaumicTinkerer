@@ -33,6 +33,7 @@ import thaumcraft.api.ThaumcraftApi;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.research.ResearchPage;
+import thaumcraft.api.wands.FocusUpgradeType;
 import thaumcraft.common.config.Config;
 import thaumcraft.common.config.ConfigItems;
 import thaumcraft.common.items.wands.ItemWandCasting;
@@ -159,8 +160,9 @@ public class ItemFocusDislocation extends ItemModFocus {
 
     @Override
     public String getSortingHelper(ItemStack itemstack) {
-        return "DISLOCATION" + getUniqueKey(itemstack);
+    	return "TTDL" + super.getSortingHelper(itemstack) + getUniqueKey(itemstack);
     }
+    
 
     public String getUniqueKey(ItemStack itemstack) {
         ItemStack stack = getPickedBlock(itemstack);
@@ -255,6 +257,28 @@ public class ItemFocusDislocation extends ItemModFocus {
     public AspectList getVisCost(ItemStack stack) {
         return visUsage;
     }
+    
+    @Override
+    public FocusUpgradeType[] getPossibleUpgradesByRank(ItemStack itemstack, int rank)
+    {
+      switch (rank)
+      {
+      case 1: 
+        return new FocusUpgradeType[] { FocusUpgradeType.frugal};
+      case 2: 
+        return new FocusUpgradeType[] { FocusUpgradeType.frugal};
+      case 3: 
+        return new FocusUpgradeType[] { FocusUpgradeType.frugal};
+      case 4: 
+        return new FocusUpgradeType[] { FocusUpgradeType.frugal};
+      case 5: 
+        return new FocusUpgradeType[] { FocusUpgradeType.frugal};
+      }
+      return null;
+    }
+    
+    
+    
 
     static {
         blacklist.add(Blocks.piston_extension);
