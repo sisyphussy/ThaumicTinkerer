@@ -14,6 +14,11 @@
  */
 package thaumic.tinkerer.common.block.tile;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.apache.commons.lang3.ArrayUtils;
+
 import appeng.api.movable.IMovableTile;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
@@ -28,7 +33,6 @@ import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.Constants;
-import org.apache.commons.lang3.ArrayUtils;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.common.Thaumcraft;
@@ -38,9 +42,6 @@ import thaumic.tinkerer.common.core.helper.Tuple4Int;
 import thaumic.tinkerer.common.enchantment.core.EnchantmentManager;
 import thaumic.tinkerer.common.lib.LibBlockNames;
 import thaumic.tinkerer.common.lib.LibFeatures;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class TileEnchanter extends TileEntity implements ISidedInventory, IMovableTile {
 
@@ -163,11 +164,11 @@ public class TileEnchanter extends TileEntity implements ISidedInventory, IMovab
                     Tuple4Int p = pillars.get(i);
                     if (worldObj.rand.nextBoolean()) {
                         
-						Thaumcraft.proxy.essentiaTrailFx(getWorldObj(), p.i1, p.i4, p.i3, xCoord, yCoord, zCoord, 1, aspect.getColor(), worldObj.rand.nextFloat() * 0.5F + 0.5F);
-						//Thaumcraft.proxy.essentiaTrailFx(getWorldObj(), p.i1, p.i4, p.i3, xCoord, yCoord, zCoord, 4, aspect.getColor(), worldObj.rand.nextFloat() * 0.5F + 0.5F);
-						
+                    	if (FMLCommonHandler.instance().getEffectiveSide().isClient()) {
+						Thaumcraft.proxy.essentiaTrailFx(getWorldObj(), p.i1, p.i4, p.i3, xCoord, yCoord, zCoord, 4, aspect.getColor(), worldObj.rand.nextFloat() * 0.5F + 0.5F);
                     	Thaumcraft.proxy.blockRunes(worldObj, p.i1, p.i4 - 0.75, p.i3, 0.3F + worldObj.rand.nextFloat() * 0.7F, 0.0F, 0.3F + worldObj.rand.nextFloat() * 0.7F, 15, worldObj.rand.nextFloat() / 8F);
                         Thaumcraft.proxy.blockRunes(worldObj, xCoord, yCoord + 0.25, zCoord, 0.3F + worldObj.rand.nextFloat() * 0.7F, 0.0F, 0.3F + worldObj.rand.nextFloat() * 0.7F, 15, worldObj.rand.nextFloat() / 8F);
+                    	}
                         if (worldObj.rand.nextInt(5) == 0)
                             worldObj.playSoundEffect(p.i1, p.i2, p.i3, "thaumcraft:egidle", 0.5F, 1F);
                                                 

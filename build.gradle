@@ -65,6 +65,10 @@ String changelogLoc = 'https://raw.github.com/Thaumic-Tinkerer/ThaumicTinkerer/c
 //apply plugin: 'curseforge'
 apply plugin: 'forge'
 
+sourceCompatibility = JavaVersion.VERSION_1_8
+targetCompatibility = JavaVersion.VERSION_1_8
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
 
 version = "2.5-1.7.10"
 if (project.hasProperty("buildnum"))
@@ -121,8 +125,8 @@ if (project.hasProperty("releaseType"))
         compile "codechicken:NotEnoughItems:1.7.10-1.0.5.118:dev"
         compile "codechicken:EnderStorage:1.7.10-1.4.7.37:dev"
         compile "mantle:Mantle:1.7.10-0.3.2.jenkins187:deobf"
-        compile "li.cil.oc:OpenComputers:MC1.7.10-1.5.7.536-dev:api"
-        compile "li.cil.oc:OpenComputers:MC1.7.10-1.5.7.536-dev:dev"
+        //compile "li.cil.oc:OpenComputers:MC1.7.10-1.5.7.536-dev:api"
+        //compile "li.cil.oc:OpenComputers:MC1.7.10-1.5.7.536-dev:dev"
         compile("tconstruct:TConstruct:1.7.10-1.8.3.build927:deobf") {
         }
     }
