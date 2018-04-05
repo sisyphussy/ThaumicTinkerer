@@ -11,7 +11,6 @@ remotebuild.py
 /gradlew.bat
 /libs
 
-
 ## ForgeGradle
 /run
 /out
@@ -34,8 +33,6 @@ remotebuild.py
 /Server/
 /classes/
 ## misc
-/libs/Thaumcraft-deobf*.jar*
-/libs/*1.7.10*
 TCDEOBF*
 ## Ignore OS cache files
 /src/main/resources/CoFH_at.cfg
