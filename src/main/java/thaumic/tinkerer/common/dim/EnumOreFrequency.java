@@ -38,17 +38,30 @@ public enum EnumOreFrequency {
     IRON("oreIron", 1503),
     LAPIS("oreLapis", 57),
     LEAD("oreLead", 335),
-    //DRACONIUM("oreDraconium", 72),
+    DRACONIUM("oreDraconium", 72),
     PERIDOT("orePeridot", 79),
     REDSTONE("oreRedstone", 364),
     RUBY("oreRuby", 57),
-    //METEORICIRON("oreMeteoricIron", 86),
+    METEORICIRON("oreMeteoricIron", 86),
     SAPPHIRE("oreSapphire", 70),
     MALACHITE("oreMalachite", 416),
     DESH("oreDesh", 105),
     TIN("oreTin", 507),
-    URANIUM("oreUranium", 112);
-    //ELECTROTINE("oreElectrotine", 392);
+    URANIUM("oreUranium", 112),
+    ELECTROTINE("oreElectrotine", 392),
+    NETHERQUARTZ("oreNetherQuartz", 809),
+    CERTUS_QUARTZ("oreCertusQuartz", 234),
+    CHARGED_CERTUS_QUARTZ("oreChargedCertusQuartz", 117),
+    CHEESE("oreCheese", 1024),
+    NICKEL("oreNickel", 144),
+    SULFUR("oreSulfur", 288),
+    COBALT("oreCobalt", 96),
+    ORIHARUKON("oreOriharukon", 44),
+    TUNGSTEN("oreTungsten", 22),
+    MAGNESIUM("oreMagnesium", 96),
+    ANDAMANTIUM("oreAdamantium", 11),
+    PLATINUM("orePlatinum", 33),
+    MITHRIL("oreMithril", 44);
 
     public int freq;
     public String name;
