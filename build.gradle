@@ -10,43 +10,49 @@ buildscript {
             url = "https://oss.sonatype.org/content/repositories/snapshots/"
         }
         maven {
-            url 'https://oss.sonatype.org/content/groups/public'
+            url 'https://plugins.gradle.org/m2/'
         }
-        maven { url 'https://plugins.gradle.org/m2/' }
-        mavenLocal()
     }
     dependencies {
         classpath 'net.minecraftforge.gradle:ForgeGradle:1.2-SNAPSHOT'
         classpath 'com.gradle:build-scan-plugin:1.3'
-		classpath "de.undercouch:gradle-download-task:3.1.2"
     }
 }
+
 apply plugin: 'com.gradle.build-scan'
-import de.undercouch.gradle.tasks.download.Download
+apply plugin: 'forge'
 
 buildScan {
     licenseAgreementUrl = 'https://gradle.com/terms-of-service'
     licenseAgree = 'yes'
 }
-repositories {
-    mavenLocal()
-    maven {
-        name = "ic2"
-        url = "http://maven.ic2.player.to/"
-    }
-    ivy {
 
-        name 'Forge FS legacy'
-        artifactPattern "http://files.minecraftforge.net/[module]/[module]-dev-[revision].[ext]"
-    }
-    maven {
-        name 'ForgeFS'
-        url 'http://files.minecraftforge.net/maven'
-    }
-    maven {
-        name 'MinecraftS3'
-        url 'http://s3.amazonaws.com/Minecraft.Download/libraries'
-    }
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+ext.configFile = file('build.properties')
+ext.config = parseConfig(configFile)
+
+version = "${config.mc_version}-${config.version}"
+if (System.getenv("BUILD_NUMBER") != null) {
+    version += "-${System.getenv("BUILD_NUMBER")}"
+} else if(config.build_number != null){
+    version += "-${config.build_number}"
+}
+if (project.hasProperty("releaseType") && project.releaseType == "ALPHA") {
+    version += "_alpha"
+}
+group = "thaumic.tinkerer" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
+archivesBaseName = config.mod_name
+
+minecraft {
+    version = "1.7.10-10.13.4.1614-1.7.10"
+    runDir = "eclipse"
+
+    replace "\${version}", config.version
+}
+
+repositories {
     maven {
         name 'DVS1 Maven FS'
         url 'http://dvs1.progwml6.com/files/maven'
@@ -55,223 +61,76 @@ repositories {
         name 'CB Repo'
         url "http://chickenbones.net/maven/"
     }
-    maven { // The repo from which to get waila
-        name "Mobius Repo"
-        url "http://mobiusstrip.eu/maven"
-    }
     maven {
-        url  'http://maven.cil.li/'
+        name = "gt"
+        url = "https://gregtech.overminddl1.com/"
     }
-
-
-}
-String changelogLoc = 'https://raw.github.com/Thaumic-Tinkerer/ThaumicTinkerer/changelog/web/changelog'
-
-//apply plugin: 'curseforge'
-apply plugin: 'forge'
-
-sourceCompatibility = JavaVersion.VERSION_1_8
-targetCompatibility = JavaVersion.VERSION_1_8
-sourceCompatibility = 1.8
-targetCompatibility = 1.8
-
-version = "2.5-1.7.10"
-if (project.hasProperty("buildnum"))
-    version = "2.5-1.7.10-" + project.buildnum
-if (project.hasProperty("releaseType"))
-    if (project.releaseType == "ALPHA")
-        version = "alpha-" + version
-
-group = "thaumic.tinkerer" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
-
-
-ext.configFile = file('build.properties')
-
-ext.config = parseConfig(configFile)
-
-version = "${config.version}-${config.build_number}"
-//version = "${config.version}"
-archivesBaseName = config.mod_name
-
-minecraft {
-    version = "1.7.10-10.13.4.1614-1.7.10"
-    //minecraftVersion="1.7.10"
-    runDir = "eclipse"
-    replace '${version}', project.version
-    //coreMod("tconstruct.preloader.TConstructLoaderContainer")
-    if (project.hasProperty("pass"))
-        replace "INSERTPASSWORDHERE", project.pass
-
-
-}
-version = "2.5-${minecraft.version}"
-if (System.getenv("BUILD_NUMBER")!=null)
-    version = "$version-${System.getenv().BUILD_NUMBER}"
-if (project.hasProperty("releaseType"))
-    if (project.releaseType == "ALPHA")
-        version = "alpha-" + version
-//curse {
-//    projectId="75598"
-//    if(project.hasProperty("apiKey"))
-//        apiKey=project.apiKey
-//   changelog="test"
-//   if(project.hasProperty("releaseType"))
-//       releaseType=project.releaseType
-//}
-
-
-    dependencies {
-        compile "codechicken:CodeChickenLib:1.7.10-1.1.3.140:dev"
-        compile "codechicken:CodeChickenCore:1.7.10-1.0.7.47:dev"
-        //compile "mcp.mobius.waila:Waila:1.5.10_1.7.10"
-        compile "codechicken:ForgeMultipart:1.7.10-1.1.2.331:dev"
-		compile "net.industrial-craft:industrialcraft-2:2.2.827-experimental:dev"
-        compile 'com.mod-buildcraft:buildcraft:6.4.8:dev'
-        compile "codechicken:NotEnoughItems:1.7.10-1.0.5.118:dev"
-        compile "codechicken:EnderStorage:1.7.10-1.4.7.37:dev"
-        compile "mantle:Mantle:1.7.10-0.3.2.jenkins187:deobf"
-        //compile "li.cil.oc:OpenComputers:MC1.7.10-1.5.7.536-dev:api"
-        //compile "li.cil.oc:OpenComputers:MC1.7.10-1.5.7.536-dev:dev"
-        compile("tconstruct:TConstruct:1.7.10-1.8.3.build927:deobf") {
-        }
-    }
-	
-	
-task getThaucraftDev(type: Download) {
-    onlyIf {
-        !file("libs/Thaumcraft-deobf-1.7.10-4.2.3.5.jar").exists()
-    }
-    src "https://github.com/jaredlll08/JSON-Ables/raw/master/libs/Thaumcraft-deobf-1.7.10-4.2.3.5%20(1).jar"
-    dest file("libs/Thaumcraft-deobf-1.7.10-4.2.3.5.jar")
-    mustRunAfter "deobfBinJar"
-    mustRunAfter "repackMinecraft"
-}
-task getOpenComputersDev(type: Download, dependsOn: "getThaucraftDev") {
-    onlyIf {
-        !file("libs/OpenComputers-MC1.7.10-1.7.2.1178-dev.jar").exists()
-    }
-    src "https://modmaven.k-4u.nl/li/cil/oc/OpenComputers/MC1.7.10-1.7.2.1178/OpenComputers-MC1.7.10-1.7.2.1178-dev.jar"
-    dest file("libs/OpenComputers-MC1.7.10-1.7.2.1178-dev.jar")
-    mustRunAfter "deobfBinJar"
-    mustRunAfter "repackMinecraft"
-}
-task getAEDev(type: Download, dependsOn: "getOpenComputersDev") {
-    onlyIf {
-        !file("libs/appliedenergistics2-rv3-beta-18-dev.jar").exists()
-    }
-    src "https://github.com/xsun2001/Applied-Energistics-2-Unofficial/releases/download/rv3.beta.18/appliedenergistics2-rv3-beta-18-dev.jar"
-    dest file("libs/appliedenergistics2-rv3-beta-18-dev.jar")
-    mustRunAfter "deobfBinJar"
-    mustRunAfter "repackMinecraft"
-}
-task getBaubles(type: Download, dependsOn: "getAEDev"){
-	onlyIf {
-		!file("libs/Baubles-1.7.10-1.0.1.10.jar").exists()
-	}
-	src "https://media.forgecdn.net/files/2224/857/Baubles-1.7.10-1.0.1.10.jar"
-    dest file("libs/Baubles-1.7.10-1.0.1.10.jar")
-    mustRunAfter "deobfBinJar"
-    mustRunAfter "repackMinecraft"
-}
-task getCoFHCore(type: Download, dependsOn: "getBaubles"){
-	onlyIf {
-		!file("libs/CoFHCore-[1.7.10]3.1.4-329-dev.jar").exists()
-	}
-	src "https://media.forgecdn.net/files/2388/751/CoFHCore-%5b1.7.10%5d3.1.4-329-dev.jar"
-    dest file("libs/CoFHCore-[1.7.10]3.1.4-329-dev.jar")
-    mustRunAfter "deobfBinJar"
-    mustRunAfter "repackMinecraft"
-}
-task getEnderCore(type: Download, dependsOn: "getCoFHCore"){
-	onlyIf {
-		!file("libs/EnderCore-1.7.10-0.2.0.39_beta-dev.jar").exists()
-	}
-	src "https://media.forgecdn.net/files/2331/48/EnderCore-1.7.10-0.2.0.39_beta.jar"
-    dest file("libs/EnderCore-1.7.10-0.2.0.39_beta-dev.jar")
-    mustRunAfter "deobfBinJar"
-    mustRunAfter "repackMinecraft"
-}
-task getEnderIO(type: Download, dependsOn: "getEnderCore"){
-	onlyIf {
-		!file("libs/EnderIO-1.7.10-2.3.0.429_beta-dev.jar").exists()
-	}
-	src "https://media.forgecdn.net/files/2322/349/EnderIO-1.7.10-2.3.0.429_beta-dev.jar"
-    dest file("libs/EnderIO-1.7.10-2.3.0.429_beta-dev.jar")
-    mustRunAfter "deobfBinJar"
-    mustRunAfter "repackMinecraft"
-}
-task getICDEV(type: Download, dependsOn: "getEnderIO"){
-	onlyIf {
-		!file("libs/industrialcraft-2-2.2.828-experimental-dev.jar").exists()
-	}
-	src "http://jenkins.ic2.player.to/job/IC2_experimental/828/artifact/build/libs/industrialcraft-2-2.2.828-experimental-dev.jar"
-    dest file("libs/industrialcraft-2-2.2.828-experimental-dev.jar")
-    mustRunAfter "deobfBinJar"
-    mustRunAfter "repackMinecraft"
-}
-task getWaila(type: Download, dependsOn: "getICDEV"){
-	onlyIf {
-		!file("libs/Waila-1.5.10_1.7.10.jar").exists()
-	}
-	src "https://media.forgecdn.net/files/2230/518/Waila-1.5.10_1.7.10.jar"
-    dest file("libs/Waila-1.5.10_1.7.10.jar")
-    mustRunAfter "deobfBinJar"
-    mustRunAfter "repackMinecraft"
 }
 
-tasks.setupCIWorkspace.dependsOn getWaila
-tasks.setupDevWorkspace.dependsOn getWaila
-tasks.setupDecompWorkspace.dependsOn getWaila
-tasks.compileJava.dependsOn getWaila
-	
-// some crazy stuff to make sure the chicken stuff is in the mods folder...
-// because it wont work otherwise...  because FML doesnt laod coremods from the classpath
-task copyChicken(type: Copy, dependsOn: "extractUserDev") {
-    from { configurations.compile }
-    include "**/*Chicken*.jar", "**/*NotEnoughItems*.jar"
-    exclude "**/CodeChickenLib*" // because CCC downloads it anyways.. -_-
-    into file(minecraft.runDir + "/mods")
-
-    mustRunAfter "deobfBinJar"
-    mustRunAfter "repackMinecraft"
+dependencies {
+    compile "codechicken:CodeChickenLib:1.7.10-1.1.3.140:dev"
+    compile "codechicken:CodeChickenCore:1.7.10-1.0.7.47:dev"
+    compile "codechicken:NotEnoughItems:1.7.10-1.0.5.120:dev"
+    compile "mcp.mobius.waila:Waila:1.5.10_1.7.10"
+    compile "net.industrial-craft:industrialcraft-2:2.2.827-experimental:dev"
+    compile "codechicken:EnderStorage:1.7.10-1.4.7.37:dev"
+    compile "com.azanor.baubles:Baubles:1.7.10-1.0.1.10:deobf"
+    compile "thaumcraft:Thaumcraft:1.7.10-4.2.3.5:dev"
+    compile "appeng:appliedenergistics2:rv3-beta-6:dev"
+    compile "li.cil.oc:OpenComputers:MC1.7.10-1.7.2.1204:dev"
+    compile "cofh:CoFHCore:1.7.10R3.0.4:dev"
+    compile "cofh:CoFHLib:1.7.10R3.0.3:dev"
+    compile "com.enderio.core:EnderCore:1.7.10-0.2.0.39_beta:dev"
+    compile "com.enderio:EnderIO:1.7.10-2.3.0.430_beta:dev"
+    compile "mantle:Mantle:1.7.10-0.3.2.jenkins187:deobf"
+    compile "tconstruct:TConstruct:1.7.10-1.8.3.build927:deobf"
 }
-//tasks.setupDevWorkspace.dependsOn copyChicken
-//tasks.setupDecompWorkspace.dependsOn copyChicken
-processResources
-        {
-            // replace stuff in mcmod.info, nothing else
-            from(sourceSets.main.resources.srcDirs) {
-                include 'mcmod.info'
-                // replace version and mcversion
-                expand 'version': project.version, 'MCversion': project.minecraft.version
-            }
 
-            // copy everything else, thats not the mcmod.info
-            from(sourceSets.main.resources.srcDirs) {
-                exclude 'mcmod.info'
-            }
-        }
-		
-		
 jar {
     manifest {
         attributes 'FMLCorePlugin': 'thaumic.tinkerer.preloader.ThaumicTLoaderContainer'
         attributes 'FMLCorePluginContainsFMLMod': 'true'
     }
-	//rename the default output, for some better... sanity with scipts
-    archiveName = "${baseName} ${version}.${extension}"
 }
 
-def parseConfig(File config) {
+processResources {
+    // this will ensure that this task is redone when the versions change.
+    inputs.property "version", project.version
+    inputs.property "mcversion", project.minecraft.version
+
+    // replace stuff in mcmod.info, nothing else
+    from(sourceSets.main.resources.srcDirs) {
+        include 'mcmod.info'
+
+        // replace version and mcversion
+        expand 'version': project.version, 'mcversion': project.minecraft.version
+    }
+
+    // copy everything else, thats not the mcmod.info
+    from(sourceSets.main.resources.srcDirs) {
+        exclude 'mcmod.info'
+    }
+}
+
+task deobfJar(type: Jar) {
+    from sourceSets.main.output
+    classifier = 'dev'
+}
+
+task sourcesJar(type: Jar) {
+    from sourceSets.main.allJava
+    classifier = 'sources'
+}
+
+artifacts {
+    archives deobfJar
+    archives sourcesJar
+}
+
+static def parseConfig(File config) {
     config.withReader {
         def prop = new Properties()
         prop.load(it)
         return (new ConfigSlurper().parse(prop))
     }
-}
-
-
-task deobfJar(type: Jar) {
-    from sourceSets.main.output
-    classifier = 'dev'
 }
