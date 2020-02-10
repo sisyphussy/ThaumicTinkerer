@@ -30,7 +30,14 @@ import thaumic.tinkerer.common.lib.LibResearch;
 public class TTResearchItem extends ResearchItem implements IRegisterableResearch {
 
     public int warp = 0;
-
+    /**
+     * When ModTweaker scripts replace ThaumicTinkerer pages, it call {@link #setPages(ResearchPage...)}
+     * and if one of provided pages is text page,
+     * Thaumic Tinkerer will generate its own {@link ResearchPage#text} adding prefixes to the existing one that breaks localization.
+     * <p>
+     * So this variable will prevent Thaumic Tinkerer from changing page's text that came from MineTweaker scripts.
+     */
+    private boolean firstLoad = true;
 
     public TTResearchItem(String par1) {
         super(par1, LibResearch.CATEGORY_THAUMICTINKERER);
@@ -68,8 +75,9 @@ public class TTResearchItem extends ResearchItem implements IRegisterableResearc
     @Override
     public ResearchItem setPages(ResearchPage... par) {
         for (ResearchPage page : par) {
-            if (page.type == PageType.TEXT)
+            if (page.type == PageType.TEXT && firstLoad) {
                 page.text = "ttresearch.page." + key + "." + page.text;
+            }
 
             if (checkInfusion() && page.type == PageType.INFUSION_CRAFTING) {
                 if (parentsHidden == null || parentsHidden.length == 0)
@@ -85,6 +93,7 @@ public class TTResearchItem extends ResearchItem implements IRegisterableResearc
             }
         }
 
+        firstLoad = false;
         return super.setPages(par);
     }
 
