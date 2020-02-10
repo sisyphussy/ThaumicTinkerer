@@ -27,7 +27,8 @@ public class ItemDarkQuartz extends ItemBase {
 
     @Override
     public IRegisterableResearch getResearchItem() {
-        IRegisterableResearch researchItem = (IRegisterableResearch) new TTResearchItem(LibResearch.KEY_DARK_QUARTZ, new AspectList(), -2, 2, 0, new ItemStack(this), new ResearchPage("0"), ResearchHelper.recipePage(LibResearch.KEY_DARK_QUARTZ + 0), ResearchHelper.recipePage(LibResearch.KEY_DARK_QUARTZ + 1), ResearchHelper.recipePage(LibResearch.KEY_DARK_QUARTZ + 2), ResearchHelper.recipePage(LibResearch.KEY_DARK_QUARTZ + 3), ResearchHelper.recipePage(LibResearch.KEY_DARK_QUARTZ + 4), ResearchHelper.recipePage(LibResearch.KEY_DARK_QUARTZ + 5))
+        IRegisterableResearch researchItem = (IRegisterableResearch) new TTResearchItem(LibResearch.KEY_DARK_QUARTZ, new AspectList(), -2, 2, 0, new ItemStack(this))
+                .setPages(new ResearchPage("0"), ResearchHelper.recipePage(LibResearch.KEY_DARK_QUARTZ + 0), ResearchHelper.recipePage(LibResearch.KEY_DARK_QUARTZ + 1), ResearchHelper.recipePage(LibResearch.KEY_DARK_QUARTZ + 2), ResearchHelper.recipePage(LibResearch.KEY_DARK_QUARTZ + 3), ResearchHelper.recipePage(LibResearch.KEY_DARK_QUARTZ + 4), ResearchHelper.recipePage(LibResearch.KEY_DARK_QUARTZ + 5))
                 .setStub().setAutoUnlock().setRound().registerResearchItem();
         return researchItem;
     }

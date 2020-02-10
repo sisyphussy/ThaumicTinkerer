@@ -1,15 +1,15 @@
 /**
  * This class was created by <Vazkii>. It's distributed as
  * part of the ThaumicTinkerer Mod.
- *
+ * <p>
  * ThaumicTinkerer is Open Source and distributed under a
  * Creative Commons Attribution-NonCommercial-ShareAlike 3.0 License
  * (http://creativecommons.org/licenses/by-nc-sa/3.0/deed.en_GB)
- *
+ * <p>
  * ThaumicTinkerer is a Derivative Work on Thaumcraft 4.
  * Thaumcraft 4 (c) Azanor 2012
  * (http://www.minecraftforum.net/topic/1585216-)
- *
+ * <p>
  * File Created @ [8 Sep 2013, 16:53:14 (GMT)]
  */
 package thaumic.tinkerer.common.research;
@@ -36,14 +36,12 @@ public class TTResearchItem extends ResearchItem implements IRegisterableResearc
         super(par1, LibResearch.CATEGORY_THAUMICTINKERER);
     }
 
-    public TTResearchItem(String par1, AspectList tags, int par3, int par4, int par5, ItemStack icon, ResearchPage... pages) {
+    public TTResearchItem(String par1, AspectList tags, int par3, int par4, int par5, ItemStack icon) {
         super(par1, LibResearch.CATEGORY_THAUMICTINKERER, tags, par3, par4, par5, icon);
-        setPages(pages);
     }
 
-    public TTResearchItem(String par1, AspectList tags, int par3, int par4, int par5, ResourceLocation icon, ResearchPage... pages) {
+    public TTResearchItem(String par1, AspectList tags, int par3, int par4, int par5, ResourceLocation icon) {
         super(par1, LibResearch.CATEGORY_THAUMICTINKERER, tags, par3, par4, par5, icon);
-        setPages(pages);
     }
 
     public TTResearchItem setWarp(int warp) {
