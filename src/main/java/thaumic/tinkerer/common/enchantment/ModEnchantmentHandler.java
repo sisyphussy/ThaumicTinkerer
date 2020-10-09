@@ -36,10 +36,12 @@ import thaumic.tinkerer.common.lib.LibEnchantIDs;
 
 import java.util.List;
 import java.util.Random;
+import java.util.UUID;
 
 public class ModEnchantmentHandler {
 
     public final String NBTLastTarget = "TTEnchantLastTarget";
+    public final String NBTLastTarget2 = "TTEnchantLastTarget2";
 
     public final String NBTSuccessiveStrike = "TTEnchantSuccessiveStrike";
 
@@ -92,29 +94,27 @@ public class ModEnchantmentHandler {
                 if (heldItem.stackTagCompound == null) {
                     heldItem.stackTagCompound = new NBTTagCompound();
                 }
-                int lastTarget = heldItem.stackTagCompound.getInteger(NBTLastTarget);
+                UUID lastTarget = new UUID(heldItem.stackTagCompound.getLong(NBTLastTarget), heldItem.stackTagCompound.getLong(NBTLastTarget2));
                 int successiveStrikes = heldItem.stackTagCompound.getInteger(NBTSuccessiveStrike);
-                int entityId = event.entityLiving.getEntityId();
+                UUID entityId = event.entityLiving.getUniqueID();
 
-                if (lastTarget != entityId) {
-                    heldItem.stackTagCompound.setInteger(NBTSuccessiveStrike, 0);
+                if (!lastTarget.equals(entityId)) {
                     successiveStrikes = 0;
+                    heldItem.stackTagCompound.setLong(NBTLastTarget, entityId.getMostSignificantBits());
+                    heldItem.stackTagCompound.setLong(NBTLastTarget2, entityId.getLeastSignificantBits());
                 } else {
-                    heldItem.stackTagCompound.setInteger(NBTSuccessiveStrike, successiveStrikes + 1);
-                    successiveStrikes = 1;
+                    successiveStrikes = Math.max(successiveStrikes + 1, 5);
                 }
+                heldItem.stackTagCompound.setInteger(NBTSuccessiveStrike, successiveStrikes);
 
                 if (focusedStrikes > 0) {
                     event.ammount /= 2;
-                    event.ammount += (.5 * successiveStrikes * event.ammount * focusedStrikes);
+                    event.ammount += (.5 * Math.max(successiveStrikes, 5) * event.ammount * focusedStrikes);
                 }
                 if (dispersedStrikes > 0) {
-                    event.ammount *= 1 + (successiveStrikes / 5);
-                    event.ammount /= (1 + (successiveStrikes * 2));
+                    event.ammount *= 1 + 0.6 * dispersedStrikes + (successiveStrikes / 5);
+                    event.ammount /= 1 + 0.25 * dispersedStrikes + (successiveStrikes * 2.5);
                 }
-
-                heldItem.stackTagCompound.setInteger("TTEnchantLastTarget", entityId);
-
             }
 
             int vampirism = EnchantmentHelper.getEnchantmentLevel(LibEnchantIDs.idVampirism, heldItem);
