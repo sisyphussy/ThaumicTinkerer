@@ -152,6 +152,7 @@ tile.travelSlab.name=Paving Slab of Travel
 tile.travelSlabFull.name=Paving Slab of Travel
 tile.travelStairs.name=Paving Stair of Travel
 tile.wardSlab.name=Paving Slab of Warding
+tile.infusedFarmland.name=Infused Farmland
 
 # Fire
 tile.fireWater.name=Aqua Imbued Fire
