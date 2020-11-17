@@ -25,8 +25,8 @@ public class TileSummon extends TileEntity {
             }
             for (int radius = 1; radius < 6; radius++) {
                 ArrayList<TileEntity> pedestals = new ArrayList<TileEntity>();
-                for (int x = xCoord - radius; x < xCoord + radius; x++) {
-                    for (int z = zCoord - radius; z < zCoord + radius; z++) {
+                for (int x = xCoord - radius; x <= xCoord + radius; x++) {
+                    for (int z = zCoord - radius; z <= zCoord + radius; z++) {
                         TileEntity tile = worldObj.getTileEntity(x, yCoord, z);
                         if (tile instanceof TilePedestal && ((TilePedestal) tile).getStackInSlot(0) != null && ((TilePedestal) tile).getStackInSlot(0).getItem() instanceof ItemMobAspect) {
                             pedestals.add(tile);
