@@ -148,23 +148,19 @@ tile.darkQuartzChiseled.name=雕琢烟黑石英块
 tile.darkQuartzPillar.name=柱状烟黑石英块
 tile.darkQuartzSlab.name=烟黑石英台阶
 tile.forcefield.name=力场
-tile.travelSlab.name=守卫者台阶
-tile.travelSlabFull.name=守卫者台阶
-tile.travelStairs.name=守卫者楼梯
+tile.travelSlab.name=旅行者台阶
+tile.travelSlabFull.name=旅行者铺路石
+tile.travelStairs.name=旅行者楼梯
+tile.wardSlab.name=守卫者台阶
+tile.infusedFarmland.name=蕴魔耕地
 
 # Fire
 tile.fireWater.name=坎水之焰
-
 tile.fireOrder.name=秩序之焰
-
 tile.fireChaos.name=混沌之焰
-
 tile.fireFire.name=离火之焰
-
 tile.fireEarth.name=坤地之焰
-
 tile.fireAir.name=巽风之焰
-
 
 tile.darkQuartzSlabFull.name=烟黑石英台阶
 tile.darkQuartzStairs.name=烟黑石英楼梯
@@ -380,6 +376,7 @@ ttresearch.page.TTENCH_FINAL.0=你研究出一种能让你偶尔打出暴击的�
 ttresearch.name.TTENCH_VALIANCE=附魔:英勇
 ttresearch.lore.TTENCH_VALIANCE=临渊而退
 ttresearch.page.TTENCH_VALIANCE.0=你研究出一种能让你在生命濒危时爆发出更强战力的附魔.<BR><BR>这种附魔能够被施加在剑上.附魔后的剑在佩戴者生命垂危时威力会上升.
+
 
 # -- ENCHANTMENT: TUNNEL
 ttresearch.name.TTENCH_TUNNEL=附魔:隧道
@@ -650,3 +647,4 @@ ttwaila.pullingAdultType=牵引:成熟体%s
 ttwaila.pullingChildType=牵引:幼体%s
 ttwaila.pushingAdultType=推开:成熟体%s
 ttwaila.pushingChildType=推开:幼体%s
+
