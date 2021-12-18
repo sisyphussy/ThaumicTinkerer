@@ -49,11 +49,8 @@ public class KamiResearchItem extends TTResearchItem {
                 for (String tag : category.research.keySet()) {
                     ResearchItem research = category.research.get(tag);
 
-                    if (research.isLost() || (research.parentsHidden == null && research.parents == null) || research.isVirtual() || research instanceof KamiResearchItem || requirements.contains(tag))
+                    if (research.isLost() || research.isVirtual() || research instanceof KamiResearchItem || requirements.contains(tag))
                         continue;
-                    if (research.getAspectTriggers() != null || research.getEntityTriggers() != null || research.getItemTriggers() != null) {
-                        continue;
-                    }
                     if (research.category.equals(LibResearch.CATEGORY_THAUMICTINKERER) || research.category.equals("BASICS") || research.category.equals("GOLEMANCY") || research.category.equals("ARTIFICE") || research.category.equals("ALCHEMY") || research.category.equals("THAUMATURGY")) {
                         boolean found = false;
                         for (String black : Blacklist)
