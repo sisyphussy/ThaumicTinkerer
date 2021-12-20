@@ -30,7 +30,7 @@ dependencies {
     compileOnly("com.github.GTNewHorizons:CodeChickenLib:master-SNAPSHOT:dev") {
         transitive = false
     }
-    compileOnly("com.github.GTNewHorizons:OpenComputers:unified-build-script-SNAPSHOT:api") {  // TODO: switch to master
+    compileOnly("com.github.GTNewHorizons:OpenComputers:master-SNAPSHOT:api") {
         transitive = false
     }
 
