@@ -1,10 +1,10 @@
 [
 {
-  "modid": "ThaumicTinkerer",
-  "name": "Thaumic Tinkerer",
+  "modid": "${modId}",
+  "name": "${modName}",
   "description": "An addon to Thaumcraft 4, implementing new content. This mod is a spiritual successor to Elemental Tinkerer. Researches that come from this mod are prefixed by [TT].",
-  "version": "${version}",
-  "mcversion": "${mcversion}",
+  "version": "${modVersion}",
+  "mcversion": "${minecraftVersion}",
   "logoFile": "/assets/ttinkerer/textures/logo.png",
   "url": "minecraftforum.net/topic/1813058-",
   "updateUrl": "",
