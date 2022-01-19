@@ -1,36 +1,36 @@
 // Add your dependencies here
 
 dependencies {
-    compile("com.github.GTNewHorizons:Baubles:master-SNAPSHOT:dev")
-    compile("com.github.GTNewHorizons:Applied-Energistics-2-Unofficial:master-SNAPSHOT:api")
+    compile("com.github.GTNewHorizons:Baubles:1.0.1.14:dev")
+    compile("com.github.GTNewHorizons:Applied-Energistics-2-Unofficial:rv3-beta-70-GTNH:api")
 
     compile("thaumcraft:Thaumcraft:1.7.10-4.2.3.5:dev")
 
     compileOnly("com.github.GTNewHorizons:Botania:master-SNAPSHOT:dev") {
         transitive = false
     }
-    compileOnly("com.github.GTNewHorizons:EnderCore:master-SNAPSHOT:dev") {
+    compileOnly("com.github.GTNewHorizons:EnderCore:0.2.6:dev") {
         transitive = false
     }
-    compileOnly("com.github.GTNewHorizons:EnderIO:master-SNAPSHOT:dev") {
+    compileOnly("com.github.GTNewHorizons:EnderIO:2.3.1.27:dev") {
         transitive = false
     }
-    compileOnly("com.github.GTNewHorizons:EnderStorage:master-SNAPSHOT:dev") {
+    compileOnly("com.github.GTNewHorizons:EnderStorage:1.4.11:dev") {
         transitive = false
     }
-    compileOnly("com.github.GTNewHorizons:waila:master-SNAPSHOT:api") {
+    compileOnly("com.github.GTNewHorizons:waila:1.5.18:api") {
         transitive = false
     }
-    compileOnly("com.github.GTNewHorizons:TinkersConstruct:master-SNAPSHOT:dev") {
+    compileOnly("com.github.GTNewHorizons:TinkersConstruct:1.9.0.10-GTNH:dev") {
         transitive = false
     }
-    compileOnly("com.github.GTNewHorizons:ForgeMultipart:master-SNAPSHOT:dev") {
+    compileOnly("com.github.GTNewHorizons:ForgeMultipart:1.2.7:dev") {
         transitive = false
     }
-    compileOnly("com.github.GTNewHorizons:CodeChickenLib:master-SNAPSHOT:dev") {
+    compileOnly("com.github.GTNewHorizons:CodeChickenLib:1.1.5.1:dev") {
         transitive = false
     }
-    compileOnly("com.github.GTNewHorizons:OpenComputers:master-SNAPSHOT:api") {
+    compileOnly("com.github.GTNewHorizons:OpenComputers:1.7.5.20-GTNH:api") {
         transitive = false
     }
 
