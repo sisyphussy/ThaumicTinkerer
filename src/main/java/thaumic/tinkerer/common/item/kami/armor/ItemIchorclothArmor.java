@@ -83,7 +83,7 @@ public class ItemIchorclothArmor extends ItemArmor implements IVisDiscountGear, 
     }
 
     @Override
-    public void addInformation(final ItemStack stack, final EntityPlayer player, final List list, final boolean par4) 
+    public void addInformation(final ItemStack stack, final EntityPlayer player, final List list, final boolean par4)
     {
         list.add(EnumChatFormatting.DARK_PURPLE + StatCollector.translateToLocal("tc.visdiscount") + ": " + this.getVisDiscount(stack, player, null) + "%");
     }
@@ -115,7 +115,7 @@ public class ItemIchorclothArmor extends ItemArmor implements IVisDiscountGear, 
 
     @Override
     public int getVisDiscount(ItemStack arg0, EntityPlayer arg1, Aspect arg2) {
-        return 5;
+        return 6;
     }
 
     @Override
