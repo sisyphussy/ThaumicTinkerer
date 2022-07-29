@@ -75,12 +75,12 @@ public abstract class ItemIchorclothArmorAdv extends ItemIchorclothArmor {
     public String getArmorTexture(ItemStack stack, Entity entity, int slot, String type) {
         return slot == 2 ? LibResources.MODEL_ARMOR_ICHOR_GEM_2 : LibResources.MODEL_ARMOR_ICHOR_GEM_1;
     }
-    
+
     @Override
     public int getVisDiscount(ItemStack arg0, EntityPlayer arg1, Aspect arg2) {
-        return 6;
+        return 10;
     }
-    
+
 
     boolean ticks() {
         return false;
