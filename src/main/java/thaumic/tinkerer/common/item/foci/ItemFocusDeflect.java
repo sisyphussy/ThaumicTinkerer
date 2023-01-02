@@ -65,9 +65,9 @@ public class ItemFocusDeflect extends ItemModFocus {
     	int range = 0;
     	if (stack != null) {
     		ItemWandCasting wand = (ItemWandCasting) stack.getItem();
-    		range = wand.getFocusEnlarge(stack); 
+    		range = wand.getFocusEnlarge(stack);
     	}
-    	
+
         List<Entity> projectiles = p.worldObj.getEntitiesWithinAABB(IProjectile.class, AxisAlignedBB.getBoundingBox(p.posX - (4 + range), p.posY - (4 + range), p.posZ - (4 + range), p.posX + (3 + range), p.posY + (3 + range), p.posZ + (3 + range)));
 
         for (Entity e : projectiles) {
@@ -89,15 +89,15 @@ public class ItemFocusDeflect extends ItemModFocus {
     {
       switch (rank)
       {
-      case 1: 
+      case 1:
         return new FocusUpgradeType[] { FocusUpgradeType.frugal};
-      case 2: 
+      case 2:
         return new FocusUpgradeType[] { FocusUpgradeType.frugal, FocusUpgradeType.enlarge};
-      case 3: 
+      case 3:
         return new FocusUpgradeType[] { FocusUpgradeType.frugal};
-      case 4: 
+      case 4:
         return new FocusUpgradeType[] { FocusUpgradeType.frugal, FocusUpgradeType.enlarge};
-      case 5: 
+      case 5:
         return new FocusUpgradeType[] { FocusUpgradeType.frugal};
       }
       return null;
@@ -109,7 +109,8 @@ public class ItemFocusDeflect extends ItemModFocus {
             return true;
         if (Loader.isModLoaded("Botania"))
         {
-            return BotaniaFunctions.isEntityHarmless(entity);
+            if (!BotaniaFunctions.isEntityHarmless(entity))
+                return false;
         }
         for(Class<?> testClass:DeflectBlacklist)
         {
@@ -148,8 +149,8 @@ public class ItemFocusDeflect extends ItemModFocus {
     public AspectList getVisCost(ItemStack stack) {
         return visUsage;
     }
-    
-    
+
+
 
 
     @Override
