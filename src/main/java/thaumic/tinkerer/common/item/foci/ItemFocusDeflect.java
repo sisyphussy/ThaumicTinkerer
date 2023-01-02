@@ -41,9 +41,9 @@ import thaumic.tinkerer.common.registry.ThaumicTinkererRecipe;
 import thaumic.tinkerer.common.research.IRegisterableResearch;
 import thaumic.tinkerer.common.research.ResearchHelper;
 import thaumic.tinkerer.common.research.TTResearchItem;
+import vazkii.botania.api.internal.IManaBurst;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class ItemFocusDeflect extends ItemModFocus {
@@ -107,16 +107,14 @@ public class ItemFocusDeflect extends ItemModFocus {
         Class<? extends Entity> aClass=entity.getClass();
         if(DeflectBlacklist.contains(aClass))
             return true;
-        if (Loader.isModLoaded("Botania"))
+        if (Loader.isModLoaded("Botania") && entity instanceof IManaBurst)
         {
-            if (!BotaniaFunctions.isEntityHarmless(entity))
-                return false;
+            return BotaniaFunctions.isEntityHarmless(entity);
         }
         for(Class<?> testClass:DeflectBlacklist)
         {
-            if(testClass.isInterface())
-                if(testClass.isAssignableFrom(aClass))
-                    return true;
+            if(testClass.isInterface() && testClass.isAssignableFrom(aClass))
+                return true;
         }
         return false;
     }
