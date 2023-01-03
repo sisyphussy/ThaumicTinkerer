@@ -41,9 +41,9 @@ import thaumic.tinkerer.common.registry.ThaumicTinkererRecipe;
 import thaumic.tinkerer.common.research.IRegisterableResearch;
 import thaumic.tinkerer.common.research.ResearchHelper;
 import thaumic.tinkerer.common.research.TTResearchItem;
+import vazkii.botania.api.internal.IManaBurst;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class ItemFocusDeflect extends ItemModFocus {
@@ -65,9 +65,9 @@ public class ItemFocusDeflect extends ItemModFocus {
     	int range = 0;
     	if (stack != null) {
     		ItemWandCasting wand = (ItemWandCasting) stack.getItem();
-    		range = wand.getFocusEnlarge(stack); 
+    		range = wand.getFocusEnlarge(stack);
     	}
-    	
+
         List<Entity> projectiles = p.worldObj.getEntitiesWithinAABB(IProjectile.class, AxisAlignedBB.getBoundingBox(p.posX - (4 + range), p.posY - (4 + range), p.posZ - (4 + range), p.posX + (3 + range), p.posY + (3 + range), p.posZ + (3 + range)));
 
         for (Entity e : projectiles) {
@@ -89,15 +89,15 @@ public class ItemFocusDeflect extends ItemModFocus {
     {
       switch (rank)
       {
-      case 1: 
+      case 1:
         return new FocusUpgradeType[] { FocusUpgradeType.frugal};
-      case 2: 
+      case 2:
         return new FocusUpgradeType[] { FocusUpgradeType.frugal, FocusUpgradeType.enlarge};
-      case 3: 
+      case 3:
         return new FocusUpgradeType[] { FocusUpgradeType.frugal};
-      case 4: 
+      case 4:
         return new FocusUpgradeType[] { FocusUpgradeType.frugal, FocusUpgradeType.enlarge};
-      case 5: 
+      case 5:
         return new FocusUpgradeType[] { FocusUpgradeType.frugal};
       }
       return null;
@@ -107,15 +107,14 @@ public class ItemFocusDeflect extends ItemModFocus {
         Class<? extends Entity> aClass=entity.getClass();
         if(DeflectBlacklist.contains(aClass))
             return true;
-        if (Loader.isModLoaded("Botania"))
+        if (Loader.isModLoaded("Botania") && entity instanceof IManaBurst)
         {
             return BotaniaFunctions.isEntityHarmless(entity);
         }
         for(Class<?> testClass:DeflectBlacklist)
         {
-            if(testClass.isInterface())
-                if(testClass.isAssignableFrom(aClass))
-                    return true;
+            if(testClass.isInterface() && testClass.isAssignableFrom(aClass))
+                return true;
         }
         return false;
     }
@@ -148,8 +147,8 @@ public class ItemFocusDeflect extends ItemModFocus {
     public AspectList getVisCost(ItemStack stack) {
         return visUsage;
     }
-    
-    
+
+
 
 
     @Override

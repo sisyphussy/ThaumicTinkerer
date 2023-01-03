@@ -23,15 +23,7 @@ public class BotaniaFunctions {
     }
 
     public static boolean isEntityHarmless(Entity entity) {
-        if(entity instanceof IManaBurst) {
-            ItemStack lens = ((IManaBurst)entity).getSourceLens();
-            if(lens.getItemDamage()!=8 && lens.getItemDamage()!=11)
-                return true;
-            else
-                return false;
-        }
-        else
-            return true;
-
+        ItemStack lens = ((IManaBurst)entity).getSourceLens();
+        return lens.getItemDamage() != 8 && lens.getItemDamage() != 11;
     }
 }
