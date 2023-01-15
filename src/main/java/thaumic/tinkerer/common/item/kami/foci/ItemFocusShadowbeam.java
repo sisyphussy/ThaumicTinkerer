@@ -36,14 +36,16 @@ import thaumic.tinkerer.common.research.ResearchHelper;
 
 public class ItemFocusShadowbeam extends ItemModKamiFocus {
 
-    private static final AspectList visUsage = new AspectList().add(Aspect.ORDER, 25).add(Aspect.ENTROPY, 25).add(Aspect.AIR, 15);
+    private static final AspectList visUsage = new AspectList().add(Aspect.ORDER, 500).add(Aspect.ENTROPY, 500).add(Aspect.AIR, 300);
+
+    private static final int DAMAGE = 100;
 
     public ItemFocusShadowbeam() {
         super();
 
         EntityRegistry.registerModEntity(Beam.class, "ShadowbeamStaffBeam", 0, ThaumicTinkerer.instance, 0, 0, false);
     }
-    
+
     public String getSortingHelper(ItemStack itemstack)
     {
       return "TTKSH" + super.getSortingHelper(itemstack);
@@ -52,7 +54,7 @@ public class ItemFocusShadowbeam extends ItemModKamiFocus {
     @Override
     public void onUsingFocusTick(ItemStack stack, EntityPlayer player, int count) {
         ItemWandCasting wand = (ItemWandCasting) stack.getItem();
-        int potency = wand.getFocusPotency(stack); //TODO verify effect
+        int potency = wand.getFocusPotency(stack);
 
         if (!player.worldObj.isRemote && wand.consumeAllVis(stack, player, getVisCost(stack), true, false)) {
 
@@ -83,22 +85,22 @@ public class ItemFocusShadowbeam extends ItemModKamiFocus {
     public AspectList getVisCost(ItemStack stack) {
         return visUsage;
     }
-    
+
     @Override
     public FocusUpgradeType[] getPossibleUpgradesByRank(ItemStack itemstack, int rank)
     {
       switch (rank)
       {
-      case 1: 
-        return new FocusUpgradeType[] { FocusUpgradeType.frugal/*, FocusUpgradeType.potency*/};
-      case 2: 
-        return new FocusUpgradeType[] { FocusUpgradeType.frugal/*, FocusUpgradeType.potency*/};
-      case 3: 
-        return new FocusUpgradeType[] { FocusUpgradeType.frugal/*, FocusUpgradeType.potency*/};
-      case 4: 
-        return new FocusUpgradeType[] { FocusUpgradeType.frugal/*, FocusUpgradeType.potency*/};
-      case 5: 
-        return new FocusUpgradeType[] { FocusUpgradeType.frugal/*, FocusUpgradeType.potency*/};
+      case 1:
+        return new FocusUpgradeType[] { FocusUpgradeType.frugal, FocusUpgradeType.potency};
+      case 2:
+        return new FocusUpgradeType[] { FocusUpgradeType.frugal, FocusUpgradeType.potency};
+      case 3:
+        return new FocusUpgradeType[] { FocusUpgradeType.frugal, FocusUpgradeType.potency};
+      case 4:
+        return new FocusUpgradeType[] { FocusUpgradeType.frugal, FocusUpgradeType.potency};
+      case 5:
+        return new FocusUpgradeType[] { FocusUpgradeType.frugal, FocusUpgradeType.potency};
       }
       return null;
     }
@@ -180,7 +182,7 @@ public class ItemFocusShadowbeam extends ItemModKamiFocus {
         private int initialOffset = 2;
         private int length = 298;
         private int maxTicks = initialOffset + length;
-        private int size = 4;
+        private int size = 2;
 
         private int potency;
         private Vector3 movementVector;
@@ -234,8 +236,10 @@ public class ItemFocusShadowbeam extends ItemModKamiFocus {
                 return;
 
             if (movingobjectposition.entityHit != null) {
-                if ((MinecraftServer.getServer().isPVPEnabled() || !(movingobjectposition.entityHit instanceof EntityPlayer)) && movingobjectposition.entityHit != getThrower() && getThrower() instanceof EntityPlayer && !movingobjectposition.entityHit.worldObj.isRemote)
-                    movingobjectposition.entityHit.attackEntityFrom(DamageSource.causePlayerDamage((EntityPlayer) getThrower()), 8 + potency);
+                if ((MinecraftServer.getServer().isPVPEnabled() || !(movingobjectposition.entityHit instanceof EntityPlayer)) && movingobjectposition.entityHit != getThrower() && getThrower() instanceof EntityPlayer && !movingobjectposition.entityHit.worldObj.isRemote) {
+                    int fullDamage = (potency>0)? (int) (DAMAGE + DAMAGE * (0.2 * potency)): DAMAGE;
+                    movingobjectposition.entityHit.attackEntityFrom(DamageSource.causePlayerDamage((EntityPlayer) getThrower()), fullDamage);
+                }
                 return;
             }
 
