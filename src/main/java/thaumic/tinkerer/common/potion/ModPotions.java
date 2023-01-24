@@ -19,7 +19,6 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import net.minecraft.potion.Potion;
 import net.minecraftforge.common.MinecraftForge;
-import thaumic.tinkerer.common.ThaumicTinkerer;
 import thaumic.tinkerer.common.core.handler.ConfigHandler;
 
 public final class ModPotions {
@@ -36,22 +35,23 @@ public final class ModPotions {
         // Code based on potion code from WayOfTime
         Potion[] potionTypes = null;
 
-        for (Field f : Potion.class.getDeclaredFields()) {
-            f.setAccessible(true);
-            try {
-                if (f.getName().equals("potionTypes") || f.getName().equals("field_76425_a")) {
-                    potionTypes = (Potion[]) f.get(null);
-                    if (potionTypes.length < 256) {
-                        final Potion[] newPotionTypes = new Potion[256];
-                        System.arraycopy(potionTypes, 0, newPotionTypes, 0, potionTypes.length);
+        if (Potion.potionTypes.length < 256) {
+            for (Field f : Potion.class.getDeclaredFields()) {
+                f.setAccessible(true);
+                try {
+                    if (f.getName().equals("potionTypes") || f.getName().equals("field_76425_a")) {
                         Field modfield = Field.class.getDeclaredField("modifiers");
                         modfield.setAccessible(true);
                         modfield.setInt(f, f.getModifiers() & ~Modifier.FINAL);
+                        final Potion[] oldPotionTypes = Potion.potionTypes;
+                        final Potion[] newPotionTypes = new Potion[256];
+                        System.arraycopy(oldPotionTypes, 0, newPotionTypes, 0, oldPotionTypes.length);
                         f.set(null, newPotionTypes);
                     }
+                } catch (Exception e) {
+                    System.err.println("Severe error when extending the potion array:");
+                    System.err.println(e);
                 }
-            } catch (Exception e) {
-                ThaumicTinkerer.log.error("Severe error when extending the potion array:", e);
             }
         }
 
