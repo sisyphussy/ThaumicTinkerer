@@ -42,18 +42,18 @@ public final class ModPotions {
             f.setAccessible(true);
             try {
                 if (f.getName().equals("potionTypes") || f.getName().equals("field_76425_a")) {
-                    Field modfield = Field.class.getDeclaredField("modifiers");
-                    modfield.setAccessible(true);
-                    modfield.setInt(f, f.getModifiers() & ~Modifier.FINAL);
                     potionTypes = (Potion[]) f.get(null);
                     if (potionTypes.length < 256) {
                         final Potion[] newPotionTypes = new Potion[256];
                         System.arraycopy(potionTypes, 0, newPotionTypes, 0, potionTypes.length);
+                        Field modfield = Field.class.getDeclaredField("modifiers");
+                        modfield.setAccessible(true);
+                        modfield.setInt(f, f.getModifiers() & ~Modifier.FINAL);
                         f.set(null, newPotionTypes);
                     }
                 }
             } catch (Exception e) {
-                ThaumicTinkerer.log.error("Severe error, please report this to the mod author:", e);
+                ThaumicTinkerer.log.error("Severe error when extending the potion array:", e);
             }
         }
 

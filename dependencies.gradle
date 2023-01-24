@@ -2,7 +2,7 @@
 
 dependencies {
     compile('com.github.GTNewHorizons:Baubles:1.0.1.14:dev')
-    compile('com.github.GTNewHorizons:Applied-Energistics-2-Unofficial:rv3-beta-76-GTNH:api')
+    compile('com.github.GTNewHorizons:Applied-Energistics-2-Unofficial:rv3-beta-147-GTNH:api')
 
     compile('thaumcraft:Thaumcraft:1.7.10-4.2.3.5:dev')
 
