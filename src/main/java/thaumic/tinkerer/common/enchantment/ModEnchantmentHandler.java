@@ -1,24 +1,20 @@
 /**
- * This class was created by <Vazkii>. It's distributed as
- * part of the ThaumicTinkerer Mod.
+ * This class was created by <Vazkii>. It's distributed as part of the ThaumicTinkerer Mod.
  *
- * ThaumicTinkerer is Open Source and distributed under a
- * Creative Commons Attribution-NonCommercial-ShareAlike 3.0 License
- * (http://creativecommons.org/licenses/by-nc-sa/3.0/deed.en_GB)
+ * ThaumicTinkerer is Open Source and distributed under a Creative Commons Attribution-NonCommercial-ShareAlike 3.0
+ * License (http://creativecommons.org/licenses/by-nc-sa/3.0/deed.en_GB)
  *
- * ThaumicTinkerer is a Derivative Work on Thaumcraft 4.
- * Thaumcraft 4 (c) Azanor 2012
+ * ThaumicTinkerer is a Derivative Work on Thaumcraft 4. Thaumcraft 4 (c) Azanor 2012
  * (http://www.minecraftforum.net/topic/1585216-)
  *
  * File Created @ [29 Sep 2013, 11:52:00 (GMT)]
  */
 package thaumic.tinkerer.common.enchantment;
 
-import cpw.mods.fml.common.eventhandler.EventPriority;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import java.util.List;
 import java.util.Random;
 import java.util.UUID;
+
 import net.minecraft.block.material.Material;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.EntityLivingBase;
@@ -34,7 +30,10 @@ import net.minecraftforge.event.entity.living.LivingFallEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.world.BlockEvent;
+
 import thaumic.tinkerer.common.lib.LibEnchantIDs;
+import cpw.mods.fml.common.eventhandler.EventPriority;
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
 public class ModEnchantmentHandler {
 
@@ -59,9 +58,10 @@ public class ModEnchantmentHandler {
                 ItemStack legs = player.getCurrentArmor(1);
                 int pounce = EnchantmentHelper.getEnchantmentLevel(LibEnchantIDs.pounce, legs);
                 if (pounce > 0) {
-                    if (player.worldObj.getBlock((int) Math.floor(player.posX), (int) Math.floor(player.posY) - 1, (int)
-                                    Math.floor(player.posZ))
-                            == net.minecraft.init.Blocks.air) {
+                    if (player.worldObj.getBlock(
+                            (int) Math.floor(player.posX),
+                            (int) Math.floor(player.posY) - 1,
+                            (int) Math.floor(player.posZ)) == net.minecraft.init.Blocks.air) {
 
                         event.ammount *= 1 + (.25 * pounce);
                     }
@@ -130,10 +130,9 @@ public class ModEnchantmentHandler {
 
         if (event.entityLiving instanceof EntityPlayer) {
             EntityPlayer player = (EntityPlayer) event.entityLiving;
-            int slowfall =
-                    EnchantmentHelper.getMaxEnchantmentLevel(LibEnchantIDs.idSlowFall, player.inventory.armorInventory);
-            if (slowfall > 0
-                    && !event.entityLiving.isSneaking()
+            int slowfall = EnchantmentHelper
+                    .getMaxEnchantmentLevel(LibEnchantIDs.idSlowFall, player.inventory.armorInventory);
+            if (slowfall > 0 && !event.entityLiving.isSneaking()
                     && event.entityLiving.motionY < min
                     && event.entityLiving.fallDistance >= 2.9) {
                 event.entityLiving.motionY /= 1 + slowfall * 0.33F;
@@ -166,8 +165,8 @@ public class ModEnchantmentHandler {
     public void onPlayerJump(LivingJumpEvent event) {
         if (event.entityLiving instanceof EntityPlayer) {
             EntityPlayer player = (EntityPlayer) event.entityLiving;
-            int boost = EnchantmentHelper.getMaxEnchantmentLevel(
-                    LibEnchantIDs.idAscentBoost, player.inventory.armorInventory);
+            int boost = EnchantmentHelper
+                    .getMaxEnchantmentLevel(LibEnchantIDs.idAscentBoost, player.inventory.armorInventory);
 
             if (boost >= 1 && !player.isSneaking()) player.motionY *= (boost + 2) / 2D;
         }

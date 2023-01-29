@@ -8,7 +8,9 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.IItemRenderer;
+
 import org.lwjgl.opengl.GL11;
+
 import thaumic.tinkerer.common.core.helper.EnumMobAspect;
 import thaumic.tinkerer.common.item.ItemMobDisplay;
 
@@ -22,8 +24,8 @@ public class RenderMobDisplay implements IItemRenderer {
     }
 
     @Override
-    public boolean shouldUseRenderHelper(
-            ItemRenderType itemRenderType, ItemStack itemStack, ItemRendererHelper itemRendererHelper) {
+    public boolean shouldUseRenderHelper(ItemRenderType itemRenderType, ItemStack itemStack,
+            ItemRendererHelper itemRendererHelper) {
         return true;
     }
 

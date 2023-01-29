@@ -1,15 +1,16 @@
 package thaumic.tinkerer.common.block.tile;
 
-import appeng.api.AEApi;
-import appeng.api.IAppEngApi;
-import appeng.api.movable.IMovableTile;
 import net.minecraft.block.Block;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.common.util.ForgeDirection;
+
 import thaumic.tinkerer.common.ThaumicTinkerer;
 import thaumic.tinkerer.common.block.mobilizer.BlockMobilizer;
+import appeng.api.AEApi;
+import appeng.api.IAppEngApi;
+import appeng.api.movable.IMovableTile;
 
 public class TileEntityMobilizer extends TileEntity {
 
@@ -59,8 +60,7 @@ public class TileEntityMobilizer extends TileEntity {
         if (te instanceof TileEntityRelay) {
             ((TileEntityRelay) te).verifyPartner();
         }
-        if (!(linked
-                && te instanceof TileEntityRelay
+        if (!(linked && te instanceof TileEntityRelay
                 && ((TileEntityRelay) te).partnerX == this.secondRelayX
                 && ((TileEntityRelay) te).partnerZ == this.secondRelayZ)) {
             linked = false;
@@ -74,8 +74,7 @@ public class TileEntityMobilizer extends TileEntity {
         // Make sure the relays haven't been broken
         verifyRelay();
         // Bounce
-        if (linked
-                && worldObj.getTotalWorldTime() % 100 == 0
+        if (linked && worldObj.getTotalWorldTime() % 100 == 0
                 && !worldObj.isBlockIndirectlyGettingPowered(xCoord, yCoord, zCoord)) {
             // Target coordinates to check
             int targetX = xCoord + movementDirection.offsetX;
@@ -87,8 +86,7 @@ public class TileEntityMobilizer extends TileEntity {
             }
         }
         // Move
-        if (linked
-                && worldObj.getTotalWorldTime() % 100 == 1
+        if (linked && worldObj.getTotalWorldTime() % 100 == 1
                 && !worldObj.isBlockIndirectlyGettingPowered(xCoord, yCoord, zCoord)) {
             // Cache coordinated
             int targetX = xCoord + movementDirection.offsetX;
@@ -111,7 +109,7 @@ public class TileEntityMobilizer extends TileEntity {
                 // AxisAlignedBB.getBoundingBox(xCoord, yCoord, zCoord, xCoord+1, yCoord+3, zCoord+1));
                 // System.out.print(entities);
                 // for(Entity e: entities){
-                //	e.setPosition(e.posX+movementDirection.offsetX, e.posY, e.posZ+movementDirection.offsetZ);
+                // e.setPosition(e.posX+movementDirection.offsetX, e.posY, e.posZ+movementDirection.offsetZ);
                 // }
 
                 // Move the block on top of the mobilizer
@@ -155,9 +153,7 @@ public class TileEntityMobilizer extends TileEntity {
                                         3);
                                 passenger.invalidate();
                                 worldObj.setBlockToAir(xCoord, yCoord + 1, zCoord);
-                                api.registries()
-                                        .movable()
-                                        .getHandler(passenger)
+                                api.registries().movable().getHandler(passenger)
                                         .moveTile(passenger, worldObj, targetX, yCoord + 1, targetZ);
                                 api.registries().movable().doneMoving(passenger);
                                 passenger.validate();
@@ -166,30 +162,30 @@ public class TileEntityMobilizer extends TileEntity {
                             // Handler IMovableTiles and vanilla TEs without AE
                         } else if (passenger instanceof IMovableTile
                                 || passenger.getClass().getName().startsWith("net.minecraft.tileentity")) {
-                            boolean imovable = passenger instanceof IMovableTile;
-                            if (imovable) ((IMovableTile) passenger).prepareToMove();
-                            worldObj.setBlock(
-                                    targetX,
-                                    yCoord + 1,
-                                    targetZ,
-                                    worldObj.getBlock(xCoord, yCoord + 1, zCoord),
-                                    worldObj.getBlockMetadata(xCoord, yCoord + 1, zCoord),
-                                    3);
-                            passenger.invalidate();
-                            worldObj.setBlockToAir(xCoord, yCoord + 1, zCoord);
+                                    boolean imovable = passenger instanceof IMovableTile;
+                                    if (imovable) ((IMovableTile) passenger).prepareToMove();
+                                    worldObj.setBlock(
+                                            targetX,
+                                            yCoord + 1,
+                                            targetZ,
+                                            worldObj.getBlock(xCoord, yCoord + 1, zCoord),
+                                            worldObj.getBlockMetadata(xCoord, yCoord + 1, zCoord),
+                                            3);
+                                    passenger.invalidate();
+                                    worldObj.setBlockToAir(xCoord, yCoord + 1, zCoord);
 
-                            // IMovableHandler default code
-                            Chunk c = worldObj.getChunkFromBlockCoords(targetX, targetZ);
+                                    // IMovableHandler default code
+                                    Chunk c = worldObj.getChunkFromBlockCoords(targetX, targetZ);
 
-                            c.func_150812_a(targetX & 0xF, yCoord + 1, targetZ & 0xF, passenger);
+                                    c.func_150812_a(targetX & 0xF, yCoord + 1, targetZ & 0xF, passenger);
 
-                            if (c.isChunkLoaded) {
-                                worldObj.addTileEntity(passenger);
-                                worldObj.markBlockForUpdate(targetX, yCoord + 1, targetZ);
-                            }
-                            if (imovable) ((IMovableTile) passenger).doneMoving();
-                            passenger.validate();
-                        }
+                                    if (c.isChunkLoaded) {
+                                        worldObj.addTileEntity(passenger);
+                                        worldObj.markBlockForUpdate(targetX, yCoord + 1, targetZ);
+                                    }
+                                    if (imovable) ((IMovableTile) passenger).doneMoving();
+                                    passenger.validate();
+                                }
                     }
                     // Move self
                     this.invalidate();

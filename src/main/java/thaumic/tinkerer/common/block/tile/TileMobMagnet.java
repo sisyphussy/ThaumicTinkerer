@@ -1,26 +1,20 @@
 /**
- * This class was created by <Vazkii>. It's distributed as
- * part of the ThaumicTinkerer Mod.
+ * This class was created by <Vazkii>. It's distributed as part of the ThaumicTinkerer Mod.
  *
- * ThaumicTinkerer is Open Source and distributed under a
- * Creative Commons Attribution-NonCommercial-ShareAlike 3.0 License
- * (http://creativecommons.org/licenses/by-nc-sa/3.0/deed.en_GB)
+ * ThaumicTinkerer is Open Source and distributed under a Creative Commons Attribution-NonCommercial-ShareAlike 3.0
+ * License (http://creativecommons.org/licenses/by-nc-sa/3.0/deed.en_GB)
  *
- * ThaumicTinkerer is a Derivative Work on Thaumcraft 4.
- * Thaumcraft 4 (c) Azanor 2012
+ * ThaumicTinkerer is a Derivative Work on Thaumcraft 4. Thaumcraft 4 (c) Azanor 2012
  * (http://www.minecraftforum.net/topic/1585216-)
  *
  * File Created @ [12 Sep 2013, 17:14:05 (GMT)]
  */
 package thaumic.tinkerer.common.block.tile;
 
-import appeng.api.movable.IMovableTile;
-import cpw.mods.fml.common.Optional;
-import dan200.computercraft.api.lua.ILuaContext;
-import dan200.computercraft.api.peripheral.IComputerAccess;
 import li.cil.oc.api.machine.Arguments;
 import li.cil.oc.api.machine.Callback;
 import li.cil.oc.api.machine.Context;
+
 import net.minecraft.command.IEntitySelector;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityAgeable;
@@ -34,8 +28,13 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraftforge.common.util.Constants;
+
 import thaumic.tinkerer.common.item.ItemSoulMould;
 import thaumic.tinkerer.common.lib.LibBlockNames;
+import appeng.api.movable.IMovableTile;
+import cpw.mods.fml.common.Optional;
+import dan200.computercraft.api.lua.ILuaContext;
+import dan200.computercraft.api.peripheral.IComputerAccess;
 
 public class TileMobMagnet extends TileMagnet implements IInventory, IMovableTile {
 
@@ -188,7 +187,7 @@ public class TileMobMagnet extends TileMagnet implements IInventory, IMovableTil
 
     @Override
     public String[] getMethodNames() {
-        return new String[] {"isPulling", "setPulling", "getSignal", "getAdultSearch", "setAdultSearch"};
+        return new String[] { "isPulling", "setPulling", "getSignal", "getAdultSearch", "setAdultSearch" };
     }
 
     @Override
@@ -196,7 +195,7 @@ public class TileMobMagnet extends TileMagnet implements IInventory, IMovableTil
     public Object[] callMethod(IComputerAccess computer, ILuaContext context, int method, Object[] arguments) {
         switch (method) {
             case 3:
-                return new Object[] {adult};
+                return new Object[] { adult };
             case 4:
                 return setAdultSearchImplementation((Boolean) arguments[0]);
         }
@@ -213,7 +212,7 @@ public class TileMobMagnet extends TileMagnet implements IInventory, IMovableTil
     @Callback(doc = "function():boolean -- Gets Whether magnet is searching for adults")
     @Optional.Method(modid = "OpenComputers")
     public Object[] getAdultSearch(Context context, Arguments args) throws Exception {
-        return new Object[] {adult};
+        return new Object[] { adult };
     }
 
     @Callback(doc = "function(boolean):nil -- Sets Whether magnet is searching for adults")

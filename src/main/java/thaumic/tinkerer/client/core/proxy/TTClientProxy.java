@@ -1,26 +1,16 @@
 /**
- * This class was created by <Vazkii>. It's distributed as
- * part of the ThaumicTinkerer Mod.
+ * This class was created by <Vazkii>. It's distributed as part of the ThaumicTinkerer Mod.
  *
- * ThaumicTinkerer is Open Source and distributed under a
- * Creative Commons Attribution-NonCommercial-ShareAlike 3.0 License
- * (http://creativecommons.org/licenses/by-nc-sa/3.0/deed.en_GB)
+ * ThaumicTinkerer is Open Source and distributed under a Creative Commons Attribution-NonCommercial-ShareAlike 3.0
+ * License (http://creativecommons.org/licenses/by-nc-sa/3.0/deed.en_GB)
  *
- * ThaumicTinkerer is a Derivative Work on Thaumcraft 4.
- * Thaumcraft 4 (c) Azanor 2012
+ * ThaumicTinkerer is a Derivative Work on Thaumcraft 4. Thaumcraft 4 (c) Azanor 2012
  * (http://www.minecraftforum.net/topic/1585216-)
  *
  * File Created @ [4 Sep 2013, 16:33:54 (GMT)]
  */
 package thaumic.tinkerer.client.core.proxy;
 
-import cpw.mods.fml.client.registry.ClientRegistry;
-import cpw.mods.fml.client.registry.RenderingRegistry;
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.Loader;
-import cpw.mods.fml.common.event.FMLInitializationEvent;
-import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import cpw.mods.fml.relauncher.Side;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumRarity;
@@ -29,6 +19,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.client.EnumHelperClient;
 import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.common.MinecraftForge;
+
 import thaumcraft.client.fx.ParticleEngine;
 import thaumic.tinkerer.client.core.handler.ClientTickHandler;
 import thaumic.tinkerer.client.core.handler.GemArmorKeyHandler;
@@ -62,6 +53,13 @@ import thaumic.tinkerer.common.item.ItemInfusedSeeds;
 import thaumic.tinkerer.common.item.ItemMobDisplay;
 import thaumic.tinkerer.common.item.kami.ItemPlacementMirror;
 import thaumic.tinkerer.common.item.kami.foci.ItemFocusShadowbeam;
+import cpw.mods.fml.client.registry.ClientRegistry;
+import cpw.mods.fml.client.registry.RenderingRegistry;
+import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.Loader;
+import cpw.mods.fml.common.event.FMLInitializationEvent;
+import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import cpw.mods.fml.relauncher.Side;
 
 public class TTClientProxy extends TTCommonProxy {
 
@@ -79,7 +77,7 @@ public class TTClientProxy extends TTCommonProxy {
         if (ConfigHandler.enableKami)
             // kamiRarity = EnumHelperClient.addRarity("KAMI", 0x6, "Kami");
             kamiRarity = EnumHelperClient.addEnum(
-                    new Class[][] {{EnumRarity.class, EnumChatFormatting.class, String.class}},
+                    new Class[][] { { EnumRarity.class, EnumChatFormatting.class, String.class } },
                     EnumRarity.class,
                     "KAMI",
                     EnumChatFormatting.LIGHT_PURPLE,
@@ -129,9 +127,11 @@ public class TTClientProxy extends TTCommonProxy {
         RenderingRegistry.registerBlockHandler(new RenderRepairer());
 
         MinecraftForgeClient.registerItemRenderer(
-                ThaumicTinkerer.registry.getFirstItemFromClass(ItemMobDisplay.class), new RenderMobDisplay());
+                ThaumicTinkerer.registry.getFirstItemFromClass(ItemMobDisplay.class),
+                new RenderMobDisplay());
         MinecraftForgeClient.registerItemRenderer(
-                ThaumicTinkerer.registry.getFirstItemFromClass(ItemInfusedSeeds.class), new RenderGenericSeeds());
+                ThaumicTinkerer.registry.getFirstItemFromClass(ItemInfusedSeeds.class),
+                new RenderGenericSeeds());
 
         if (ConfigHandler.enableKami) {
             MinecraftForgeClient.registerItemRenderer(
@@ -148,7 +148,15 @@ public class TTClientProxy extends TTCommonProxy {
     @Override
     public void shadowSparkle(World world, float x, float y, float z, int size) {
         ItemFocusShadowbeam.Particle fx = new ItemFocusShadowbeam.Particle(
-                world, (double) x, (double) y, (double) z, size, 0.001f, 0.001f, 0.001f, 5);
+                world,
+                (double) x,
+                (double) y,
+                (double) z,
+                size,
+                0.001f,
+                0.001f,
+                0.001f,
+                5);
         ParticleEngine.instance.addEffect(world, fx);
     }
 

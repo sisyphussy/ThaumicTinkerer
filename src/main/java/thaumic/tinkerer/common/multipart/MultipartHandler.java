@@ -1,27 +1,26 @@
 /**
- * This class was created by <Vazkii>. It's distributed as
- * part of the ThaumicTinkerer Mod.
+ * This class was created by <Vazkii>. It's distributed as part of the ThaumicTinkerer Mod.
  *
- * ThaumicTinkerer is Open Source and distributed under a
- * Creative Commons Attribution-NonCommercial-ShareAlike 3.0 License
- * (http://creativecommons.org/licenses/by-nc-sa/3.0/deed.en_GB)
+ * ThaumicTinkerer is Open Source and distributed under a Creative Commons Attribution-NonCommercial-ShareAlike 3.0
+ * License (http://creativecommons.org/licenses/by-nc-sa/3.0/deed.en_GB)
  *
- * ThaumicTinkerer is a Derivative Work on Thaumcraft 4.
- * Thaumcraft 4 (c) Azanor 2012
+ * ThaumicTinkerer is a Derivative Work on Thaumcraft 4. Thaumcraft 4 (c) Azanor 2012
  * (http://www.minecraftforum.net/topic/1585216-)
  *
  * File Created @ [29 Oct 2013, 14:23:16 (GMT)]
  */
 package thaumic.tinkerer.common.multipart;
 
-import codechicken.microblock.BlockMicroMaterial;
-import codechicken.microblock.MicroMaterialRegistry;
 import net.minecraft.block.Block;
+
 import thaumcraft.common.config.ConfigBlocks;
 import thaumic.tinkerer.common.ThaumicTinkerer;
 import thaumic.tinkerer.common.block.quartz.BlockDarkQuartz;
+import codechicken.microblock.BlockMicroMaterial;
+import codechicken.microblock.MicroMaterialRegistry;
 
 public class MultipartHandler {
+
     public MultipartHandler() {
         ThaumicTinkerer.log.trace("Loading Multipart Handler class");
         registerMultipart(ConfigBlocks.blockCustomOre, 0);
@@ -45,6 +44,7 @@ public class MultipartHandler {
 
     private static void registerMultipart(Block block, int meta) {
         MicroMaterialRegistry.registerMaterial(
-                new BlockMicroMaterial(block, meta), block.getUnlocalizedName() + (meta == 0 ? "" : "_" + meta));
+                new BlockMicroMaterial(block, meta),
+                block.getUnlocalizedName() + (meta == 0 ? "" : "_" + meta));
     }
 }

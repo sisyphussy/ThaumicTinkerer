@@ -1,13 +1,10 @@
 /**
- * This class was created by <Vazkii>. It's distributed as
- * part of the ThaumicTinkerer Mod.
+ * This class was created by <Vazkii>. It's distributed as part of the ThaumicTinkerer Mod.
  *
- * ThaumicTinkerer is Open Source and distributed under a
- * Creative Commons Attribution-NonCommercial-ShareAlike 3.0 License
- * (http://creativecommons.org/licenses/by-nc-sa/3.0/deed.en_GB)
+ * ThaumicTinkerer is Open Source and distributed under a Creative Commons Attribution-NonCommercial-ShareAlike 3.0
+ * License (http://creativecommons.org/licenses/by-nc-sa/3.0/deed.en_GB)
  *
- * ThaumicTinkerer is a Derivative Work on Thaumcraft 4.
- * Thaumcraft 4 (c) Azanor 2012
+ * ThaumicTinkerer is a Derivative Work on Thaumcraft 4. Thaumcraft 4 (c) Azanor 2012
  * (http://www.minecraftforum.net/topic/1585216-)
  *
  * File Created @ [Jan 10, 2014, 3:54:41 PM (GMT)]
@@ -16,6 +13,7 @@ package thaumic.tinkerer.common.block.kami;
 
 import java.util.ArrayList;
 import java.util.Random;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -28,6 +26,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
+
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.research.ResearchPage;
@@ -65,22 +64,14 @@ public class BlockWarpGate extends BlockModContainer {
     }
 
     @Override
-    public boolean onBlockActivated(
-            World par1World,
-            int par2,
-            int par3,
-            int par4,
-            EntityPlayer par5EntityPlayer,
-            int par6,
-            float par7,
-            float par8,
-            float par9) {
+    public boolean onBlockActivated(World par1World, int par2, int par3, int par4, EntityPlayer par5EntityPlayer,
+            int par6, float par7, float par8, float par9) {
         if (!par1World.isRemote) {
             TileEntity tile = par1World.getTileEntity(par2, par3, par4);
             if (tile != null) {
                 par1World.markBlockForUpdate(par2, par3, par4);
-                par5EntityPlayer.openGui(
-                        ThaumicTinkerer.instance, LibGuiIDs.GUI_ID_WARP_GATE, par1World, par2, par3, par4);
+                par5EntityPlayer
+                        .openGui(ThaumicTinkerer.instance, LibGuiIDs.GUI_ID_WARP_GATE, par1World, par2, par3, par4);
             }
         }
 
@@ -100,9 +91,8 @@ public class BlockWarpGate extends BlockModContainer {
                     float f1 = random.nextFloat() * 0.8F + 0.1F;
                     EntityItem entityitem;
 
-                    for (float f2 = random.nextFloat() * 0.8F + 0.1F;
-                            itemstack.stackSize > 0;
-                            par1World.spawnEntityInWorld(entityitem)) {
+                    for (float f2 = random.nextFloat() * 0.8F + 0.1F; itemstack.stackSize > 0; par1World
+                            .spawnEntityInWorld(entityitem)) {
                         int k1 = random.nextInt(21) + 10;
 
                         if (k1 > itemstack.stackSize) k1 = itemstack.stackSize;
@@ -119,9 +109,8 @@ public class BlockWarpGate extends BlockModContainer {
                         entityitem.motionY = (float) random.nextGaussian() * f3 + 0.2F;
                         entityitem.motionZ = (float) random.nextGaussian() * f3;
 
-                        if (itemstack.hasTagCompound())
-                            entityitem.getEntityItem().setTagCompound((NBTTagCompound)
-                                    itemstack.getTagCompound().copy());
+                        if (itemstack.hasTagCompound()) entityitem.getEntityItem()
+                                .setTagCompound((NBTTagCompound) itemstack.getTagCompound().copy());
                     }
                 }
             }
@@ -199,23 +188,18 @@ public class BlockWarpGate extends BlockModContainer {
         }
         if (!ConfigHandler.enableKami) return null;
         return (IRegisterableResearch) new KamiResearchItem(
-                        LibResearch.KEY_WARP_GATE,
-                        new AspectList()
-                                .add(Aspect.TRAVEL, 2)
-                                .add(Aspect.ELDRITCH, 1)
-                                .add(Aspect.FLIGHT, 1)
-                                .add(Aspect.MECHANISM, 1),
-                        19,
-                        6,
-                        5,
-                        new ItemStack(this))
-                .setParents(LibResearch.KEY_ICHORCLOTH_CHEST_GEM)
-                .setParentsHidden(LibResearch.KEY_ICHORCLOTH_BOOTS_GEM)
-                .setPages(
-                        new ResearchPage("0"),
-                        ResearchHelper.infusionPage(LibResearch.KEY_WARP_GATE),
-                        new ResearchPage("1"),
-                        ResearchHelper.infusionPage(LibResearch.KEY_SKY_PEARL));
+                LibResearch.KEY_WARP_GATE,
+                new AspectList().add(Aspect.TRAVEL, 2).add(Aspect.ELDRITCH, 1).add(Aspect.FLIGHT, 1)
+                        .add(Aspect.MECHANISM, 1),
+                19,
+                6,
+                5,
+                new ItemStack(this)).setParents(LibResearch.KEY_ICHORCLOTH_CHEST_GEM)
+                        .setParentsHidden(LibResearch.KEY_ICHORCLOTH_BOOTS_GEM).setPages(
+                                new ResearchPage("0"),
+                                ResearchHelper.infusionPage(LibResearch.KEY_WARP_GATE),
+                                new ResearchPage("1"),
+                                ResearchHelper.infusionPage(LibResearch.KEY_SKY_PEARL));
     }
 
     @Override

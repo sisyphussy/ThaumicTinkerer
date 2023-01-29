@@ -3,6 +3,7 @@ package thaumic.tinkerer.common.block.tile.kami;
 import net.minecraft.entity.Entity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
+
 import thaumic.tinkerer.common.core.handler.ConfigHandler;
 
 public class TileBedrockPortal extends TileEntity {

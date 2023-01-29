@@ -1,13 +1,10 @@
 /**
- * This class was created by <Vazkii>. It's distributed as
- * part of the ThaumicTinkerer Mod.
+ * This class was created by <Vazkii>. It's distributed as part of the ThaumicTinkerer Mod.
  *
- * ThaumicTinkerer is Open Source and distributed under a
- * Creative Commons Attribution-NonCommercial-ShareAlike 3.0 License
- * (http://creativecommons.org/licenses/by-nc-sa/3.0/deed.en_GB)
+ * ThaumicTinkerer is Open Source and distributed under a Creative Commons Attribution-NonCommercial-ShareAlike 3.0
+ * License (http://creativecommons.org/licenses/by-nc-sa/3.0/deed.en_GB)
  *
- * ThaumicTinkerer is a Derivative Work on Thaumcraft 4.
- * Thaumcraft 4 (c) Azanor 2012
+ * ThaumicTinkerer is a Derivative Work on Thaumcraft 4. Thaumcraft 4 (c) Azanor 2012
  * (http://www.minecraftforum.net/topic/1585216-)
  *
  * File Created @ [Dec 29, 2013, 6:01:04 PM (GMT)]
@@ -15,6 +12,7 @@
 package thaumic.tinkerer.common.item.kami.tool;
 
 import java.util.List;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -28,6 +26,7 @@ import net.minecraft.util.IIcon;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.research.ResearchPage;
@@ -106,14 +105,12 @@ public class ItemIchorPickAdv extends ItemIchorPick implements IAdvancedTool {
         ForgeDirection direction = ForgeDirection.getOrientation(block.sideHit);
         int fortune = EnchantmentHelper.getFortuneModifier(player);
         boolean silk = EnchantmentHelper.getSilkTouchModifier(player);
-        if (ConfigHandler.bedrockDimensionID != 0
-                && blk == Blocks.bedrock
+        if (ConfigHandler.bedrockDimensionID != 0 && blk == Blocks.bedrock
                 && ((world.provider.isSurfaceWorld() && y < 5)
                         || (y > 253 && world.provider instanceof WorldProviderBedrock))) {
             world.setBlock(x, y, z, ThaumicTinkerer.registry.getFirstBlockFromClass(BlockBedrockPortal.class));
         }
-        if (ConfigHandler.bedrockDimensionID != 0
-                && blk == Blocks.bedrock
+        if (ConfigHandler.bedrockDimensionID != 0 && blk == Blocks.bedrock
                 && (y <= 253 && world.provider instanceof WorldProviderBedrock)) {
             world.setBlock(x, y, z, Blocks.air);
         }
@@ -190,18 +187,12 @@ public class ItemIchorPickAdv extends ItemIchorPick implements IAdvancedTool {
     public IRegisterableResearch getResearchItem() {
         if (!ConfigHandler.enableKami) return null;
         return (IRegisterableResearch) new KamiResearchItem(
-                        LibResearch.KEY_ICHOR_PICK_GEM,
-                        new AspectList()
-                                .add(Aspect.FIRE, 2)
-                                .add(Aspect.TOOL, 1)
-                                .add(Aspect.MINE, 1)
-                                .add(Aspect.EARTH, 1),
-                        13,
-                        15,
-                        5,
-                        new ItemStack(this))
-                .setParents(LibResearch.KEY_ICHOR_TOOLS)
-                .setPages(
+                LibResearch.KEY_ICHOR_PICK_GEM,
+                new AspectList().add(Aspect.FIRE, 2).add(Aspect.TOOL, 1).add(Aspect.MINE, 1).add(Aspect.EARTH, 1),
+                13,
+                15,
+                5,
+                new ItemStack(this)).setParents(LibResearch.KEY_ICHOR_TOOLS).setPages(
                         new ResearchPage("0"),
                         ResearchHelper.infusionPage(LibResearch.KEY_ICHOR_PICK_GEM),
                         new ResearchPage("1"));
@@ -213,14 +204,8 @@ public class ItemIchorPickAdv extends ItemIchorPick implements IAdvancedTool {
                 LibResearch.KEY_ICHOR_PICK_GEM,
                 new ItemStack(this),
                 15,
-                new AspectList()
-                        .add(Aspect.FIRE, 50)
-                        .add(Aspect.MINE, 64)
-                        .add(Aspect.METAL, 32)
-                        .add(Aspect.EARTH, 32)
-                        .add(Aspect.HARVEST, 32)
-                        .add(Aspect.GREED, 16)
-                        .add(Aspect.SENSES, 16),
+                new AspectList().add(Aspect.FIRE, 50).add(Aspect.MINE, 64).add(Aspect.METAL, 32).add(Aspect.EARTH, 32)
+                        .add(Aspect.HARVEST, 32).add(Aspect.GREED, 16).add(Aspect.SENSES, 16),
                 new ItemStack(ThaumicTinkerer.registry.getFirstItemFromClass(ItemIchorPick.class)),
                 new ItemStack(ThaumicTinkerer.registry.getFirstItemFromClass(ItemKamiResource.class), 1, 2),
                 new ItemStack(ThaumicTinkerer.registry.getFirstItemFromClass(ItemKamiResource.class)),

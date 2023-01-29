@@ -1,23 +1,19 @@
 /**
- * This class was created by <Vazkii>. It's distributed as
- * part of the ThaumicTinkerer Mod.
+ * This class was created by <Vazkii>. It's distributed as part of the ThaumicTinkerer Mod.
  *
- * ThaumicTinkerer is Open Source and distributed under a
- * Creative Commons Attribution-NonCommercial-ShareAlike 3.0 License
- * (http://creativecommons.org/licenses/by-nc-sa/3.0/deed.en_GB)
+ * ThaumicTinkerer is Open Source and distributed under a Creative Commons Attribution-NonCommercial-ShareAlike 3.0
+ * License (http://creativecommons.org/licenses/by-nc-sa/3.0/deed.en_GB)
  *
- * ThaumicTinkerer is a Derivative Work on Thaumcraft 4.
- * Thaumcraft 4 (c) Azanor 2012
+ * ThaumicTinkerer is a Derivative Work on Thaumcraft 4. Thaumcraft 4 (c) Azanor 2012
  * (http://www.minecraftforum.net/topic/1585216-)
  *
  * File Created @ [Dec 27, 2013, 4:12:03 PM (GMT)]
  */
 package thaumic.tinkerer.common.item.kami.armor;
 
-import cpw.mods.fml.common.eventhandler.EventPriority;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import java.util.ArrayList;
 import java.util.List;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -27,6 +23,7 @@ import net.minecraft.potion.PotionEffect;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingJumpEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 import net.minecraftforge.event.entity.living.LivingFallEvent;
+
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.research.ResearchPage;
@@ -42,6 +39,8 @@ import thaumic.tinkerer.common.registry.ThaumicTinkererRecipe;
 import thaumic.tinkerer.common.research.IRegisterableResearch;
 import thaumic.tinkerer.common.research.KamiResearchItem;
 import thaumic.tinkerer.common.research.ResearchHelper;
+import cpw.mods.fml.common.eventhandler.EventPriority;
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
 public class ItemGemBoots extends ItemIchorclothArmorAdv {
 
@@ -84,18 +83,14 @@ public class ItemGemBoots extends ItemIchorclothArmorAdv {
     public IRegisterableResearch getResearchItem() {
         if (!ConfigHandler.enableKami) return null;
         return (IRegisterableResearch) new KamiResearchItem(
-                        LibResearch.KEY_ICHORCLOTH_BOOTS_GEM,
-                        new AspectList()
-                                .add(Aspect.EARTH, 2)
-                                .add(Aspect.TRAVEL, 1)
-                                .add(Aspect.MINE, 1)
-                                .add(Aspect.PLANT, 1),
-                        15,
-                        10,
-                        5,
-                        new ItemStack(this))
-                .setParents(LibResearch.KEY_ICHORCLOTH_ARMOR)
-                .setPages(new ResearchPage("0"), ResearchHelper.infusionPage(LibResearch.KEY_ICHORCLOTH_BOOTS_GEM));
+                LibResearch.KEY_ICHORCLOTH_BOOTS_GEM,
+                new AspectList().add(Aspect.EARTH, 2).add(Aspect.TRAVEL, 1).add(Aspect.MINE, 1).add(Aspect.PLANT, 1),
+                15,
+                10,
+                5,
+                new ItemStack(this)).setParents(LibResearch.KEY_ICHORCLOTH_ARMOR).setPages(
+                        new ResearchPage("0"),
+                        ResearchHelper.infusionPage(LibResearch.KEY_ICHORCLOTH_BOOTS_GEM));
     }
 
     @Override
@@ -104,16 +99,11 @@ public class ItemGemBoots extends ItemIchorclothArmorAdv {
                 LibResearch.KEY_ICHORCLOTH_BOOTS_GEM,
                 new ItemStack(this),
                 13,
-                new AspectList()
-                        .add(Aspect.EARTH, 50)
-                        .add(Aspect.ARMOR, 32)
-                        .add(Aspect.MINE, 32)
-                        .add(Aspect.MOTION, 32)
-                        .add(Aspect.LIGHT, 64)
-                        .add(Aspect.PLANT, 16)
-                        .add(Aspect.TRAVEL, 16),
-                new ItemStack(ThaumicTinkerer.registry.getItemFromClassAndName(
-                        ItemIchorclothArmor.class, LibItemNames.ICHOR_BOOTS)),
+                new AspectList().add(Aspect.EARTH, 50).add(Aspect.ARMOR, 32).add(Aspect.MINE, 32).add(Aspect.MOTION, 32)
+                        .add(Aspect.LIGHT, 64).add(Aspect.PLANT, 16).add(Aspect.TRAVEL, 16),
+                new ItemStack(
+                        ThaumicTinkerer.registry
+                                .getItemFromClassAndName(ItemIchorclothArmor.class, LibItemNames.ICHOR_BOOTS)),
                 new ItemStack(Items.diamond, 1),
                 new ItemStack(ThaumicTinkerer.registry.getFirstItemFromClass(ItemKamiResource.class)),
                 new ItemStack(ThaumicTinkerer.registry.getFirstItemFromClass(ItemKamiResource.class)),
@@ -132,12 +122,10 @@ public class ItemGemBoots extends ItemIchorclothArmorAdv {
     public void onPlayerJump(LivingJumpEvent event) {
         if (event.entityLiving instanceof EntityPlayer) {
             EntityPlayer player = (EntityPlayer) event.entityLiving;
-            boolean hasArmor = player.getCurrentArmor(0) != null
-                    && player.getCurrentArmor(0).getItem() == this;
+            boolean hasArmor = player.getCurrentArmor(0) != null && player.getCurrentArmor(0).getItem() == this;
 
-            if (hasArmor
-                    && ThaumicTinkerer.proxy.armorStatus(player)
-                    && player.getCurrentArmor(0).getItemDamage() == 0) player.motionY += 0.3;
+            if (hasArmor && ThaumicTinkerer.proxy.armorStatus(player) && player.getCurrentArmor(0).getItemDamage() == 0)
+                player.motionY += 0.3;
         }
     }
 
@@ -148,8 +136,7 @@ public class ItemGemBoots extends ItemIchorclothArmorAdv {
         if (event.entityLiving instanceof EntityPlayer) {
 
             EntityPlayer player = (EntityPlayer) event.entityLiving;
-            boolean hasArmor = player.getCurrentArmor(0) != null
-                    && player.getCurrentArmor(0).getItem() == this;
+            boolean hasArmor = player.getCurrentArmor(0) != null && player.getCurrentArmor(0).getItem() == this;
             if (hasArmor) {
                 event.distance = 0;
             }
@@ -161,21 +148,15 @@ public class ItemGemBoots extends ItemIchorclothArmorAdv {
         if (event.entityLiving instanceof EntityPlayer && event.entityLiving.worldObj.isRemote) {
             EntityPlayer player = (EntityPlayer) event.entityLiving;
 
-            boolean highStepListed =
-                    playersWith1Step.contains(player.getGameProfile().getName());
-            boolean hasHighStep = player.getCurrentArmor(0) != null
-                    && player.getCurrentArmor(0).getItem() == this;
+            boolean highStepListed = playersWith1Step.contains(player.getGameProfile().getName());
+            boolean hasHighStep = player.getCurrentArmor(0) != null && player.getCurrentArmor(0).getItem() == this;
 
-            if (!highStepListed
-                    && (hasHighStep
-                            && ThaumicTinkerer.proxy.armorStatus(player)
-                            && player.getCurrentArmor(0).getItemDamage() == 0))
+            if (!highStepListed && (hasHighStep && ThaumicTinkerer.proxy.armorStatus(player)
+                    && player.getCurrentArmor(0).getItemDamage() == 0))
                 playersWith1Step.add(player.getGameProfile().getName());
 
-            if ((!hasHighStep
-                            || !ThaumicTinkerer.proxy.armorStatus(player)
-                            || player.getCurrentArmor(0).getItemDamage() == 1)
-                    && highStepListed) {
+            if ((!hasHighStep || !ThaumicTinkerer.proxy.armorStatus(player)
+                    || player.getCurrentArmor(0).getItemDamage() == 1) && highStepListed) {
                 playersWith1Step.remove(player.getGameProfile().getName());
                 player.stepHeight = 0.5F;
             }

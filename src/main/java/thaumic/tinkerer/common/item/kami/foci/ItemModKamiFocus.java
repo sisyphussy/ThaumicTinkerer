@@ -1,23 +1,19 @@
 /**
- * This class was created by <Vazkii>. It's distributed as
- * part of the ThaumicTinkerer Mod.
+ * This class was created by <Vazkii>. It's distributed as part of the ThaumicTinkerer Mod.
  *
- * ThaumicTinkerer is Open Source and distributed under a
- * Creative Commons Attribution-NonCommercial-ShareAlike 3.0 License
- * (http://creativecommons.org/licenses/by-nc-sa/3.0/deed.en_GB)
+ * ThaumicTinkerer is Open Source and distributed under a Creative Commons Attribution-NonCommercial-ShareAlike 3.0
+ * License (http://creativecommons.org/licenses/by-nc-sa/3.0/deed.en_GB)
  *
- * ThaumicTinkerer is a Derivative Work on Thaumcraft 4.
- * Thaumcraft 4 (c) Azanor 2012
+ * ThaumicTinkerer is a Derivative Work on Thaumcraft 4. Thaumcraft 4 (c) Azanor 2012
  * (http://www.minecraftforum.net/topic/1585216-)
  *
  * File Created @ [9 Sep 2013, 19:22:59 (GMT)]
  */
 package thaumic.tinkerer.common.item.kami.foci;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import java.util.ArrayList;
 import java.util.List;
+
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumRarity;
@@ -25,6 +21,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
+
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.wands.FocusUpgradeType;
 import thaumcraft.api.wands.ItemFocusBasic;
@@ -33,6 +30,8 @@ import thaumic.tinkerer.common.core.handler.ConfigHandler;
 import thaumic.tinkerer.common.registry.ITTinkererItem;
 import thaumic.tinkerer.common.registry.ThaumicTinkererRecipe;
 import thaumic.tinkerer.common.research.IRegisterableResearch;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public abstract class ItemModKamiFocus extends ItemFocusBasic implements ITTinkererItem {
 
@@ -99,10 +98,10 @@ public abstract class ItemModKamiFocus extends ItemFocusBasic implements ITTinke
     }
 
     protected void addVisCostTooltip(AspectList cost, ItemStack stack, EntityPlayer player, List list, boolean par4) {
-        /*for (Aspect aspect : cost.getAspectsSorted()) {
-            float amount = cost.getAmount(aspect) / 100.0F;
-            list.add(" " + '\u00a7' + aspect.getChatcolor() + aspect.getName() + '\u00a7' + "r x " + amount);
-        }*/
+        /*
+         * for (Aspect aspect : cost.getAspectsSorted()) { float amount = cost.getAmount(aspect) / 100.0F; list.add(" "
+         * + '\u00a7' + aspect.getChatcolor() + aspect.getName() + '\u00a7' + "r x " + amount); }
+         */
     }
 
     @Override
@@ -135,10 +134,7 @@ public abstract class ItemModKamiFocus extends ItemFocusBasic implements ITTinke
     }
 
     @Override
-    public ItemStack onFocusRightClick(
-            ItemStack paramItemStack,
-            World paramWorld,
-            EntityPlayer paramEntityPlayer,
+    public ItemStack onFocusRightClick(ItemStack paramItemStack, World paramWorld, EntityPlayer paramEntityPlayer,
             MovingObjectPosition paramMovingObjectPosition) {
         if (isUseItem(paramItemStack)) paramEntityPlayer.setItemInUse(paramItemStack, Integer.MAX_VALUE);
 
@@ -151,8 +147,8 @@ public abstract class ItemModKamiFocus extends ItemFocusBasic implements ITTinke
     }
 
     @Override
-    public void onPlayerStoppedUsingFocus(
-            ItemStack paramItemStack, World paramWorld, EntityPlayer paramEntityPlayer, int paramInt) {
+    public void onPlayerStoppedUsingFocus(ItemStack paramItemStack, World paramWorld, EntityPlayer paramEntityPlayer,
+            int paramInt) {
         // NO-OP
     }
 
@@ -162,8 +158,8 @@ public abstract class ItemModKamiFocus extends ItemFocusBasic implements ITTinke
     }
 
     @Override
-    public boolean onFocusBlockStartBreak(
-            ItemStack paramItemStack, int paramInt1, int paramInt2, int paramInt3, EntityPlayer paramEntityPlayer) {
+    public boolean onFocusBlockStartBreak(ItemStack paramItemStack, int paramInt1, int paramInt2, int paramInt3,
+            EntityPlayer paramEntityPlayer) {
         return false;
     }
 

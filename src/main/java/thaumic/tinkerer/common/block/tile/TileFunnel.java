@@ -1,20 +1,16 @@
 /**
- * This class was created by <Vazkii>. It's distributed as
- * part of the ThaumicTinkerer Mod.
+ * This class was created by <Vazkii>. It's distributed as part of the ThaumicTinkerer Mod.
  *
- * ThaumicTinkerer is Open Source and distributed under a
- * Creative Commons Attribution-NonCommercial-ShareAlike 3.0 License
- * (http://creativecommons.org/licenses/by-nc-sa/3.0/deed.en_GB)
+ * ThaumicTinkerer is Open Source and distributed under a Creative Commons Attribution-NonCommercial-ShareAlike 3.0
+ * License (http://creativecommons.org/licenses/by-nc-sa/3.0/deed.en_GB)
  *
- * ThaumicTinkerer is a Derivative Work on Thaumcraft 4.
- * Thaumcraft 4 (c) Azanor 2012
+ * ThaumicTinkerer is a Derivative Work on Thaumcraft 4. Thaumcraft 4 (c) Azanor 2012
  * (http://www.minecraftforum.net/topic/1585216-)
  *
  * File Created @ [28 Sep 2013, 19:34:46 (GMT)]
  */
 package thaumic.tinkerer.common.block.tile;
 
-import appeng.api.movable.IMovableTile;
 import net.minecraft.block.BlockHopper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.ISidedInventory;
@@ -28,6 +24,7 @@ import net.minecraft.tileentity.TileEntityHopper;
 import net.minecraft.util.Facing;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.ForgeDirection;
+
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.aspects.IAspectContainer;
@@ -36,6 +33,7 @@ import thaumcraft.common.blocks.ItemJarFilled;
 import thaumcraft.common.tiles.TileJarFillable;
 import thaumcraft.common.tiles.TileJarFillableVoid;
 import thaumic.tinkerer.common.lib.LibBlockNames;
+import appeng.api.movable.IMovableTile;
 
 public class TileFunnel extends TileEntity implements ISidedInventory, IAspectContainer, IMovableTile {
 
@@ -54,21 +52,20 @@ public class TileFunnel extends TileEntity implements ISidedInventory, IAspectCo
 
                     TileEntity tile = worldObj.getTileEntity(xCoord, yCoord - 1, zCoord);
                     if (tile != null && tile instanceof TileEntityHopper) {
-                        TileEntity tile1 =
-                                getHopperFacing(tile.xCoord, tile.yCoord, tile.zCoord, tile.getBlockMetadata());
+                        TileEntity tile1 = getHopperFacing(
+                                tile.xCoord,
+                                tile.yCoord,
+                                tile.zCoord,
+                                tile.getBlockMetadata());
                         if (tile1 instanceof TileJarFillable) {
                             TileJarFillable jar1 = (TileJarFillable) tile1;
                             boolean voidJar = tile1 instanceof TileJarFillableVoid;
                             AspectList aspectList1 = jar1.getAspects();
-                            //noinspection ConstantConditions
-                            if (aspectList1 != null
-                                            && aspectList1.size() == 0
-                                            && (jar1.aspectFilter == null || jar1.aspectFilter == aspect)
+                            // noinspection ConstantConditions
+                            if (aspectList1 != null && aspectList1.size() == 0
+                                    && (jar1.aspectFilter == null || jar1.aspectFilter == aspect)
                                     || aspectList1.getAspects()[0] == aspect
-                                            && (aspectList1.getAmount(
-                                                                    aspectList1.getAspects()[0])
-                                                            < 64
-                                                    || voidJar)) {
+                                            && (aspectList1.getAmount(aspectList1.getAspects()[0]) < 64 || voidJar)) {
                                 jar1.addToContainer(aspect, 1);
                                 item.setAspects(jar, aspectList.remove(aspect, 1));
                             }
@@ -88,7 +85,9 @@ public class TileFunnel extends TileEntity implements ISidedInventory, IAspectCo
     private TileEntity getHopperFacing(int x, int y, int z, int meta) {
         int i = BlockHopper.getDirectionFromMetadata(meta);
         return worldObj.getTileEntity(
-                x + Facing.offsetsXForSide[i], y + Facing.offsetsYForSide[i], z + Facing.offsetsZForSide[i]);
+                x + Facing.offsetsXForSide[i],
+                y + Facing.offsetsYForSide[i],
+                z + Facing.offsetsZForSide[i]);
     }
 
     @Override
@@ -138,15 +137,15 @@ public class TileFunnel extends TileEntity implements ISidedInventory, IAspectCo
         AspectList aspects = getAspects();
         // if(inventorySlots[i] != null && inventorySlots[i].itemID == ConfigItems.itemJarFilled.itemID && aspects ==
         // null) {
-        //	Aspect filter=((ItemJarFilled)inventorySlots[i].getItem()).getFilter(inventorySlots[i]);
-        //    inventorySlots[i] = new ItemStack(ConfigBlocks.blockJar,1,inventorySlots[i].getItemDamage());
-        //    if(filter!=null)
-        //    {
-        //        if(inventorySlots[i].getTagCompound()==null)
-        //            inventorySlots[i].setTagCompound(new NBTTagCompound());
-        //        inventorySlots[i].getTagCompound().setString("AspectFilter",filter.getTag());
-        //    }
-        //	onInventoryChanged();
+        // Aspect filter=((ItemJarFilled)inventorySlots[i].getItem()).getFilter(inventorySlots[i]);
+        // inventorySlots[i] = new ItemStack(ConfigBlocks.blockJar,1,inventorySlots[i].getItemDamage());
+        // if(filter!=null)
+        // {
+        // if(inventorySlots[i].getTagCompound()==null)
+        // inventorySlots[i].setTagCompound(new NBTTagCompound());
+        // inventorySlots[i].getTagCompound().setString("AspectFilter",filter.getTag());
+        // }
+        // onInventoryChanged();
         // }
 
         return inventorySlots[i];
@@ -230,7 +229,7 @@ public class TileFunnel extends TileEntity implements ISidedInventory, IAspectCo
 
     @Override
     public int[] getAccessibleSlotsFromSide(int var1) {
-        return var1 == ForgeDirection.DOWN.ordinal() ? new int[0] : new int[] {0};
+        return var1 == ForgeDirection.DOWN.ordinal() ? new int[0] : new int[] { 0 };
     }
 
     @Override

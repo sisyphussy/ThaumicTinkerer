@@ -1,32 +1,24 @@
 /**
- * This class was created by <Vazkii>. It's distributed as
- * part of the ThaumicTinkerer Mod.
+ * This class was created by <Vazkii>. It's distributed as part of the ThaumicTinkerer Mod.
  *
- * ThaumicTinkerer is Open Source and distributed under a
- * Creative Commons Attribution-NonCommercial-ShareAlike 3.0 License
- * (http://creativecommons.org/licenses/by-nc-sa/3.0/deed.en_GB)
+ * ThaumicTinkerer is Open Source and distributed under a Creative Commons Attribution-NonCommercial-ShareAlike 3.0
+ * License (http://creativecommons.org/licenses/by-nc-sa/3.0/deed.en_GB)
  *
- * ThaumicTinkerer is a Derivative Work on Thaumcraft 4.
- * Thaumcraft 4 (c) Azanor 2012
+ * ThaumicTinkerer is a Derivative Work on Thaumcraft 4. Thaumcraft 4 (c) Azanor 2012
  * (http://www.minecraftforum.net/topic/1585216-)
  *
  * File Created @ [9 Sep 2013, 15:51:34 (GMT)]
  */
 package thaumic.tinkerer.common.block.tile.tablet;
 
-import appeng.api.movable.IMovableTile;
-import cpw.mods.fml.common.Optional;
-import cpw.mods.fml.common.eventhandler.Event;
-import dan200.computercraft.api.lua.ILuaContext;
-import dan200.computercraft.api.lua.LuaException;
-import dan200.computercraft.api.peripheral.IComputerAccess;
-import dan200.computercraft.api.peripheral.IPeripheral;
 import java.util.ArrayList;
 import java.util.List;
+
 import li.cil.oc.api.machine.Arguments;
 import li.cil.oc.api.machine.Callback;
 import li.cil.oc.api.machine.Context;
 import li.cil.oc.api.network.SimpleComponent;
+
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
@@ -51,14 +43,20 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.event.ForgeEventFactory;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent.Action;
+
 import thaumic.tinkerer.common.ThaumicTinkerer;
 import thaumic.tinkerer.common.block.BlockAnimationTablet;
 import thaumic.tinkerer.common.lib.LibBlockNames;
+import appeng.api.movable.IMovableTile;
+import cpw.mods.fml.common.Optional;
+import cpw.mods.fml.common.eventhandler.Event;
+import dan200.computercraft.api.lua.ILuaContext;
+import dan200.computercraft.api.lua.LuaException;
+import dan200.computercraft.api.peripheral.IComputerAccess;
+import dan200.computercraft.api.peripheral.IPeripheral;
 
-@Optional.InterfaceList({
-    @Optional.Interface(iface = "li.cil.oc.api.network.SimpleComponent", modid = "OpenComputers"),
-    @Optional.Interface(iface = "dan200.computercraft.api.peripheral.IPeripheral", modid = "ComputerCraft")
-})
+@Optional.InterfaceList({ @Optional.Interface(iface = "li.cil.oc.api.network.SimpleComponent", modid = "OpenComputers"),
+        @Optional.Interface(iface = "dan200.computercraft.api.peripheral.IPeripheral", modid = "ComputerCraft") })
 public class TileAnimationTablet extends TileEntity implements IInventory, IMovableTile, IPeripheral, SimpleComponent {
 
     private static final String TAG_LEFT_CLICK = "leftClick";
@@ -67,15 +65,10 @@ public class TileAnimationTablet extends TileEntity implements IInventory, IMova
     private static final String TAG_MOD = "mod";
     private static final String TAG_OWNER = "owner";
 
-    private static final int[][] LOC_INCREASES = new int[][] {
-        {0, -1},
-        {0, +1},
-        {-1, 0},
-        {+1, 0}
-    };
+    private static final int[][] LOC_INCREASES = new int[][] { { 0, -1 }, { 0, +1 }, { -1, 0 }, { +1, 0 } };
 
-    private static final ForgeDirection[] SIDES =
-            new ForgeDirection[] {ForgeDirection.NORTH, ForgeDirection.SOUTH, ForgeDirection.WEST, ForgeDirection.EAST};
+    private static final ForgeDirection[] SIDES = new ForgeDirection[] { ForgeDirection.NORTH, ForgeDirection.SOUTH,
+            ForgeDirection.WEST, ForgeDirection.EAST };
 
     private static final int SWING_SPEED = 3;
     private static final int MAX_DEGREE = 45;
@@ -153,16 +146,14 @@ public class TileAnimationTablet extends TileEntity implements IInventory, IMova
         boolean done = false;
 
         if (leftClick) {
-            Entity entity = detectedEntities.isEmpty()
-                    ? null
+            Entity entity = detectedEntities.isEmpty() ? null
                     : detectedEntities.get(worldObj.rand.nextInt(detectedEntities.size()));
             if (entity != null) {
                 player.getAttributeMap().applyAttributeModifiers(stack.getAttributeModifiers()); // Set attack strenght
                 player.attackTargetEntityWithCurrentItem(entity);
                 done = true;
             } else if (!isBreaking) {
-                if (block != Blocks.air
-                        && !block.isAir(worldObj, coords.posX, coords.posY, coords.posZ)
+                if (block != Blocks.air && !block.isAir(worldObj, coords.posX, coords.posY, coords.posZ)
                         && block.getBlockHardness(worldObj, coords.posX, coords.posY, coords.posZ) >= 0) {
                     isBreaking = true;
                     startBreaking(block, worldObj.getBlockMetadata(coords.posX, coords.posY, coords.posZ));
@@ -180,25 +171,34 @@ public class TileAnimationTablet extends TileEntity implements IInventory, IMova
 
             try {
                 ForgeEventFactory.onPlayerInteract(
-                        player, Action.RIGHT_CLICK_AIR, coords.posX, coords.posY, coords.posZ, side, worldObj);
-                Entity entity = detectedEntities.isEmpty()
-                        ? null
+                        player,
+                        Action.RIGHT_CLICK_AIR,
+                        coords.posX,
+                        coords.posY,
+                        coords.posZ,
+                        side,
+                        worldObj);
+                Entity entity = detectedEntities.isEmpty() ? null
                         : detectedEntities.get(worldObj.rand.nextInt(detectedEntities.size()));
-                done = entity != null
-                        && entity instanceof EntityLiving
+                done = entity != null && entity instanceof EntityLiving
                         && (item.itemInteractionForEntity(stack, player, (EntityLivingBase) entity)
                                 || (!(entity instanceof EntityAnimal) || ((EntityAnimal) entity).interact(player)));
 
-                if (!done)
-                    item.onItemUseFirst(
-                            stack, player, worldObj, coords.posX, coords.posY, coords.posZ, side, 0F, 0F, 0F);
-                if (!done)
-                    done = block != null
-                            && block.onBlockActivated(
-                                    worldObj, coords.posX, coords.posY, coords.posZ, player, side, 0F, 0F, 0F);
-                if (!done)
-                    done = item.onItemUse(
-                            stack, player, worldObj, coords.posX, coords.posY, coords.posZ, side, 0F, 0F, 0F);
+                if (!done) item.onItemUseFirst(
+                        stack,
+                        player,
+                        worldObj,
+                        coords.posX,
+                        coords.posY,
+                        coords.posZ,
+                        side,
+                        0F,
+                        0F,
+                        0F);
+                if (!done) done = block != null && block
+                        .onBlockActivated(worldObj, coords.posX, coords.posY, coords.posZ, player, side, 0F, 0F, 0F);
+                if (!done) done = item
+                        .onItemUse(stack, player, worldObj, coords.posX, coords.posY, coords.posZ, side, 0F, 0F, 0F);
                 if (!done) {
                     item.onItemRightClick(stack, worldObj, player);
                     done = true;
@@ -209,13 +209,19 @@ public class TileAnimationTablet extends TileEntity implements IInventory, IMova
                 List list = worldObj.getEntitiesWithinAABB(
                         EntityPlayer.class,
                         AxisAlignedBB.getBoundingBox(
-                                xCoord - 8, yCoord - 8, zCoord - 8, xCoord + 8, yCoord + 8, zCoord + 8));
+                                xCoord - 8,
+                                yCoord - 8,
+                                zCoord - 8,
+                                xCoord + 8,
+                                yCoord + 8,
+                                zCoord + 8));
                 for (Object player : list) {
-                    ((EntityPlayer) player)
-                            .addChatComponentMessage(new ChatComponentText(EnumChatFormatting.RED
-                                    + "Something went wrong with a Tool Dynamism Tablet! Check your FML log."));
-                    ((EntityPlayer) player)
-                            .addChatComponentMessage(new ChatComponentText(
+                    ((EntityPlayer) player).addChatComponentMessage(
+                            new ChatComponentText(
+                                    EnumChatFormatting.RED
+                                            + "Something went wrong with a Tool Dynamism Tablet! Check your FML log."));
+                    ((EntityPlayer) player).addChatComponentMessage(
+                            new ChatComponentText(
                                     EnumChatFormatting.RED + "" + EnumChatFormatting.ITALIC + e.getMessage()));
                 }
             }
@@ -243,7 +249,13 @@ public class TileAnimationTablet extends TileEntity implements IInventory, IMova
         ChunkCoordinates coords = getTargetLoc();
 
         PlayerInteractEvent event = ForgeEventFactory.onPlayerInteract(
-                player, Action.LEFT_CLICK_BLOCK, coords.posX, coords.posY, coords.posZ, side, worldObj);
+                player,
+                Action.LEFT_CLICK_BLOCK,
+                coords.posX,
+                coords.posY,
+                coords.posZ,
+                side,
+                worldObj);
         if (event.isCanceled()) {
             stopBreaking();
             return;
@@ -291,7 +303,11 @@ public class TileAnimationTablet extends TileEntity implements IInventory, IMova
 
             if (var5 != durabilityRemainingOnBlock) {
                 worldObj.destroyBlockInWorldPartially(
-                        player.getEntityId(), coords.posX, coords.posY, coords.posZ, var5);
+                        player.getEntityId(),
+                        coords.posX,
+                        coords.posY,
+                        coords.posZ,
+                        var5);
                 durabilityRemainingOnBlock = var5;
             }
 
@@ -346,7 +362,12 @@ public class TileAnimationTablet extends TileEntity implements IInventory, IMova
 
     public void findEntities(ChunkCoordinates coords) {
         AxisAlignedBB boundingBox = AxisAlignedBB.getBoundingBox(
-                coords.posX, coords.posY, coords.posZ, coords.posX + 1, coords.posY + 1, coords.posZ + 1);
+                coords.posX,
+                coords.posY,
+                coords.posZ,
+                coords.posX + 1,
+                coords.posY + 1,
+                coords.posZ + 1);
         detectedEntities = worldObj.getEntitiesWithinAABB(Entity.class, boundingBox);
     }
 
@@ -361,8 +382,8 @@ public class TileAnimationTablet extends TileEntity implements IInventory, IMova
 
         int meta = getBlockMetadata();
         if (meta == 0) {
-            ThaumicTinkerer.log.error(
-                    "Metadata of a Tool Dynamism tablet is in an invalid state. This is a critical error.");
+            ThaumicTinkerer.log
+                    .error("Metadata of a Tool Dynamism tablet is in an invalid state. This is a critical error.");
             return coords;
         }
         int[] increase = LOC_INCREASES[(meta & 7) - 2];
@@ -393,9 +414,9 @@ public class TileAnimationTablet extends TileEntity implements IInventory, IMova
         swingProgress = par1NBTTagCompound.getInteger(TAG_PROGRESS);
 
         // if(par1NBTTagCompound.hasKey(TAG_OWNER))
-        //    Owner=par1NBTTagCompound.getString(TAG_OWNER);
+        // Owner=par1NBTTagCompound.getString(TAG_OWNER);
         // else
-        //    Owner="";
+        // Owner="";
         readCustomNBT(par1NBTTagCompound);
     }
 
@@ -413,13 +434,13 @@ public class TileAnimationTablet extends TileEntity implements IInventory, IMova
         leftClick = par1NBTTagCompound.getBoolean(TAG_LEFT_CLICK);
         redstone = par1NBTTagCompound.getBoolean(TAG_REDSTONE);
         // if(par1NBTTagCompound.hasKey("isBreaking"))
-        //   isBreaking = par1NBTTagCompound.getBoolean("isBreaking");
+        // isBreaking = par1NBTTagCompound.getBoolean("isBreaking");
         // if(par1NBTTagCompound.hasKey("initialDamage"))
-        //    initialDamage = par1NBTTagCompound.getInteger("initialDamage");
+        // initialDamage = par1NBTTagCompound.getInteger("initialDamage");
         // if(par1NBTTagCompound.hasKey("curblockDamage"))
         // curblockDamage = par1NBTTagCompound.getInteger("curblockDamage");
         // if(par1NBTTagCompound.hasKey("durabilityRemainingOnBlock"))
-        //    durabilityRemainingOnBlock=par1NBTTagCompound.getInteger("durabilityRemainingOnBlock");
+        // durabilityRemainingOnBlock=par1NBTTagCompound.getInteger("durabilityRemainingOnBlock");
         NBTTagList var2 = par1NBTTagCompound.getTagList("Items", Constants.NBT.TAG_COMPOUND);
         inventorySlots = new ItemStack[getSizeInventory()];
         for (int var3 = 0; var3 < var2.tagCount(); ++var3) {
@@ -548,16 +569,8 @@ public class TileAnimationTablet extends TileEntity implements IInventory, IMova
 
     @Override
     public String[] getMethodNames() {
-        return new String[] {
-            "getRedstone",
-            "setRedstone",
-            "getLeftClick",
-            "setLeftClick",
-            "getRotation",
-            "setRotation",
-            "hasItem",
-            "trigger"
-        };
+        return new String[] { "getRedstone", "setRedstone", "getLeftClick", "setLeftClick", "getRotation",
+                "setRotation", "hasItem", "trigger" };
     }
 
     @Override
@@ -566,19 +579,19 @@ public class TileAnimationTablet extends TileEntity implements IInventory, IMova
             throws LuaException {
         switch (method) {
             case 0:
-                return new Object[] {redstone};
+                return new Object[] { redstone };
             case 1:
                 return setRedstoneImplementation((Boolean) arguments[0]);
             case 2:
-                return new Object[] {leftClick};
+                return new Object[] { leftClick };
             case 3:
                 return setLeftClickImplementation((Boolean) arguments[0]);
             case 4:
-                return new Object[] {getBlockMetadata() - 2};
+                return new Object[] { getBlockMetadata() - 2 };
             case 5:
                 return setRotationImplementation((Double) arguments[0]);
             case 6:
-                return new Object[] {getStackInSlot(0) != null};
+                return new Object[] { getStackInSlot(0) != null };
             case 7:
                 return triggerImplementation();
         }
@@ -586,7 +599,7 @@ public class TileAnimationTablet extends TileEntity implements IInventory, IMova
     }
 
     private Object[] triggerImplementation() {
-        if (swingProgress != 0) return new Object[] {false};
+        if (swingProgress != 0) return new Object[] { false };
 
         findEntities(getTargetLoc());
         initiateSwing();
@@ -598,7 +611,7 @@ public class TileAnimationTablet extends TileEntity implements IInventory, IMova
                 0,
                 0);
 
-        return new Object[] {true};
+        return new Object[] { true };
     }
 
     @Optional.Method(modid = "ComputerCraft")
@@ -658,47 +671,47 @@ public class TileAnimationTablet extends TileEntity implements IInventory, IMova
     @Callback(doc = "function():boolean -- Returns Whether tablet is redstone activated")
     @Optional.Method(modid = "OpenComputers")
     public Object[] getRedstone(Context context, Arguments args) throws Exception {
-        return new Object[] {redstone};
+        return new Object[] { redstone };
     }
 
     @Callback(doc = "function(boolean):Nil -- Sets Whether tablet is redstone activated")
     @Optional.Method(modid = "OpenComputers")
     public Object[] setRedstone(Context context, Arguments args) throws Exception {
         setRedstoneImplementation(args.checkBoolean(0));
-        return new Object[] {redstone};
+        return new Object[] { redstone };
     }
 
     @Callback(doc = "function():boolean -- Returns Whether tablet Left clicks")
     @Optional.Method(modid = "OpenComputers")
     public Object[] getLeftClick(Context context, Arguments args) throws Exception {
-        return new Object[] {leftClick};
+        return new Object[] { leftClick };
     }
 
     @Callback(doc = "function(boolean):Nil -- Sets Whether tablet Left Clicks")
     @Optional.Method(modid = "OpenComputers")
     public Object[] setLeftClick(Context context, Arguments args) throws Exception {
         setLeftClickImplementation(args.checkBoolean(0));
-        return new Object[] {leftClick};
+        return new Object[] { leftClick };
     }
 
     // TODO {"hasItem", "trigger" };
     @Callback(doc = "function():number -- Returns tablet Rotation")
     @Optional.Method(modid = "OpenComputers")
     public Object[] getRotation(Context context, Arguments args) throws Exception {
-        return new Object[] {getBlockMetadata() - 2};
+        return new Object[] { getBlockMetadata() - 2 };
     }
 
     @Callback(doc = "function(number):Nil -- Sets tablet rotation")
     @Optional.Method(modid = "OpenComputers")
     public Object[] setRotation(Context context, Arguments args) throws Exception {
         setRotationImplementation((double) args.checkInteger(0));
-        return new Object[] {getBlockMetadata() - 2};
+        return new Object[] { getBlockMetadata() - 2 };
     }
 
     @Callback(doc = "function():boolean -- Returns wether tablet has an item or not")
     @Optional.Method(modid = "OpenComputers")
     public Object[] hasItem(Context context, Arguments args) throws Exception {
-        return new Object[] {getStackInSlot(0) != null};
+        return new Object[] { getStackInSlot(0) != null };
     }
 
     @Callback(doc = "function():Nil -- Triggers tablets swing")

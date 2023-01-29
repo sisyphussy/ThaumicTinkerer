@@ -1,6 +1,7 @@
 package thaumic.tinkerer.common.registry;
 
 import java.util.ArrayList;
+
 import net.minecraft.item.ItemBlock;
 import net.minecraft.tileentity.TileEntity;
 

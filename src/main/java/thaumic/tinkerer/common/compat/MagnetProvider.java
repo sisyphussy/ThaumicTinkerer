@@ -1,15 +1,18 @@
 package thaumic.tinkerer.common.compat;
 
 import java.util.List;
+
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 import mcp.mobius.waila.api.IWailaDataProvider;
+
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
+
 import thaumic.tinkerer.common.block.tile.TileMagnet;
 import thaumic.tinkerer.common.block.tile.TileMobMagnet;
 import thaumic.tinkerer.common.item.ItemSoulMould;
@@ -22,14 +25,14 @@ public class MagnetProvider implements IWailaDataProvider {
     }
 
     @Override
-    public List<String> getWailaHead(
-            ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor, IWailaConfigHandler config) {
+    public List<String> getWailaHead(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor,
+            IWailaConfigHandler config) {
         return currenttip;
     }
 
     @Override
-    public List<String> getWailaBody(
-            ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor, IWailaConfigHandler config) {
+    public List<String> getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor,
+            IWailaConfigHandler config) {
         boolean mobMagnet = accessor.getTileEntity() instanceof TileMobMagnet;
 
         TileMagnet tileMagnet = (TileMagnet) accessor.getTileEntity();
@@ -47,10 +50,9 @@ public class MagnetProvider implements IWailaDataProvider {
             } else {
                 String name = ItemSoulMould.getPatternName(tileMob.getStackInSlot(0));
                 name = StatCollector.translateToLocal("entity." + name + ".name");
-                if (isPulling)
-                    if (tileMob.adult)
-                        currenttip.add(StatCollector.translateToLocalFormatted("ttwaila.pullingAdultType", name));
-                    else currenttip.add(StatCollector.translateToLocalFormatted("ttwaila.pullingChildType", name));
+                if (isPulling) if (tileMob.adult)
+                    currenttip.add(StatCollector.translateToLocalFormatted("ttwaila.pullingAdultType", name));
+                else currenttip.add(StatCollector.translateToLocalFormatted("ttwaila.pullingChildType", name));
                 else if (tileMob.adult)
                     currenttip.add(StatCollector.translateToLocalFormatted("ttwaila.pushingAdultType", name));
                 else currenttip.add(StatCollector.translateToLocalFormatted("ttwaila.pushingChildType", name));
@@ -60,14 +62,14 @@ public class MagnetProvider implements IWailaDataProvider {
     }
 
     @Override
-    public List<String> getWailaTail(
-            ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor, IWailaConfigHandler config) {
+    public List<String> getWailaTail(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor,
+            IWailaConfigHandler config) {
         return currenttip;
     }
 
     @Override
-    public NBTTagCompound getNBTData(
-            EntityPlayerMP player, TileEntity te, NBTTagCompound tag, World world, int x, int y, int z) {
+    public NBTTagCompound getNBTData(EntityPlayerMP player, TileEntity te, NBTTagCompound tag, World world, int x,
+            int y, int z) {
         // TODO Auto-generated method stub
         return tag;
     }

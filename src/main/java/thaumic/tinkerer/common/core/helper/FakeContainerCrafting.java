@@ -10,6 +10,7 @@ import net.minecraft.item.ItemStack;
  * Created by pixlepix on 9/28/14.
  */
 public class FakeContainerCrafting extends Container {
+
     public FakeContainerCrafting(ItemStack item) {
         for (int i = 0; i < 9; i++) {
             addSlotToContainer(new Slot(new FakeInventory(item), i, 0, 0));

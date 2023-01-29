@@ -1,13 +1,10 @@
 /**
- * This class was created by <Vazkii>. It's distributed as
- * part of the ThaumicTinkerer Mod.
+ * This class was created by <Vazkii>. It's distributed as part of the ThaumicTinkerer Mod.
  *
- * ThaumicTinkerer is Open Source and distributed under a
- * Creative Commons Attribution-NonCommercial-ShareAlike 3.0 License
- * (http://creativecommons.org/licenses/by-nc-sa/3.0/deed.en_GB)
+ * ThaumicTinkerer is Open Source and distributed under a Creative Commons Attribution-NonCommercial-ShareAlike 3.0
+ * License (http://creativecommons.org/licenses/by-nc-sa/3.0/deed.en_GB)
  *
- * ThaumicTinkerer is a Derivative Work on Thaumcraft 4.
- * Thaumcraft 4 (c) Azanor 2012
+ * ThaumicTinkerer is a Derivative Work on Thaumcraft 4. Thaumcraft 4 (c) Azanor 2012
  * (http://www.minecraftforum.net/topic/1585216-)
  *
  * File Created @ [Jan 10, 2014, 6:08:23 PM (GMT)]
@@ -17,6 +14,7 @@ package thaumic.tinkerer.client.gui.kami;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
+
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.Tessellator;
@@ -26,8 +24,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
+
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
+
 import thaumcraft.codechicken.lib.vec.Vector3;
 import thaumic.tinkerer.client.core.helper.ClientHelper;
 import thaumic.tinkerer.common.ThaumicTinkerer;
@@ -91,8 +91,7 @@ public class GuiWarpGateDestinations extends GuiScreen {
         if (par2 >= 2 && par2 < 12) {
             int num = par2 - 2;
             ItemStack stack = warpGate.getStackInSlot(num);
-            if (stack != null
-                    && ItemSkyPearl.isAttuned(stack)
+            if (stack != null && ItemSkyPearl.isAttuned(stack)
                     && ItemSkyPearl.getDim(stack) == warpGate.getWorldObj().provider.dimensionId) {
                 int x = ItemSkyPearl.getX(stack);
                 int z = ItemSkyPearl.getZ(stack);
@@ -126,7 +125,7 @@ public class GuiWarpGateDestinations extends GuiScreen {
                 int y = ItemSkyPearl.getY(stack);
                 int z = ItemSkyPearl.getZ(stack);
 
-                if (y != -1) coords.add(new Object[] {x - this.x, z - this.y, stack, i});
+                if (y != -1) coords.add(new Object[] { x - this.x, z - this.y, stack, i });
             }
         }
 
@@ -148,24 +147,34 @@ public class GuiWarpGateDestinations extends GuiScreen {
         GL11.glDisable(GL11.GL_BLEND);
 
         fontRendererObj.drawStringWithShadow(
-                EnumChatFormatting.UNDERLINE + StatCollector.translateToLocal("ttmisc.destinations"), 3, 40, 0xFFFFFF);
+                EnumChatFormatting.UNDERLINE + StatCollector.translateToLocal("ttmisc.destinations"),
+                3,
+                40,
+                0xFFFFFF);
         GL11.glColor4f(1F, 1F, 1F, 1F);
         drawPearlAt(0, null, gateX, gateY, par1, par2);
-        for (Object[] coords_ : coords)
-            drawPearlAt(
-                    (Integer) coords_[3],
-                    (ItemStack) coords_[2],
-                    (Integer) coords_[0],
-                    (Integer) coords_[1],
-                    par1,
-                    par2);
+        for (Object[] coords_ : coords) drawPearlAt(
+                (Integer) coords_[3],
+                (ItemStack) coords_[2],
+                (Integer) coords_[0],
+                (Integer) coords_[1],
+                par1,
+                par2);
 
         if (!tooltip.isEmpty()) ClientHelper.renderTooltip(par1, par2, tooltip);
 
         drawCenteredString(
-                fontRendererObj, StatCollector.translateToLocal("ttmisc.numberKeys"), width / 2, 5, 0xFFFFFF);
+                fontRendererObj,
+                StatCollector.translateToLocal("ttmisc.numberKeys"),
+                width / 2,
+                5,
+                0xFFFFFF);
         drawCenteredString(
-                fontRendererObj, StatCollector.translateToLocal("ttmisc.spaceToReset"), width / 2, 16, 0xFFFFFF);
+                fontRendererObj,
+                StatCollector.translateToLocal("ttmisc.spaceToReset"),
+                width / 2,
+                16,
+                0xFFFFFF);
     }
 
     public void drawPearlAt(int index, ItemStack stack, int xp, int yp, int mx, int my) {
@@ -181,9 +190,7 @@ public class GuiWarpGateDestinations extends GuiScreen {
         render.renderIcon(
                 -8,
                 -8,
-                ThaumicTinkerer.registry
-                        .getFirstItemFromClass(ItemSkyPearl.class)
-                        .getIconFromDamage(0),
+                ThaumicTinkerer.registry.getFirstItemFromClass(ItemSkyPearl.class).getIconFromDamage(0),
                 16,
                 16);
         GL11.glPopMatrix();

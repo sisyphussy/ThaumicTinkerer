@@ -1,13 +1,14 @@
 package thaumic.tinkerer.common.core.helper;
 
-import com.google.common.collect.Maps;
 import java.util.Map;
+
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.monster.*;
 import net.minecraft.entity.passive.*;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
+
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.crafting.InfusionRecipe;
@@ -21,46 +22,51 @@ import thaumic.tinkerer.common.item.ItemMobAspect;
 import thaumic.tinkerer.common.item.ItemMobDisplay;
 import thaumic.tinkerer.common.lib.LibResearch;
 
+import com.google.common.collect.Maps;
+
 public enum EnumMobAspect {
-    SnowMan(EntitySnowman.class, new Aspect[] {Aspect.WATER, Aspect.WATER, Aspect.MAN}),
-    Bat(EntityBat.class, new Aspect[] {Aspect.AIR, Aspect.AIR, Aspect.FLIGHT}, 1.9f, -0.3f),
-    Blaze(EntityBlaze.class, new Aspect[] {Aspect.FIRE, Aspect.FIRE, Aspect.FIRE}),
-    BrainyZombie(EntityBrainyZombie.class, new Aspect[] {Aspect.MAGIC, Aspect.UNDEAD, Aspect.FLESH}, "Thaumcraft."),
-    Firebat(EntityFireBat.class, new Aspect[] {Aspect.FLIGHT, Aspect.FIRE, Aspect.MAGIC}, 1.9f, -0.3f),
-    CaveSpider(EntityCaveSpider.class, new Aspect[] {Aspect.BEAST, Aspect.POISON, Aspect.POISON}),
-    Chicken(EntityChicken.class, new Aspect[] {Aspect.CROP, Aspect.FLIGHT, Aspect.BEAST}),
-    Cow(EntityCow.class, new Aspect[] {Aspect.BEAST, Aspect.EARTH, Aspect.BEAST}),
-    Creeper(EntityCreeper.class, new Aspect[] {Aspect.MAGIC, Aspect.BEAST, Aspect.ELDRITCH}),
-    Enderman(EntityEnderman.class, new Aspect[] {Aspect.ELDRITCH, Aspect.ELDRITCH, Aspect.MAN}, 0.3f, 0.0f),
-    Ghast(EntityGhast.class, new Aspect[] {Aspect.FIRE, Aspect.FLIGHT, Aspect.FLIGHT}, 0.1f, 0.2f),
-    EntityHorse(EntityHorse.class, new Aspect[] {Aspect.BEAST, Aspect.BEAST, Aspect.TRAVEL}),
-    VillagerGolem(EntityIronGolem.class, new Aspect[] {Aspect.METAL, Aspect.METAL, Aspect.MAN}, 0.3f, 0.0f),
-    LavaSlime(EntityMagmaCube.class, new Aspect[] {Aspect.FIRE, Aspect.SLIME, Aspect.SLIME}, 0.6f, 0.0f) {
+
+    SnowMan(EntitySnowman.class, new Aspect[] { Aspect.WATER, Aspect.WATER, Aspect.MAN }),
+    Bat(EntityBat.class, new Aspect[] { Aspect.AIR, Aspect.AIR, Aspect.FLIGHT }, 1.9f, -0.3f),
+    Blaze(EntityBlaze.class, new Aspect[] { Aspect.FIRE, Aspect.FIRE, Aspect.FIRE }),
+    BrainyZombie(EntityBrainyZombie.class, new Aspect[] { Aspect.MAGIC, Aspect.UNDEAD, Aspect.FLESH }, "Thaumcraft."),
+    Firebat(EntityFireBat.class, new Aspect[] { Aspect.FLIGHT, Aspect.FIRE, Aspect.MAGIC }, 1.9f, -0.3f),
+    CaveSpider(EntityCaveSpider.class, new Aspect[] { Aspect.BEAST, Aspect.POISON, Aspect.POISON }),
+    Chicken(EntityChicken.class, new Aspect[] { Aspect.CROP, Aspect.FLIGHT, Aspect.BEAST }),
+    Cow(EntityCow.class, new Aspect[] { Aspect.BEAST, Aspect.EARTH, Aspect.BEAST }),
+    Creeper(EntityCreeper.class, new Aspect[] { Aspect.MAGIC, Aspect.BEAST, Aspect.ELDRITCH }),
+    Enderman(EntityEnderman.class, new Aspect[] { Aspect.ELDRITCH, Aspect.ELDRITCH, Aspect.MAN }, 0.3f, 0.0f),
+    Ghast(EntityGhast.class, new Aspect[] { Aspect.FIRE, Aspect.FLIGHT, Aspect.FLIGHT }, 0.1f, 0.2f),
+    EntityHorse(EntityHorse.class, new Aspect[] { Aspect.BEAST, Aspect.BEAST, Aspect.TRAVEL }),
+    VillagerGolem(EntityIronGolem.class, new Aspect[] { Aspect.METAL, Aspect.METAL, Aspect.MAN }, 0.3f, 0.0f),
+    LavaSlime(EntityMagmaCube.class, new Aspect[] { Aspect.FIRE, Aspect.SLIME, Aspect.SLIME }, 0.6f, 0.0f) {
+
         @Override
         protected Entity createEntity(World worldObj) {
             return setSlimeSize(super.createEntity(worldObj), 1);
         }
     },
-    MushroomCow(EntityMooshroom.class, new Aspect[] {Aspect.BEAST, Aspect.EARTH, Aspect.CROP}),
-    Ozelot(EntityOcelot.class, new Aspect[] {Aspect.BEAST, Aspect.EARTH, Aspect.ELDRITCH}),
-    Pig(EntityPig.class, new Aspect[] {Aspect.BEAST, Aspect.EARTH, Aspect.TRAVEL}),
-    PigZombie(EntityPigZombie.class, new Aspect[] {Aspect.UNDEAD, Aspect.FLESH, Aspect.FIRE}),
-    Sheep(EntitySheep.class, new Aspect[] {Aspect.EARTH, Aspect.CLOTH, Aspect.BEAST}),
-    Silverfish(EntitySilverfish.class, new Aspect[] {Aspect.METAL, Aspect.METAL, Aspect.EARTH}),
-    Skeleton(EntitySkeleton.class, new Aspect[] {Aspect.UNDEAD, Aspect.MAN, Aspect.UNDEAD}),
-    Slime(EntitySlime.class, new Aspect[] {Aspect.SLIME, Aspect.SLIME, Aspect.BEAST}, 0.6f, 0.0f) {
+    MushroomCow(EntityMooshroom.class, new Aspect[] { Aspect.BEAST, Aspect.EARTH, Aspect.CROP }),
+    Ozelot(EntityOcelot.class, new Aspect[] { Aspect.BEAST, Aspect.EARTH, Aspect.ELDRITCH }),
+    Pig(EntityPig.class, new Aspect[] { Aspect.BEAST, Aspect.EARTH, Aspect.TRAVEL }),
+    PigZombie(EntityPigZombie.class, new Aspect[] { Aspect.UNDEAD, Aspect.FLESH, Aspect.FIRE }),
+    Sheep(EntitySheep.class, new Aspect[] { Aspect.EARTH, Aspect.CLOTH, Aspect.BEAST }),
+    Silverfish(EntitySilverfish.class, new Aspect[] { Aspect.METAL, Aspect.METAL, Aspect.EARTH }),
+    Skeleton(EntitySkeleton.class, new Aspect[] { Aspect.UNDEAD, Aspect.MAN, Aspect.UNDEAD }),
+    Slime(EntitySlime.class, new Aspect[] { Aspect.SLIME, Aspect.SLIME, Aspect.BEAST }, 0.6f, 0.0f) {
+
         @Override
         protected Entity createEntity(World worldObj) {
             return setSlimeSize(super.createEntity(worldObj), 1);
         }
     },
-    Spider(EntitySpider.class, new Aspect[] {Aspect.BEAST, Aspect.UNDEAD, Aspect.UNDEAD}),
-    Squid(EntitySquid.class, new Aspect[] {Aspect.WATER, Aspect.WATER, Aspect.WATER}, 0.3f, 0.5f),
-    Villager(EntityVillager.class, new Aspect[] {Aspect.MAN, Aspect.MAN, Aspect.MAN}),
-    Wisp(EntityWisp.class, new Aspect[] {Aspect.AIR, Aspect.MAGIC, Aspect.MAGIC}, "Thaumcraft."),
-    Witch(EntityWitch.class, new Aspect[] {Aspect.MAGIC, Aspect.UNDEAD, Aspect.ELDRITCH}, 0.35f, 0.0f),
-    Wolf(EntityWolf.class, new Aspect[] {Aspect.BEAST, Aspect.BEAST, Aspect.BEAST}),
-    Zombie(EntityZombie.class, new Aspect[] {Aspect.FLESH, Aspect.FLESH, Aspect.UNDEAD});
+    Spider(EntitySpider.class, new Aspect[] { Aspect.BEAST, Aspect.UNDEAD, Aspect.UNDEAD }),
+    Squid(EntitySquid.class, new Aspect[] { Aspect.WATER, Aspect.WATER, Aspect.WATER }, 0.3f, 0.5f),
+    Villager(EntityVillager.class, new Aspect[] { Aspect.MAN, Aspect.MAN, Aspect.MAN }),
+    Wisp(EntityWisp.class, new Aspect[] { Aspect.AIR, Aspect.MAGIC, Aspect.MAGIC }, "Thaumcraft."),
+    Witch(EntityWitch.class, new Aspect[] { Aspect.MAGIC, Aspect.UNDEAD, Aspect.ELDRITCH }, 0.35f, 0.0f),
+    Wolf(EntityWolf.class, new Aspect[] { Aspect.BEAST, Aspect.BEAST, Aspect.BEAST }),
+    Zombie(EntityZombie.class, new Aspect[] { Aspect.FLESH, Aspect.FLESH, Aspect.UNDEAD });
 
     public static Map<EnumMobAspect, Entity> entityCache = Maps.newHashMap();
     public Aspect[] aspects;

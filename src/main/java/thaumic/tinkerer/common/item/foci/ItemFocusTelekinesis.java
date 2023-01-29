@@ -1,13 +1,10 @@
 /**
- * This class was created by <Vazkii>. It's distributed as
- * part of the ThaumicTinkerer Mod.
+ * This class was created by <Vazkii>. It's distributed as part of the ThaumicTinkerer Mod.
  *
- * ThaumicTinkerer is Open Source and distributed under a
- * Creative Commons Attribution-NonCommercial-ShareAlike 3.0 License
- * (http://creativecommons.org/licenses/by-nc-sa/3.0/deed.en_GB)
+ * ThaumicTinkerer is Open Source and distributed under a Creative Commons Attribution-NonCommercial-ShareAlike 3.0
+ * License (http://creativecommons.org/licenses/by-nc-sa/3.0/deed.en_GB)
  *
- * ThaumicTinkerer is a Derivative Work on Thaumcraft 4.
- * Thaumcraft 4 (c) Azanor 2012
+ * ThaumicTinkerer is a Derivative Work on Thaumcraft 4. Thaumcraft 4 (c) Azanor 2012
  * (http://www.minecraftforum.net/topic/1585216-)
  *
  * File Created @ [11 Sep 2013, 23:21:21 (GMT)]
@@ -15,11 +12,13 @@
 package thaumic.tinkerer.common.item.foci;
 
 import java.util.List;
+
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
+
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.research.ResearchPage;
@@ -39,8 +38,7 @@ import thaumic.tinkerer.common.research.TTResearchItem;
 
 public class ItemFocusTelekinesis extends ItemModFocus {
 
-    private static final AspectList visUsage =
-            new AspectList().add(Aspect.AIR, 5).add(Aspect.ENTROPY, 5);
+    private static final AspectList visUsage = new AspectList().add(Aspect.AIR, 5).add(Aspect.ENTROPY, 5);
 
     @Override
     public void onUsingFocusTick(ItemStack stack, EntityPlayer player, int ticks) {
@@ -101,15 +99,15 @@ public class ItemFocusTelekinesis extends ItemModFocus {
     public FocusUpgradeType[] getPossibleUpgradesByRank(ItemStack itemstack, int rank) {
         switch (rank) {
             case 1:
-                return new FocusUpgradeType[] {FocusUpgradeType.frugal};
+                return new FocusUpgradeType[] { FocusUpgradeType.frugal };
             case 2:
-                return new FocusUpgradeType[] {FocusUpgradeType.frugal};
+                return new FocusUpgradeType[] { FocusUpgradeType.frugal };
             case 3:
-                return new FocusUpgradeType[] {FocusUpgradeType.frugal};
+                return new FocusUpgradeType[] { FocusUpgradeType.frugal };
             case 4:
-                return new FocusUpgradeType[] {FocusUpgradeType.frugal};
+                return new FocusUpgradeType[] { FocusUpgradeType.frugal };
             case 5:
-                return new FocusUpgradeType[] {FocusUpgradeType.frugal};
+                return new FocusUpgradeType[] { FocusUpgradeType.frugal };
         }
         return null;
     }
@@ -122,19 +120,14 @@ public class ItemFocusTelekinesis extends ItemModFocus {
     @Override
     public IRegisterableResearch getResearchItem() {
         return (TTResearchItem) new TTResearchItem(
-                        LibResearch.KEY_FOCUS_TELEKINESIS,
-                        new AspectList()
-                                .add(Aspect.ELDRITCH, 2)
-                                .add(Aspect.MAGIC, 1)
-                                .add(Aspect.MOTION, 1),
-                        -4,
-                        -6,
-                        2,
-                        new ItemStack(this))
-                .setParents(LibResearch.KEY_FOCUS_FLIGHT)
-                .setConcealed()
-                .setPages(new ResearchPage("0"), ResearchHelper.infusionPage(LibResearch.KEY_FOCUS_TELEKINESIS))
-                .setSecondary();
+                LibResearch.KEY_FOCUS_TELEKINESIS,
+                new AspectList().add(Aspect.ELDRITCH, 2).add(Aspect.MAGIC, 1).add(Aspect.MOTION, 1),
+                -4,
+                -6,
+                2,
+                new ItemStack(this)).setParents(LibResearch.KEY_FOCUS_FLIGHT).setConcealed()
+                        .setPages(new ResearchPage("0"), ResearchHelper.infusionPage(LibResearch.KEY_FOCUS_TELEKINESIS))
+                        .setSecondary();
     }
 
     @Override
@@ -143,10 +136,7 @@ public class ItemFocusTelekinesis extends ItemModFocus {
                 LibResearch.KEY_FOCUS_TELEKINESIS,
                 new ItemStack(this),
                 5,
-                new AspectList()
-                        .add(Aspect.MOTION, 10)
-                        .add(Aspect.AIR, 20)
-                        .add(Aspect.ENTROPY, 20)
+                new AspectList().add(Aspect.MOTION, 10).add(Aspect.AIR, 20).add(Aspect.ENTROPY, 20)
                         .add(Aspect.MIND, 10),
                 new ItemStack(Items.ender_pearl),
                 new ItemStack(Items.quartz),

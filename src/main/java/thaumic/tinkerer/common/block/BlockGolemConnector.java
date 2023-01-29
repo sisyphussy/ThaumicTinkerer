@@ -1,7 +1,7 @@
 package thaumic.tinkerer.common.block;
 
-import cpw.mods.fml.common.Loader;
 import java.util.ArrayList;
+
 import net.minecraft.block.material.Material;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -9,6 +9,7 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
+
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.research.ResearchPage;
@@ -23,6 +24,7 @@ import thaumic.tinkerer.common.registry.ThaumicTinkererRecipe;
 import thaumic.tinkerer.common.research.IRegisterableResearch;
 import thaumic.tinkerer.common.research.ResearchHelper;
 import thaumic.tinkerer.common.research.TTResearchItem;
+import cpw.mods.fml.common.Loader;
 
 public class BlockGolemConnector extends BlockCamo {
 
@@ -79,26 +81,19 @@ public class BlockGolemConnector extends BlockCamo {
     @Override
     public IRegisterableResearch getResearchItem() {
         return (IRegisterableResearch) new TTResearchItem(
-                        LibResearch.KEY_GOLEMCONNECTOR,
-                        new AspectList()
-                                .add(Aspect.ORDER, 1)
-                                .add(Aspect.TRAVEL, 2)
-                                .add(Aspect.TOOL, 1),
-                        1,
-                        0,
-                        0,
-                        new ItemStack(this))
-                .setParents(LibResearch.KEY_PERIPHERALS)
-                .setParentsHidden("GOLEMBELL")
-                .setConcealed()
-                .setRound()
-                .setPages(
-                        new ResearchPage("0"),
-                        ResearchHelper.arcaneRecipePage(LibResearch.KEY_GOLEMCONNECTOR),
-                        new ResearchPage("1"),
-                        ResearchHelper.arcaneRecipePage(LibResearch.KEY_INTERFACE + "1"),
-                        new ResearchPage("2"),
-                        new ResearchPage("3"));
+                LibResearch.KEY_GOLEMCONNECTOR,
+                new AspectList().add(Aspect.ORDER, 1).add(Aspect.TRAVEL, 2).add(Aspect.TOOL, 1),
+                1,
+                0,
+                0,
+                new ItemStack(this)).setParents(LibResearch.KEY_PERIPHERALS).setParentsHidden("GOLEMBELL")
+                        .setConcealed().setRound().setPages(
+                                new ResearchPage("0"),
+                                ResearchHelper.arcaneRecipePage(LibResearch.KEY_GOLEMCONNECTOR),
+                                new ResearchPage("1"),
+                                ResearchHelper.arcaneRecipePage(LibResearch.KEY_INTERFACE + "1"),
+                                new ResearchPage("2"),
+                                new ResearchPage("3"));
     }
 
     @Override

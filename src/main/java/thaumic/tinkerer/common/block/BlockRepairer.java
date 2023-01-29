@@ -1,24 +1,19 @@
 /**
- * This class was created by <Vazkii>. It's distributed as
- * part of the ThaumicTinkerer Mod.
+ * This class was created by <Vazkii>. It's distributed as part of the ThaumicTinkerer Mod.
  *
- * ThaumicTinkerer is Open Source and distributed under a
- * Creative Commons Attribution-NonCommercial-ShareAlike 3.0 License
- * (http://creativecommons.org/licenses/by-nc-sa/3.0/deed.en_GB)
+ * ThaumicTinkerer is Open Source and distributed under a Creative Commons Attribution-NonCommercial-ShareAlike 3.0
+ * License (http://creativecommons.org/licenses/by-nc-sa/3.0/deed.en_GB)
  *
- * ThaumicTinkerer is a Derivative Work on Thaumcraft 4.
- * Thaumcraft 4 (c) Azanor 2012
+ * ThaumicTinkerer is a Derivative Work on Thaumcraft 4. Thaumcraft 4 (c) Azanor 2012
  * (http://www.minecraftforum.net/topic/1585216-)
  *
  * File Created @ [Nov 30, 2013, 5:36:26 PM (GMT)]
  */
 package thaumic.tinkerer.common.block;
 
-import cpw.mods.fml.common.Loader;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import java.util.ArrayList;
 import java.util.Random;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.EntityLivingBase;
@@ -34,6 +29,7 @@ import net.minecraft.util.IIcon;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.research.ResearchPage;
@@ -49,6 +45,9 @@ import thaumic.tinkerer.common.registry.ThaumicTinkererRecipe;
 import thaumic.tinkerer.common.research.IRegisterableResearch;
 import thaumic.tinkerer.common.research.ResearchHelper;
 import thaumic.tinkerer.common.research.TTResearchItem;
+import cpw.mods.fml.common.Loader;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public class BlockRepairer extends BlockModContainer {
 
@@ -63,16 +62,8 @@ public class BlockRepairer extends BlockModContainer {
     }
 
     @Override
-    public boolean onBlockActivated(
-            World par1World,
-            int par2,
-            int par3,
-            int par4,
-            EntityPlayer par5EntityPlayer,
-            int par6,
-            float par7,
-            float par8,
-            float par9) {
+    public boolean onBlockActivated(World par1World, int par2, int par3, int par4, EntityPlayer par5EntityPlayer,
+            int par6, float par7, float par8, float par9) {
         TileRepairer repairer = (TileRepairer) par1World.getTileEntity(par2, par3, par4);
         ItemStack stack = repairer.getStackInSlot(0);
 
@@ -100,8 +91,8 @@ public class BlockRepairer extends BlockModContainer {
     }
 
     @Override
-    public void onBlockPlacedBy(
-            World par1World, int par2, int par3, int par4, EntityLivingBase par5EntityLiving, ItemStack par6ItemStack) {
+    public void onBlockPlacedBy(World par1World, int par2, int par3, int par4, EntityLivingBase par5EntityLiving,
+            ItemStack par6ItemStack) {
         byte b0 = 0;
         int l1 = MathHelper.floor_double(par5EntityLiving.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
 
@@ -129,9 +120,8 @@ public class BlockRepairer extends BlockModContainer {
                     float f1 = random.nextFloat() * 0.8F + 0.1F;
                     EntityItem entityitem;
 
-                    for (float f2 = random.nextFloat() * 0.8F + 0.1F;
-                            itemstack.stackSize > 0;
-                            par1World.spawnEntityInWorld(entityitem)) {
+                    for (float f2 = random.nextFloat() * 0.8F + 0.1F; itemstack.stackSize > 0; par1World
+                            .spawnEntityInWorld(entityitem)) {
                         int k1 = random.nextInt(21) + 10;
 
                         if (k1 > itemstack.stackSize) k1 = itemstack.stackSize;
@@ -144,15 +134,18 @@ public class BlockRepairer extends BlockModContainer {
                             } else dmg = itemstack.getItemDamage();
                         } else dmg = itemstack.getItemDamage();
                         entityitem = new EntityItem(
-                                par1World, par2 + f, par3 + f1, par4 + f2, new ItemStack(itemstack.getItem(), k1, dmg));
+                                par1World,
+                                par2 + f,
+                                par3 + f1,
+                                par4 + f2,
+                                new ItemStack(itemstack.getItem(), k1, dmg));
                         float f3 = 0.05F;
                         entityitem.motionX = (float) random.nextGaussian() * f3;
                         entityitem.motionY = (float) random.nextGaussian() * f3 + 0.2F;
                         entityitem.motionZ = (float) random.nextGaussian() * f3;
 
-                        if (itemstack.hasTagCompound())
-                            entityitem.getEntityItem().setTagCompound((NBTTagCompound)
-                                    itemstack.getTagCompound().copy());
+                        if (itemstack.hasTagCompound()) entityitem.getEntityItem()
+                                .setTagCompound((NBTTagCompound) itemstack.getTagCompound().copy());
                     }
                 }
             }
@@ -222,20 +215,14 @@ public class BlockRepairer extends BlockModContainer {
     @Override
     public IRegisterableResearch getResearchItem() {
         return (IRegisterableResearch) new TTResearchItem(
-                        LibResearch.KEY_REPAIRER,
-                        new AspectList()
-                                .add(Aspect.TOOL, 2)
-                                .add(Aspect.CRAFT, 1)
-                                .add(Aspect.ORDER, 1)
-                                .add(Aspect.MAGIC, 1),
-                        -1,
-                        -9,
-                        3,
-                        new ItemStack(this))
-                .setConcealed()
-                .setParents(LibResearch.KEY_FUNNEL)
-                .setParentsHidden("THAUMIUM", "ENCHFABRIC")
-                .setPages(new ResearchPage("0"), ResearchHelper.infusionPage(LibResearch.KEY_REPAIRER));
+                LibResearch.KEY_REPAIRER,
+                new AspectList().add(Aspect.TOOL, 2).add(Aspect.CRAFT, 1).add(Aspect.ORDER, 1).add(Aspect.MAGIC, 1),
+                -1,
+                -9,
+                3,
+                new ItemStack(this)).setConcealed().setParents(LibResearch.KEY_FUNNEL)
+                        .setParentsHidden("THAUMIUM", "ENCHFABRIC")
+                        .setPages(new ResearchPage("0"), ResearchHelper.infusionPage(LibResearch.KEY_REPAIRER));
     }
 
     @Override
@@ -244,11 +231,7 @@ public class BlockRepairer extends BlockModContainer {
                 LibResearch.KEY_REPAIRER,
                 new ItemStack(this),
                 8,
-                new AspectList()
-                        .add(Aspect.TOOL, 15)
-                        .add(Aspect.CRAFT, 20)
-                        .add(Aspect.ORDER, 10)
-                        .add(Aspect.MAGIC, 15),
+                new AspectList().add(Aspect.TOOL, 15).add(Aspect.CRAFT, 20).add(Aspect.ORDER, 10).add(Aspect.MAGIC, 15),
                 new ItemStack(ConfigBlocks.blockCosmeticSolid, 1, 4),
                 new ItemStack(Items.iron_ingot),
                 new ItemStack(Items.gold_ingot),

@@ -1,10 +1,12 @@
 package thaumic.tinkerer.common.item;
 
 import java.util.ArrayList;
+
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.util.IIcon;
+
 import thaumic.tinkerer.client.core.helper.IconHelper;
 import thaumic.tinkerer.common.block.fire.*;
 import thaumic.tinkerer.common.registry.ITTinkererBlock;

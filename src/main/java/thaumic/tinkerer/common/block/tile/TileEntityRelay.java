@@ -1,10 +1,11 @@
 package thaumic.tinkerer.common.block.tile;
 
-import appeng.api.movable.IMovableTile;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
+
 import thaumic.tinkerer.common.ThaumicTinkerer;
+import appeng.api.movable.IMovableTile;
 
 public class TileEntityRelay extends TileEntity implements IMovableTile {
 
@@ -16,8 +17,7 @@ public class TileEntityRelay extends TileEntity implements IMovableTile {
 
     public void verifyPartner() {
         TileEntity te = worldObj.getTileEntity(partnerX, yCoord, partnerZ);
-        if (!(hasPartner
-                && te instanceof TileEntityRelay
+        if (!(hasPartner && te instanceof TileEntityRelay
                 && ((TileEntityRelay) te).partnerX == this.xCoord
                 && ((TileEntityRelay) te).partnerZ == this.zCoord)) {
             hasPartner = false;

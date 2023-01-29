@@ -2,11 +2,14 @@ package thaumic.tinkerer.client.gui;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ResourceLocation;
+
 import org.lwjgl.opengl.GL11;
+
 import thaumcraft.api.aspects.Aspect;
 import thaumic.tinkerer.client.gui.button.GuiButtonRP;
 import thaumic.tinkerer.client.gui.button.GuiButtonRPRadio;
@@ -21,6 +24,7 @@ import thaumic.tinkerer.common.network.packet.PacketPlacerButton;
  * Created by nekosune on 30/06/14.
  */
 public class GuiRemotePlacer extends GuiContainer {
+
     private static final ResourceLocation gui = new ResourceLocation(LibResources.GUI_ASPECT_ANALYZER);
 
     int x, y;

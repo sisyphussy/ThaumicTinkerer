@@ -1,16 +1,19 @@
 package thaumic.tinkerer.common.compat;
 
 import java.util.List;
+
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 import mcp.mobius.waila.api.IWailaDataProvider;
 import mcp.mobius.waila.api.IWailaRegistrar;
+
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
+
 import thaumic.tinkerer.common.ThaumicTinkerer;
 import thaumic.tinkerer.common.block.BlockAnimationTablet;
 import thaumic.tinkerer.common.block.BlockMagnet;
@@ -38,14 +41,14 @@ public class TTinkererProvider implements IWailaDataProvider {
     }
 
     @Override
-    public List<String> getWailaHead(
-            ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor, IWailaConfigHandler config) {
+    public List<String> getWailaHead(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor,
+            IWailaConfigHandler config) {
         return currenttip;
     }
 
     @Override
-    public List<String> getWailaBody(
-            ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor, IWailaConfigHandler config) {
+    public List<String> getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor,
+            IWailaConfigHandler config) {
         if (accessor.getBlock() == ThaumicTinkerer.registry.getFirstBlockFromClass(BlockAnimationTablet.class)) {
             TileAnimationTablet tileAn = (TileAnimationTablet) accessor.getTileEntity();
             String currentTool;
@@ -85,9 +88,8 @@ public class TTinkererProvider implements IWailaDataProvider {
             if (item != null) {
                 if (item.getItemDamage() > 0)
                     currenttip.add(StatCollector.translateToLocalFormatted("ttwaila.repairing", item.getDisplayName()));
-                else
-                    currenttip.add(StatCollector.translateToLocalFormatted(
-                            "ttwaila.finishedRepairing", item.getDisplayName()));
+                else currenttip.add(
+                        StatCollector.translateToLocalFormatted("ttwaila.finishedRepairing", item.getDisplayName()));
             }
         }
         if (accessor.getBlock() == ThaumicTinkerer.registry.getFirstBlockFromClass(BlockWarpGate.class)) {
@@ -99,15 +101,15 @@ public class TTinkererProvider implements IWailaDataProvider {
     }
 
     @Override
-    public List<String> getWailaTail(
-            ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor, IWailaConfigHandler config) {
+    public List<String> getWailaTail(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor,
+            IWailaConfigHandler config) {
         // TODO Auto-generated method stub
         return currenttip;
     }
 
     @Override
-    public NBTTagCompound getNBTData(
-            EntityPlayerMP player, TileEntity te, NBTTagCompound tag, World world, int x, int y, int z) {
+    public NBTTagCompound getNBTData(EntityPlayerMP player, TileEntity te, NBTTagCompound tag, World world, int x,
+            int y, int z) {
         // TODO Auto-generated method stub
         return tag;
     }

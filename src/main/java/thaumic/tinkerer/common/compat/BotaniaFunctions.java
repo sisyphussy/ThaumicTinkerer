@@ -2,6 +2,7 @@ package thaumic.tinkerer.common.compat;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
+
 import thaumic.tinkerer.common.item.foci.ItemFocusDeflect;
 import vazkii.botania.api.internal.IManaBurst;
 

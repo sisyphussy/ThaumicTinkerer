@@ -1,7 +1,5 @@
 package thaumic.tinkerer.common.block.mobilizer;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.init.Items;
@@ -11,6 +9,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.research.ResearchPage;
@@ -25,6 +24,8 @@ import thaumic.tinkerer.common.registry.ThaumicTinkererRecipe;
 import thaumic.tinkerer.common.research.IRegisterableResearch;
 import thaumic.tinkerer.common.research.ResearchHelper;
 import thaumic.tinkerer.common.research.TTResearchItem;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public class BlockMobilizer extends BlockMod {
 
@@ -72,8 +73,7 @@ public class BlockMobilizer extends BlockMod {
     @Override
     @SideOnly(Side.CLIENT)
     public IIcon getIcon(int par1, int meta) {
-        return par1 == ForgeDirection.UP.ordinal()
-                ? iconTop
+        return par1 == ForgeDirection.UP.ordinal() ? iconTop
                 : par1 == ForgeDirection.DOWN.ordinal() ? iconBottom : iconSide;
     }
 
@@ -95,18 +95,18 @@ public class BlockMobilizer extends BlockMod {
     @Override
     public IRegisterableResearch getResearchItem() {
         return (IRegisterableResearch) new TTResearchItem(
-                        LibResearch.KEY_MOBILIZER,
-                        new AspectList().add(Aspect.MOTION, 2).add(Aspect.ORDER, 2),
-                        -7,
-                        5,
-                        3,
-                        new ItemStack(this))
-                .setParents(LibResearch.KEY_MAGNETS)
-                .setPages(
-                        new ResearchPage("0"),
-                        ResearchHelper.infusionPage(LibResearch.KEY_MOBILIZER),
-                        ResearchHelper.arcaneRecipePage(LibResearch.KEY_RELAY))
-                .setSecondary();
+                LibResearch.KEY_MOBILIZER,
+                new AspectList().add(Aspect.MOTION, 2).add(Aspect.ORDER, 2),
+                -7,
+                5,
+                3,
+                new ItemStack(this))
+                        .setParents(LibResearch.KEY_MAGNETS)
+                        .setPages(
+                                new ResearchPage("0"),
+                                ResearchHelper.infusionPage(LibResearch.KEY_MOBILIZER),
+                                ResearchHelper.arcaneRecipePage(LibResearch.KEY_RELAY))
+                        .setSecondary();
     }
 
     @Override

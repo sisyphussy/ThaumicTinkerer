@@ -1,9 +1,7 @@
 package thaumic.tinkerer.common.block.kami;
 
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import java.util.Random;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -22,6 +20,7 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
+
 import thaumic.tinkerer.client.core.helper.IconHelper;
 import thaumic.tinkerer.common.block.BlockMod;
 import thaumic.tinkerer.common.block.tile.kami.TileBedrockPortal;
@@ -32,6 +31,9 @@ import thaumic.tinkerer.common.dim.WorldProviderBedrock;
 import thaumic.tinkerer.common.lib.LibBlockNames;
 import thaumic.tinkerer.common.registry.ThaumicTinkererRecipe;
 import thaumic.tinkerer.common.research.IRegisterableResearch;
+import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public class BlockBedrockPortal extends BlockMod {
 
@@ -47,16 +49,8 @@ public class BlockBedrockPortal extends BlockMod {
     }
 
     @Override
-    public boolean onBlockActivated(
-            World world,
-            int x,
-            int y,
-            int z,
-            EntityPlayer p_149727_5_,
-            int p_149727_6_,
-            float p_149727_7_,
-            float p_149727_8_,
-            float p_149727_9_) {
+    public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer p_149727_5_, int p_149727_6_,
+            float p_149727_7_, float p_149727_8_, float p_149727_9_) {
         world.setBlock(x, y, z, Blocks.bedrock);
         return super.onBlockActivated(world, x, y, z, p_149727_5_, p_149727_6_, p_149727_7_, p_149727_8_, p_149727_9_);
     }
@@ -114,12 +108,10 @@ public class BlockBedrockPortal extends BlockMod {
             boolean flag = (par1IBlockAccess.getBlockMetadata(i1, j1, k1) & 8) != 0;
             return flag
                     ? (par5 == 0
-                            || (par5 == 1 && super.shouldSideBeRendered(par1IBlockAccess, par2, par3, par4, par5)
-                                    ? true
+                            || (par5 == 1 && super.shouldSideBeRendered(par1IBlockAccess, par2, par3, par4, par5) ? true
                                     : true))
                     : (par5 == 1
-                            || (par5 == 0 && super.shouldSideBeRendered(par1IBlockAccess, par2, par3, par4, par5)
-                                    ? true
+                            || (par5 == 0 && super.shouldSideBeRendered(par1IBlockAccess, par2, par3, par4, par5) ? true
                                     : true));
         }
     }
@@ -132,9 +124,7 @@ public class BlockBedrockPortal extends BlockMod {
 
             if (entity instanceof EntityPlayer && !par1World.isRemote) {
 
-                FMLCommonHandler.instance()
-                        .getMinecraftServerInstance()
-                        .getConfigurationManager()
+                FMLCommonHandler.instance().getMinecraftServerInstance().getConfigurationManager()
                         .transferPlayerToDimension(
                                 (EntityPlayerMP) entity,
                                 ConfigHandler.bedrockDimensionID,
@@ -159,11 +149,11 @@ public class BlockBedrockPortal extends BlockMod {
         } else if (entity.worldObj.provider instanceof WorldProviderBedrock) {
             if (entity instanceof EntityPlayer && !par1World.isRemote) {
 
-                FMLCommonHandler.instance()
-                        .getMinecraftServerInstance()
-                        .getConfigurationManager()
+                FMLCommonHandler.instance().getMinecraftServerInstance().getConfigurationManager()
                         .transferPlayerToDimension(
-                                (EntityPlayerMP) entity, 0, new TeleporterBedrock((WorldServer) par1World));
+                                (EntityPlayerMP) entity,
+                                0,
+                                new TeleporterBedrock((WorldServer) par1World));
 
                 Random rand = new Random();
 
@@ -208,8 +198,7 @@ public class BlockBedrockPortal extends BlockMod {
             e.worldObj.removeEntity(e);
             e.isDead = false;
             e.worldObj.theProfiler.startSection("reposition");
-            minecraftserver
-                    .getConfigurationManager()
+            minecraftserver.getConfigurationManager()
                     .transferEntityToWorld(e, j, worldserver, worldserver1, new TeleporterBedrock(worldserver));
             e.worldObj.theProfiler.endStartSection("reloading");
             Entity entity = EntityList.createEntityByName(EntityList.getEntityString(e), worldserver1);
@@ -219,8 +208,8 @@ public class BlockBedrockPortal extends BlockMod {
 
                 if (j == 1 && par1 == 1) {
                     ChunkCoordinates chunkcoordinates = worldserver1.getSpawnPoint();
-                    chunkcoordinates.posY =
-                            e.worldObj.getTopSolidOrLiquidBlock(chunkcoordinates.posX, chunkcoordinates.posZ);
+                    chunkcoordinates.posY = e.worldObj
+                            .getTopSolidOrLiquidBlock(chunkcoordinates.posX, chunkcoordinates.posZ);
                     entity.setLocationAndAngles(
                             (double) chunkcoordinates.posX,
                             (double) chunkcoordinates.posY,

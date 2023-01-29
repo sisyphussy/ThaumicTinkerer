@@ -1,10 +1,12 @@
 package thaumic.tinkerer.common.block;
 
 import java.util.ArrayList;
+
 import net.minecraft.block.material.Material;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
+
 import thaumic.tinkerer.common.block.tile.TileForcefield;
 import thaumic.tinkerer.common.lib.LibBlockNames;
 import thaumic.tinkerer.common.registry.ThaumicTinkererRecipe;
@@ -14,6 +16,7 @@ import thaumic.tinkerer.common.research.IRegisterableResearch;
  * Created by pixlepix on 4/19/14.
  */
 public class BlockForcefield extends BlockMod {
+
     public BlockForcefield() {
         super(Material.air);
     }

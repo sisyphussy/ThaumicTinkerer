@@ -1,13 +1,10 @@
 /**
- * This class was created by <Vazkii>. It's distributed as
- * part of the ThaumicTinkerer Mod.
+ * This class was created by <Vazkii>. It's distributed as part of the ThaumicTinkerer Mod.
  *
- * ThaumicTinkerer is Open Source and distributed under a
- * Creative Commons Attribution-NonCommercial-ShareAlike 3.0 License
- * (http://creativecommons.org/licenses/by-nc-sa/3.0/deed.en_GB)
+ * ThaumicTinkerer is Open Source and distributed under a Creative Commons Attribution-NonCommercial-ShareAlike 3.0
+ * License (http://creativecommons.org/licenses/by-nc-sa/3.0/deed.en_GB)
  *
- * ThaumicTinkerer is a Derivative Work on Thaumcraft 4.
- * Thaumcraft 4 (c) Azanor 2012
+ * ThaumicTinkerer is a Derivative Work on Thaumcraft 4. Thaumcraft 4 (c) Azanor 2012
  * (http://www.minecraftforum.net/topic/1585216-)
  *
  * File Created @ [9 Sep 2013, 17:12:26 (GMT)]
@@ -24,7 +21,9 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
+
 import org.lwjgl.opengl.GL11;
+
 import thaumic.tinkerer.client.core.helper.ClientHelper;
 import thaumic.tinkerer.client.lib.LibResources;
 import thaumic.tinkerer.common.block.tile.tablet.TileAnimationTablet;
@@ -36,12 +35,8 @@ public class RenderTileAnimationTablet extends TileEntitySpecialRenderer {
     private static final ResourceLocation overlayRight = new ResourceLocation(LibResources.MISC_AT_RIGHT);
     private static final ResourceLocation overlayIndent = new ResourceLocation(LibResources.MISC_AT_INDENT);
 
-    private static final float[][] TRANSLATIONS = new float[][] {
-        {0F, 0F, -1F},
-        {-1F, 0F, 0F},
-        {0F, 0F, 0F},
-        {-1F, 0F, -1F}
-    };
+    private static final float[][] TRANSLATIONS = new float[][] { { 0F, 0F, -1F }, { -1F, 0F, 0F }, { 0F, 0F, 0F },
+            { -1F, 0F, -1F } };
 
     @Override
     public void renderTileEntityAt(TileEntity tileentity, double d0, double d1, double d2, float partialTicks) {
@@ -90,15 +85,8 @@ public class RenderTileAnimationTablet extends TileEntitySpecialRenderer {
         }
     }
 
-    private void renderOverlay(
-            TileAnimationTablet tablet,
-            ResourceLocation texture,
-            int rotationMod,
-            boolean useLighting,
-            boolean useBlend,
-            double size,
-            float height,
-            float forceDeg) {
+    private void renderOverlay(TileAnimationTablet tablet, ResourceLocation texture, int rotationMod,
+            boolean useLighting, boolean useBlend, double size, float height, float forceDeg) {
         Minecraft mc = ClientHelper.minecraft();
         mc.renderEngine.bindTexture(texture);
         GL11.glPushMatrix();

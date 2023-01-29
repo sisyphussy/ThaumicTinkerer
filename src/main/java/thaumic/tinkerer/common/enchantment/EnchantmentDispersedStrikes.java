@@ -2,9 +2,11 @@ package thaumic.tinkerer.common.enchantment;
 
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnumEnchantmentType;
+
 import thaumcraft.api.ThaumcraftApi;
 
 public class EnchantmentDispersedStrikes extends EnchantmentMod {
+
     public EnchantmentDispersedStrikes(int par1) {
         super(par1, 5, EnumEnchantmentType.weapon);
     }

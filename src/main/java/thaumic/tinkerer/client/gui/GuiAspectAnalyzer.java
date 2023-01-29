@@ -1,13 +1,10 @@
 /**
- * This class was created by <Vazkii>. It's distributed as
- * part of the ThaumicTinkerer Mod.
+ * This class was created by <Vazkii>. It's distributed as part of the ThaumicTinkerer Mod.
  *
- * ThaumicTinkerer is Open Source and distributed under a
- * Creative Commons Attribution-NonCommercial-ShareAlike 3.0 License
- * (http://creativecommons.org/licenses/by-nc-sa/3.0/deed.en_GB)
+ * ThaumicTinkerer is Open Source and distributed under a Creative Commons Attribution-NonCommercial-ShareAlike 3.0
+ * License (http://creativecommons.org/licenses/by-nc-sa/3.0/deed.en_GB)
  *
- * ThaumicTinkerer is a Derivative Work on Thaumcraft 4.
- * Thaumcraft 4 (c) Azanor 2012
+ * ThaumicTinkerer is a Derivative Work on Thaumcraft 4. Thaumcraft 4 (c) Azanor 2012
  * (http://www.minecraftforum.net/topic/1585216-)
  *
  * File Created @ [Dec 11, 2013, 10:46:14 PM (GMT)]
@@ -16,12 +13,15 @@ package thaumic.tinkerer.client.gui;
 
 import java.util.Arrays;
 import java.util.List;
+
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
+
 import org.lwjgl.opengl.GL11;
+
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.client.lib.UtilsFX;
@@ -65,8 +65,7 @@ public class GuiAspectAnalyzer extends GuiContainer {
         if (stack != null) {
             int h = ScanManager.generateItemHash(stack.getItem(), stack.getItemDamage());
 
-            List<String> list = Thaumcraft.proxy
-                    .getScannedObjects()
+            List<String> list = Thaumcraft.proxy.getScannedObjects()
                     .get(ClientHelper.clientPlayer().getGameProfile().getName());
             if (list != null && (list.contains("@" + h) || list.contains("#" + h))) {
                 AspectList tags = ThaumcraftCraftingManager.getObjectTags(stack);
@@ -89,13 +88,12 @@ public class GuiAspectAnalyzer extends GuiContainer {
 
     @Override
     protected void drawGuiContainerForegroundLayer(int mx, int my) {
-        if (aspectHovered != null)
-            ClientHelper.renderTooltip(
-                    mx - x,
-                    my - y,
-                    Arrays.asList(
-                            EnumChatFormatting.AQUA + aspectHovered.getName(),
-                            EnumChatFormatting.GRAY + aspectHovered.getLocalizedDescription()));
+        if (aspectHovered != null) ClientHelper.renderTooltip(
+                mx - x,
+                my - y,
+                Arrays.asList(
+                        EnumChatFormatting.AQUA + aspectHovered.getName(),
+                        EnumChatFormatting.GRAY + aspectHovered.getLocalizedDescription()));
 
         super.drawGuiContainerForegroundLayer(mx, my);
     }

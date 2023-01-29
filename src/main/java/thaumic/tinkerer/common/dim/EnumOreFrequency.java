@@ -3,6 +3,7 @@ package thaumic.tinkerer.common.dim;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
+
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
@@ -14,6 +15,7 @@ import net.minecraftforge.oredict.OreDictionary;
  * Numbers here used with permission of Vazkii
  */
 public enum EnumOreFrequency {
+
     ALUMINUM("oreAluminum", 617),
     AMBER("oreAmber", 161),
     APATITE("oreApatite", 269),
@@ -102,8 +104,7 @@ public enum EnumOreFrequency {
     }
 
     public boolean isValid() {
-        return !Arrays.asList(OreClusterGenerator.blacklist).contains(name)
-                && !OreDictionary.getOres(name).isEmpty()
+        return !Arrays.asList(OreClusterGenerator.blacklist).contains(name) && !OreDictionary.getOres(name).isEmpty()
                 && OreDictionary.getOres(name).get(0).getItem() instanceof ItemBlock;
     }
 }

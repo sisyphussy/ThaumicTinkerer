@@ -2,11 +2,13 @@ package thaumic.tinkerer.common.block.tile;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.monster.EntitySkeleton;
 import net.minecraft.tileentity.TileEntity;
+
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.common.tiles.TilePedestal;
 import thaumic.tinkerer.common.ThaumicTinkerer;
@@ -27,8 +29,7 @@ public class TileSummon extends TileEntity {
                 for (int x = xCoord - radius; x <= xCoord + radius; x++) {
                     for (int z = zCoord - radius; z <= zCoord + radius; z++) {
                         TileEntity tile = worldObj.getTileEntity(x, yCoord, z);
-                        if (tile instanceof TilePedestal
-                                && ((TilePedestal) tile).getStackInSlot(0) != null
+                        if (tile instanceof TilePedestal && ((TilePedestal) tile).getStackInSlot(0) != null
                                 && ((TilePedestal) tile).getStackInSlot(0).getItem() instanceof ItemMobAspect) {
                             pedestals.add(tile);
                         }
@@ -68,16 +69,14 @@ public class TileSummon extends TileEntity {
                                             ped3.setInventorySlotContents(0, null);
                                         }
 
-                                        if (!isInfused
-                                                || ItemMobAspect.lastUsedTabletMatches(ped1.getStackInSlot(0), this)
-                                                        && ItemMobAspect.lastUsedTabletMatches(
-                                                                ped2.getStackInSlot(0), this)
-                                                        && ItemMobAspect.lastUsedTabletMatches(
-                                                                ped3.getStackInSlot(0), this)) {
+                                        if (!isInfused || ItemMobAspect
+                                                .lastUsedTabletMatches(ped1.getStackInSlot(0), this)
+                                                && ItemMobAspect.lastUsedTabletMatches(ped2.getStackInSlot(0), this)
+                                                && ItemMobAspect.lastUsedTabletMatches(ped3.getStackInSlot(0), this)) {
 
                                             if (!worldObj.isRemote) {
-                                                Entity spawn =
-                                                        EntityList.createEntityByName(recipe.toString(), worldObj);
+                                                Entity spawn = EntityList
+                                                        .createEntityByName(recipe.toString(), worldObj);
                                                 spawn.setLocationAndAngles(xCoord + .5, yCoord + 1, zCoord + .5, 0, 0);
                                                 if (spawn instanceof EntitySkeleton && worldObj.provider.isHellWorld) {
                                                     ((EntitySkeleton) spawn).setSkeletonType(1);

@@ -1,22 +1,18 @@
 /**
- * This class was created by <Vazkii>. It's distributed as
- * part of the ThaumicTinkerer Mod.
+ * This class was created by <Vazkii>. It's distributed as part of the ThaumicTinkerer Mod.
  *
- * ThaumicTinkerer is Open Source and distributed under a
- * Creative Commons Attribution-NonCommercial-ShareAlike 3.0 License
- * (http://creativecommons.org/licenses/by-nc-sa/3.0/deed.en_GB)
+ * ThaumicTinkerer is Open Source and distributed under a Creative Commons Attribution-NonCommercial-ShareAlike 3.0
+ * License (http://creativecommons.org/licenses/by-nc-sa/3.0/deed.en_GB)
  *
- * ThaumicTinkerer is a Derivative Work on Thaumcraft 4.
- * Thaumcraft 4 (c) Azanor 2012
+ * ThaumicTinkerer is a Derivative Work on Thaumcraft 4. Thaumcraft 4 (c) Azanor 2012
  * (http://www.minecraftforum.net/topic/1585216-)
  *
  * File Created @ [9 Sep 2013, 22:19:25 (GMT)]
  */
 package thaumic.tinkerer.common.item.foci;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import java.util.ArrayList;
+
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
@@ -30,6 +26,7 @@ import net.minecraft.tileentity.TileEntityMobSpawner;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
+
 import thaumcraft.api.ThaumcraftApi;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
@@ -49,6 +46,8 @@ import thaumic.tinkerer.common.registry.ThaumicTinkererRecipe;
 import thaumic.tinkerer.common.research.IRegisterableResearch;
 import thaumic.tinkerer.common.research.ResearchHelper;
 import thaumic.tinkerer.common.research.TTResearchItem;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public class ItemFocusDislocation extends ItemModFocus {
 
@@ -60,12 +59,12 @@ public class ItemFocusDislocation extends ItemModFocus {
 
     private static final String TAG_BLOCK_NAME = "blockName";
     private static final String TAG_BLOCK_META = "blockMeta";
-    private static final AspectList visUsage =
-            new AspectList().add(Aspect.ENTROPY, 500).add(Aspect.ORDER, 500).add(Aspect.EARTH, 100);
-    private static final AspectList visUsageTile =
-            new AspectList().add(Aspect.ENTROPY, 2500).add(Aspect.ORDER, 2500).add(Aspect.EARTH, 500);
-    private static final AspectList visUsageSpawner =
-            new AspectList().add(Aspect.ENTROPY, 10000).add(Aspect.ORDER, 10000).add(Aspect.EARTH, 5000);
+    private static final AspectList visUsage = new AspectList().add(Aspect.ENTROPY, 500).add(Aspect.ORDER, 500)
+            .add(Aspect.EARTH, 100);
+    private static final AspectList visUsageTile = new AspectList().add(Aspect.ENTROPY, 2500).add(Aspect.ORDER, 2500)
+            .add(Aspect.EARTH, 500);
+    private static final AspectList visUsageSpawner = new AspectList().add(Aspect.ENTROPY, 10000)
+            .add(Aspect.ORDER, 10000).add(Aspect.EARTH, 5000);
     private static ArrayList<Block> blacklist = new ArrayList<Block>();
     private IIcon ornament;
 
@@ -89,8 +88,8 @@ public class ItemFocusDislocation extends ItemModFocus {
     }
 
     @Override
-    public ItemStack onFocusRightClick(
-            ItemStack itemstack, World world, EntityPlayer player, MovingObjectPosition mop) {
+    public ItemStack onFocusRightClick(ItemStack itemstack, World world, EntityPlayer player,
+            MovingObjectPosition mop) {
         if (mop == null) return itemstack;
 
         Block block = world.getBlock(mop.blockX, mop.blockY, mop.blockZ);
@@ -117,9 +116,8 @@ public class ItemFocusDislocation extends ItemModFocus {
                                 ((ItemBlock) stack.getItem()).field_150939_a,
                                 stack.getItemDamage(),
                                 1 | 2);
-                        ((ItemBlock) stack.getItem())
-                                .field_150939_a.onBlockPlacedBy(
-                                        world, mop.blockX, mop.blockY, mop.blockZ, player, itemstack);
+                        ((ItemBlock) stack.getItem()).field_150939_a
+                                .onBlockPlacedBy(world, mop.blockX, mop.blockY, mop.blockZ, player, itemstack);
                         NBTTagCompound tileCmp = getStackTileEntity(itemstack);
                         if (tileCmp != null && !tileCmp.hasNoTags()) {
                             TileEntity tile1 = TileEntity.createAndLoadEntity(tileCmp);
@@ -139,29 +137,28 @@ public class ItemFocusDislocation extends ItemModFocus {
                     }
                     world.playSoundAtEntity(player, "thaumcraft:wand", 0.5F, 1F);
                 }
-            } else if (!blacklist.contains(block)
-                    && isBlockAllowed(block)
+            } else if (!blacklist.contains(block) && isBlockAllowed(block)
                     && !ThaumcraftApi.portableHoleBlackList.contains(block)
                     && block != null
                     && block.getBlockHardness(world, mop.blockX, mop.blockY, mop.blockZ) != -1F
                     && wand.consumeAllVis(itemstack, player, getCost(tile), true, false)) {
-                if (!world.isRemote) {
-                    world.removeTileEntity(mop.blockX, mop.blockY, mop.blockZ);
-                    world.setBlock(mop.blockX, mop.blockY, mop.blockZ, Blocks.air, 0, 1 | 2);
-                    storePickedBlock(itemstack, block, (short) meta, tile);
-                }
+                        if (!world.isRemote) {
+                            world.removeTileEntity(mop.blockX, mop.blockY, mop.blockZ);
+                            world.setBlock(mop.blockX, mop.blockY, mop.blockZ, Blocks.air, 0, 1 | 2);
+                            storePickedBlock(itemstack, block, (short) meta, tile);
+                        }
 
-                for (int i = 0; i < 8; i++) {
-                    float x = (float) (mop.blockX + Math.random());
-                    float y = (float) (mop.blockY + Math.random());
-                    float z = (float) (mop.blockZ + Math.random());
-                    ThaumicTinkerer.tcProxy.burst(world, x, y, z, 0.2F);
-                }
-                world.playSoundAtEntity(player, block.stepSound.getBreakSound(), 1F, 1F);
-                world.playSoundAtEntity(player, "thaumcraft:wand", 0.5F, 1F);
+                        for (int i = 0; i < 8; i++) {
+                            float x = (float) (mop.blockX + Math.random());
+                            float y = (float) (mop.blockY + Math.random());
+                            float z = (float) (mop.blockZ + Math.random());
+                            ThaumicTinkerer.tcProxy.burst(world, x, y, z, 0.2F);
+                        }
+                        world.playSoundAtEntity(player, block.stepSound.getBreakSound(), 1F, 1F);
+                        world.playSoundAtEntity(player, "thaumcraft:wand", 0.5F, 1F);
 
-                if (world.isRemote) player.swingItem();
-            }
+                        if (world.isRemote) player.swingItem();
+                    }
         }
 
         return itemstack;
@@ -212,7 +209,7 @@ public class ItemFocusDislocation extends ItemModFocus {
         ItemStack stck;
         // if(block instanceof BlockReed)
         // {
-        //   stck=new ItemStack(Items.reeds,1,meta);
+        // stck=new ItemStack(Items.reeds,1,meta);
         // }
         stck = new ItemStack(new ItemBlock(block), 1, meta);
         return stck;
@@ -268,15 +265,15 @@ public class ItemFocusDislocation extends ItemModFocus {
     public FocusUpgradeType[] getPossibleUpgradesByRank(ItemStack itemstack, int rank) {
         switch (rank) {
             case 1:
-                return new FocusUpgradeType[] {FocusUpgradeType.frugal};
+                return new FocusUpgradeType[] { FocusUpgradeType.frugal };
             case 2:
-                return new FocusUpgradeType[] {FocusUpgradeType.frugal};
+                return new FocusUpgradeType[] { FocusUpgradeType.frugal };
             case 3:
-                return new FocusUpgradeType[] {FocusUpgradeType.frugal};
+                return new FocusUpgradeType[] { FocusUpgradeType.frugal };
             case 4:
-                return new FocusUpgradeType[] {FocusUpgradeType.frugal};
+                return new FocusUpgradeType[] { FocusUpgradeType.frugal };
             case 5:
-                return new FocusUpgradeType[] {FocusUpgradeType.frugal};
+                return new FocusUpgradeType[] { FocusUpgradeType.frugal };
         }
         return null;
     }
@@ -297,19 +294,12 @@ public class ItemFocusDislocation extends ItemModFocus {
             return null;
         }
         return (TTResearchItem) new TTResearchItem(
-                        LibResearch.KEY_FOCUS_DISLOCATION,
-                        new AspectList()
-                                .add(Aspect.ELDRITCH, 2)
-                                .add(Aspect.MAGIC, 1)
-                                .add(Aspect.EXCHANGE, 1),
-                        -5,
-                        -5,
-                        2,
-                        new ItemStack(this))
-                .setSecondary()
-                .setParents(LibResearch.KEY_FOCUS_FLIGHT)
-                .setConcealed()
-                .setPages(
+                LibResearch.KEY_FOCUS_DISLOCATION,
+                new AspectList().add(Aspect.ELDRITCH, 2).add(Aspect.MAGIC, 1).add(Aspect.EXCHANGE, 1),
+                -5,
+                -5,
+                2,
+                new ItemStack(this)).setSecondary().setParents(LibResearch.KEY_FOCUS_FLIGHT).setConcealed().setPages(
                         new ResearchPage("0"),
                         new ResearchPage("1"),
                         ResearchHelper.infusionPage(LibResearch.KEY_FOCUS_DISLOCATION));
@@ -321,12 +311,8 @@ public class ItemFocusDislocation extends ItemModFocus {
                 LibResearch.KEY_FOCUS_DISLOCATION,
                 new ItemStack(this),
                 8,
-                new AspectList()
-                        .add(Aspect.ELDRITCH, 20)
-                        .add(Aspect.DARKNESS, 10)
-                        .add(Aspect.VOID, 25)
-                        .add(Aspect.MAGIC, 20)
-                        .add(Aspect.TAINT, 5),
+                new AspectList().add(Aspect.ELDRITCH, 20).add(Aspect.DARKNESS, 10).add(Aspect.VOID, 25)
+                        .add(Aspect.MAGIC, 20).add(Aspect.TAINT, 5),
                 new ItemStack(Items.ender_pearl),
                 new ItemStack(Items.quartz),
                 new ItemStack(Items.quartz),

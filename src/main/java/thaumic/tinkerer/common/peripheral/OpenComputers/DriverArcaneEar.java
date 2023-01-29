@@ -5,7 +5,9 @@ import li.cil.oc.api.machine.Callback;
 import li.cil.oc.api.machine.Context;
 import li.cil.oc.api.network.ManagedEnvironment;
 import li.cil.oc.api.prefab.DriverTileEntity;
+
 import net.minecraft.world.World;
+
 import thaumcraft.common.tiles.TileSensor;
 import thaumic.tinkerer.common.peripheral.implementation.ArcaneEarImplementation;
 
@@ -13,6 +15,7 @@ import thaumic.tinkerer.common.peripheral.implementation.ArcaneEarImplementation
  * Created by Katrina on 21/04/14.
  */
 public class DriverArcaneEar extends DriverTileEntity {
+
     @Override
     public Class<?> getTileEntityClass() {
         return TileSensor.class;

@@ -1,22 +1,19 @@
 /**
- * This class was created by <Vazkii>. It's distributed as
- * part of the ThaumicTinkerer Mod.
+ * This class was created by <Vazkii>. It's distributed as part of the ThaumicTinkerer Mod.
  *
- * ThaumicTinkerer is Open Source and distributed under a
- * Creative Commons Attribution-NonCommercial-ShareAlike 3.0 License
- * (http://creativecommons.org/licenses/by-nc-sa/3.0/deed.en_GB)
+ * ThaumicTinkerer is Open Source and distributed under a Creative Commons Attribution-NonCommercial-ShareAlike 3.0
+ * License (http://creativecommons.org/licenses/by-nc-sa/3.0/deed.en_GB)
  *
- * ThaumicTinkerer is a Derivative Work on Thaumcraft 4.
- * Thaumcraft 4 (c) Azanor 2012
+ * ThaumicTinkerer is a Derivative Work on Thaumcraft 4. Thaumcraft 4 (c) Azanor 2012
  * (http://www.minecraftforum.net/topic/1585216-)
  *
  * File Created @ [Dec 25, 2013, 12:20:05 AM (GMT)]
  */
 package thaumic.tinkerer.common.item.kami.armor;
 
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import java.util.ArrayList;
 import java.util.List;
+
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -24,11 +21,13 @@ import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
+
 import thaumcraft.api.aspects.Aspect;
 import thaumic.tinkerer.client.core.handler.kami.ToolModeHUDHandler;
 import thaumic.tinkerer.client.lib.LibResources;
 import thaumic.tinkerer.common.registry.ThaumicTinkererRecipe;
 import thaumic.tinkerer.common.research.IRegisterableResearch;
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
 public abstract class ItemIchorclothArmorAdv extends ItemIchorclothArmor {
 
@@ -54,8 +53,8 @@ public abstract class ItemIchorclothArmorAdv extends ItemIchorclothArmor {
             par1ItemStack.setItemDamage(~dmg & 1);
             par2World.playSoundAtEntity(par3EntityPlayer, "random.orb", 0.3F, 0.1F);
 
-            ToolModeHUDHandler.setTooltip(
-                    StatCollector.translateToLocal("ttmisc.awakenedArmor" + par1ItemStack.getItemDamage()));
+            ToolModeHUDHandler
+                    .setTooltip(StatCollector.translateToLocal("ttmisc.awakenedArmor" + par1ItemStack.getItemDamage()));
 
             return par1ItemStack;
         }

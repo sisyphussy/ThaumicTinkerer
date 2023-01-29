@@ -1,9 +1,11 @@
 package thaumic.tinkerer.common.block.fire;
 
 import java.util.HashMap;
+
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
+
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.research.ResearchPage;
@@ -19,6 +21,7 @@ import thaumic.tinkerer.common.research.ResearchHelper;
 import thaumic.tinkerer.common.research.TTResearchItem;
 
 public class BlockFireEarth extends BlockFireBase {
+
     public BlockFireEarth() {
         super();
     }
@@ -32,16 +35,14 @@ public class BlockFireEarth extends BlockFireBase {
     public IRegisterableResearch getResearchItem() {
         if (!ConfigHandler.enableFire) return null;
         return (TTResearchItem) new TTResearchItem(
-                        LibResearch.KEY_FIRE_TERRA,
-                        new AspectList().add(Aspect.FIRE, 5).add(Aspect.EARTH, 5),
-                        4,
-                        -6,
-                        2,
-                        new ItemStack(this))
-                .setParents(LibResearch.KEY_BRIGHT_NITOR)
-                .setConcealed()
-                .setPages(new ResearchPage("0"), ResearchHelper.crucibleRecipePage(LibResearch.KEY_FIRE_TERRA))
-                .setSecondary();
+                LibResearch.KEY_FIRE_TERRA,
+                new AspectList().add(Aspect.FIRE, 5).add(Aspect.EARTH, 5),
+                4,
+                -6,
+                2,
+                new ItemStack(this)).setParents(LibResearch.KEY_BRIGHT_NITOR).setConcealed()
+                        .setPages(new ResearchPage("0"), ResearchHelper.crucibleRecipePage(LibResearch.KEY_FIRE_TERRA))
+                        .setSecondary();
     }
 
     @Override
@@ -79,8 +80,8 @@ public class BlockFireEarth extends BlockFireBase {
     }
 
     @Override
-    public HashMap<thaumic.tinkerer.common.core.helper.BlockTuple, thaumic.tinkerer.common.core.helper.BlockTuple>
-            getBlockTransformation(World w, int x, int y, int z) {
+    public HashMap<thaumic.tinkerer.common.core.helper.BlockTuple, thaumic.tinkerer.common.core.helper.BlockTuple> getBlockTransformation(
+            World w, int x, int y, int z) {
         return getBlockTransformation();
     }
 }

@@ -1,13 +1,10 @@
 /**
- * This class was created by <Vazkii>. It's distributed as
- * part of the ThaumicTinkerer Mod.
+ * This class was created by <Vazkii>. It's distributed as part of the ThaumicTinkerer Mod.
  *
- * ThaumicTinkerer is Open Source and distributed under a
- * Creative Commons Attribution-NonCommercial-ShareAlike 3.0 License
- * (http://creativecommons.org/licenses/by-nc-sa/3.0/deed.en_GB)
+ * ThaumicTinkerer is Open Source and distributed under a Creative Commons Attribution-NonCommercial-ShareAlike 3.0
+ * License (http://creativecommons.org/licenses/by-nc-sa/3.0/deed.en_GB)
  *
- * ThaumicTinkerer is a Derivative Work on Thaumcraft 4.
- * Thaumcraft 4 (c) Azanor 2012
+ * ThaumicTinkerer is a Derivative Work on Thaumcraft 4. Thaumcraft 4 (c) Azanor 2012
  * (http://www.minecraftforum.net/topic/1585216-)
  *
  * File Created @ [Dec 29, 2013, 6:01:31 PM (GMT)]
@@ -15,6 +12,7 @@
 package thaumic.tinkerer.common.item.kami.tool;
 
 import java.util.List;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
@@ -30,6 +28,7 @@ import net.minecraft.util.*;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.event.world.BlockEvent;
+
 import thaumic.tinkerer.common.ThaumicTinkerer;
 import thaumic.tinkerer.common.block.kami.BlockBedrockPortal;
 import thaumic.tinkerer.common.core.handler.ConfigHandler;
@@ -37,14 +36,12 @@ import thaumic.tinkerer.common.dim.WorldProviderBedrock;
 
 public final class ToolHandler {
 
-    public static Material[] materialsPick =
-            new Material[] {Material.rock, Material.iron, Material.ice, Material.glass, Material.piston, Material.anvil
-            };
-    public static Material[] materialsShovel = new Material[] {
-        Material.grass, Material.ground, Material.sand, Material.snow, Material.craftedSnow, Material.clay
-    };
-    public static Material[] materialsAxe =
-            new Material[] {Material.coral, Material.leaves, Material.plants, Material.wood};
+    public static Material[] materialsPick = new Material[] { Material.rock, Material.iron, Material.ice,
+            Material.glass, Material.piston, Material.anvil };
+    public static Material[] materialsShovel = new Material[] { Material.grass, Material.ground, Material.sand,
+            Material.snow, Material.craftedSnow, Material.clay };
+    public static Material[] materialsAxe = new Material[] { Material.coral, Material.leaves, Material.plants,
+            Material.wood };
 
     public static int getMode(ItemStack tool) {
         return tool.getItemDamage();
@@ -61,28 +58,14 @@ public final class ToolHandler {
 
     public static boolean isRightMaterial(Material material, Material[] materialsListing) {
         // if(material.isToolNotRequired())
-        //	return true;
+        // return true;
         for (Material mat : materialsListing) if (material == mat) return true;
 
         return false;
     }
 
-    public static void removeBlocksInIteration(
-            EntityPlayer player,
-            World world,
-            int x,
-            int y,
-            int z,
-            int xs,
-            int ys,
-            int zs,
-            int xe,
-            int ye,
-            int ze,
-            Block block,
-            Material[] materialsListing,
-            boolean silk,
-            int fortune) {
+    public static void removeBlocksInIteration(EntityPlayer player, World world, int x, int y, int z, int xs, int ys,
+            int zs, int xe, int ye, int ze, Block block, Material[] materialsListing, boolean silk, int fortune) {
         MovingObjectPosition mop = raytraceFromEntity(player.worldObj, player, false, 4.5d);
         if (mop == null) return;
         int sideHit = mop.sideHit;
@@ -99,23 +82,16 @@ public final class ToolHandler {
             }
         }
         List list = world.getEntitiesWithinAABB(
-                EntityItem.class, AxisAlignedBB.getBoundingBox(x + xs, y + ys, z + zs, x + xe, y + ye, z + ze));
+                EntityItem.class,
+                AxisAlignedBB.getBoundingBox(x + xs, y + ys, z + zs, x + xe, y + ye, z + ze));
         for (Object entity : list) {
             EntityItem item = (EntityItem) entity;
             item.setPosition(player.posX, player.posY + 1, player.posZ);
         }
     }
 
-    protected static void breakExtraBlock(
-            World world,
-            int x,
-            int y,
-            int z,
-            EntityPlayer playerEntity,
-            int refX,
-            int refY,
-            int refZ,
-            Material[] materialsListing) {
+    protected static void breakExtraBlock(World world, int x, int y, int z, EntityPlayer playerEntity, int refX,
+            int refY, int refZ, Material[] materialsListing) {
         if (world.isAirBlock(x, y, z)) return;
 
         // what?
@@ -131,12 +107,12 @@ public final class ToolHandler {
         float strength = ForgeHooks.blockStrength(block, player, world, x, y, z);
 
         // only harvestable blocks that aren't impossibly slow to harvest
-        //   if (!ForgeHooks.canHarvestBlock(block, player, meta) || refStrength/strength > 10f)
-        //       return;
+        // if (!ForgeHooks.canHarvestBlock(block, player, meta) || refStrength/strength > 10f)
+        // return;
 
         // send the blockbreak event
-        BlockEvent.BreakEvent event =
-                ForgeHooks.onBlockBreakEvent(world, player.theItemInWorldManager.getGameType(), player, x, y, z);
+        BlockEvent.BreakEvent event = ForgeHooks
+                .onBlockBreakEvent(world, player.theItemInWorldManager.getGameType(), player, x, y, z);
         if (event.isCanceled()) return;
 
         if (player.capabilities.isCreativeMode) {
@@ -161,8 +137,8 @@ public final class ToolHandler {
             // ItemInWorldManager.removeBlock
             block.onBlockHarvested(world, x, y, z, meta, player);
 
-            if (block.removedByPlayer(
-                    world, player, x, y, z, true)) // boolean is if block can be harvested, checked above
+            if (block.removedByPlayer(world, player, x, y, z, true)) // boolean is if block can be harvested, checked
+                                                                     // above
             {
                 block.onBlockDestroyedByPlayer(world, x, y, z, meta);
                 if (block != Blocks.bedrock) block.harvestBlock(world, player, x, y, z, meta);
@@ -186,27 +162,13 @@ public final class ToolHandler {
                 block.onBlockDestroyedByPlayer(world, x, y, z, meta);
             }
 
-            Minecraft.getMinecraft()
-                    .getNetHandler()
-                    .addToSendQueue(
-                            new C07PacketPlayerDigging(2, x, y, z, Minecraft.getMinecraft().objectMouseOver.sideHit));
+            Minecraft.getMinecraft().getNetHandler().addToSendQueue(
+                    new C07PacketPlayerDigging(2, x, y, z, Minecraft.getMinecraft().objectMouseOver.sideHit));
         }
     }
 
-    public static void removeBlockWithDrops(
-            EntityPlayer player,
-            World world,
-            int x,
-            int y,
-            int z,
-            int bx,
-            int by,
-            int bz,
-            Block block,
-            Material[] materialsListing,
-            boolean silk,
-            int fortune,
-            float blockHardness,
+    public static void removeBlockWithDrops(EntityPlayer player, World world, int x, int y, int z, int bx, int by,
+            int bz, Block block, Material[] materialsListing, boolean silk, int fortune, float blockHardness,
             int metadata) {
         if (!world.blockExists(x, y, z)) return;
 
@@ -216,19 +178,16 @@ public final class ToolHandler {
 
         int meta = world.getBlockMetadata(x, y, z);
         Material mat = world.getBlock(x, y, z).getMaterial();
-        if (blk != null
-                && !blk.isAir(world, x, y, z)
+        if (blk != null && !blk.isAir(world, x, y, z)
                 && ((blk.getPlayerRelativeBlockHardness(player, world, x, y, z) != 0
                         || (blk == Blocks.bedrock && (y <= 253 && world.provider instanceof WorldProviderBedrock))))) {
             if (!blk.canHarvestBlock(player, meta) || !isRightMaterial(mat, materialsListing)) return;
-            if (ConfigHandler.bedrockDimensionID != 0
-                    && block == Blocks.bedrock
+            if (ConfigHandler.bedrockDimensionID != 0 && block == Blocks.bedrock
                     && ((world.provider.isSurfaceWorld() && y < 5)
                             || (y > 253 && world.provider instanceof WorldProviderBedrock))) {
                 world.setBlock(x, y, z, ThaumicTinkerer.registry.getFirstBlockFromClass(BlockBedrockPortal.class));
             }
-            if (ConfigHandler.bedrockDimensionID != 0
-                    && world.provider.dimensionId == ConfigHandler.bedrockDimensionID
+            if (ConfigHandler.bedrockDimensionID != 0 && world.provider.dimensionId == ConfigHandler.bedrockDimensionID
                     && blk == Blocks.bedrock
                     && y <= 253) {
                 world.setBlock(x, y, z, Blocks.air);

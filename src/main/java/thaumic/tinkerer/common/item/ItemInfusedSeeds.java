@@ -2,6 +2,7 @@ package thaumic.tinkerer.common.item;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import net.minecraft.block.BlockFarmland;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
@@ -15,6 +16,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
+
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.common.config.ConfigItems;
@@ -132,8 +134,7 @@ public class ItemInfusedSeeds extends ItemSeeds implements ITTinkererItem {
 
     @Override
     public IIcon getIconIndex(ItemStack stack) {
-        return getAspect(stack) == null
-                ? icons[0]
+        return getAspect(stack) == null ? icons[0]
                 : icons[BlockInfusedGrain.getNumberFromAspectForTexture(getAspect(stack))];
     }
 
@@ -238,31 +239,31 @@ public class ItemInfusedSeeds extends ItemSeeds implements ITTinkererItem {
                         new ItemStack(ConfigItems.itemShard, 1, 5)));
     }
 
-    public boolean onItemUse(
-            ItemStack par1ItemStack,
-            EntityPlayer par2EntityPlayer,
-            World world,
-            int x,
-            int y,
-            int z,
-            int par7,
-            float par8,
-            float par9,
-            float par10) {
+    public boolean onItemUse(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, World world, int x, int y, int z,
+            int par7, float par8, float par9, float par10) {
         if (par7 != 1) {
             return false;
         } else if (world.getBlock(x, y, z) instanceof BlockFarmland
                 && par2EntityPlayer.canPlayerEdit(x, y, z, par7, par1ItemStack)
                 && par2EntityPlayer.canPlayerEdit(x, y + 1, z, par7, par1ItemStack)) {
 
-            world.setBlock(x, y, z, ThaumicTinkerer.registry.getFirstBlockFromClass(BlockInfusedFarmland.class));
-            world.setBlock(x, y + 1, z, ThaumicTinkerer.registry.getFirstBlockFromClass(BlockInfusedGrain.class));
-            BlockInfusedGrain.setAspect(world, x, y + 1, z, getAspect(par1ItemStack));
-            ((TileInfusedGrain) world.getTileEntity(x, y + 1, z)).primalTendencies = getAspectTendencies(par1ItemStack);
-            par1ItemStack.stackSize--;
-            return true;
-        } else {
-            return false;
-        }
+                    world.setBlock(
+                            x,
+                            y,
+                            z,
+                            ThaumicTinkerer.registry.getFirstBlockFromClass(BlockInfusedFarmland.class));
+                    world.setBlock(
+                            x,
+                            y + 1,
+                            z,
+                            ThaumicTinkerer.registry.getFirstBlockFromClass(BlockInfusedGrain.class));
+                    BlockInfusedGrain.setAspect(world, x, y + 1, z, getAspect(par1ItemStack));
+                    ((TileInfusedGrain) world.getTileEntity(x, y + 1, z)).primalTendencies = getAspectTendencies(
+                            par1ItemStack);
+                    par1ItemStack.stackSize--;
+                    return true;
+                } else {
+                    return false;
+                }
     }
 }

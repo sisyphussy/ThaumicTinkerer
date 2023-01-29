@@ -1,11 +1,13 @@
 package thaumic.tinkerer.common.registry;
 
-import cpw.mods.fml.common.registry.GameRegistry;
 import java.util.List;
+
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.IRecipe;
+
 import thaumcraft.common.config.ConfigResearch;
+import cpw.mods.fml.common.registry.GameRegistry;
 
 public class ThaumicTinkererCraftingBenchRecipe extends ThaumicTinkererRecipe {
 

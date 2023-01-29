@@ -1,9 +1,7 @@
 package thaumic.tinkerer.common.compat;
 
-import codechicken.enderstorage.api.EnderStorageManager;
-import codechicken.enderstorage.storage.item.EnderItemStorage;
-import codechicken.enderstorage.storage.item.TileEnderChest;
 import java.util.List;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
@@ -11,10 +9,15 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
+
 import thaumcraft.common.items.wands.ItemWandCasting;
 import thaumic.tinkerer.common.item.foci.ItemFocusEnderChest;
+import codechicken.enderstorage.api.EnderStorageManager;
+import codechicken.enderstorage.storage.item.EnderItemStorage;
+import codechicken.enderstorage.storage.item.TileEnderChest;
 
 public class EnderStorageFunctions {
+
     public static ItemStack onFocusRightClick(ItemStack stack, World world, EntityPlayer p, MovingObjectPosition pos) {
         ItemWandCasting wand = (ItemWandCasting) stack.getItem();
         ItemStack focus = wand.getFocusItem(stack);
@@ -50,8 +53,7 @@ public class EnderStorageFunctions {
             } else {
                 int freq = focus.getTagCompound().getInteger("freq");
                 ((EnderItemStorage) EnderStorageManager.instance(world.isRemote)
-                                .getStorage(getOwner(focus), freq & 0xFFF, "item"))
-                        .openSMPGui(p, focus.getDisplayName());
+                        .getStorage(getOwner(focus), freq & 0xFFF, "item")).openSMPGui(p, focus.getDisplayName());
             }
         }
 

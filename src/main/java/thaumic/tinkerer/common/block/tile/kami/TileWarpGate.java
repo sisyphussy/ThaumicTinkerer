@@ -1,13 +1,10 @@
 /**
- * This class was created by <Vazkii>. It's distributed as
- * part of the ThaumicTinkerer Mod.
+ * This class was created by <Vazkii>. It's distributed as part of the ThaumicTinkerer Mod.
  *
- * ThaumicTinkerer is Open Source and distributed under a
- * Creative Commons Attribution-NonCommercial-ShareAlike 3.0 License
- * (http://creativecommons.org/licenses/by-nc-sa/3.0/deed.en_GB)
+ * ThaumicTinkerer is Open Source and distributed under a Creative Commons Attribution-NonCommercial-ShareAlike 3.0
+ * License (http://creativecommons.org/licenses/by-nc-sa/3.0/deed.en_GB)
  *
- * ThaumicTinkerer is a Derivative Work on Thaumcraft 4.
- * Thaumcraft 4 (c) Azanor 2012
+ * ThaumicTinkerer is a Derivative Work on Thaumcraft 4. Thaumcraft 4 (c) Azanor 2012
  * (http://www.minecraftforum.net/topic/1585216-)
  *
  * File Created @ [Jan 10, 2014, 3:56:13 PM (GMT)]
@@ -15,6 +12,7 @@
 package thaumic.tinkerer.common.block.tile.kami;
 
 import java.util.List;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.IInventory;
@@ -28,6 +26,7 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraftforge.common.util.Constants;
+
 import thaumic.tinkerer.common.ThaumicTinkerer;
 import thaumic.tinkerer.common.item.kami.ItemSkyPearl;
 import thaumic.tinkerer.common.lib.LibBlockNames;
@@ -52,30 +51,26 @@ public class TileWarpGate extends TileEntity implements IInventory {
             if (!destGate.locked) {
                 player.worldObj.playSoundAtEntity(player, "thaumcraft:wand", 1F, 1F);
 
-                for (int i = 0; i < 20; i++)
-                    ThaumicTinkerer.tcProxy.sparkle(
-                            (float) player.posX + player.worldObj.rand.nextFloat() - 0.5F,
-                            (float) player.posY + player.worldObj.rand.nextFloat(),
-                            (float) player.posZ + player.worldObj.rand.nextFloat() - 0.5F,
-                            6);
+                for (int i = 0; i < 20; i++) ThaumicTinkerer.tcProxy.sparkle(
+                        (float) player.posX + player.worldObj.rand.nextFloat() - 0.5F,
+                        (float) player.posY + player.worldObj.rand.nextFloat(),
+                        (float) player.posZ + player.worldObj.rand.nextFloat() - 0.5F,
+                        6);
 
                 player.mountEntity(null);
-                if (player instanceof EntityPlayerMP)
-                    ((EntityPlayerMP) player)
-                            .playerNetServerHandler.setPlayerLocation(
-                                    x + 0.5, y + 1.6, z + 0.5, player.rotationYaw, player.rotationPitch);
+                if (player instanceof EntityPlayerMP) ((EntityPlayerMP) player).playerNetServerHandler
+                        .setPlayerLocation(x + 0.5, y + 1.6, z + 0.5, player.rotationYaw, player.rotationPitch);
 
-                for (int i = 0; i < 20; i++)
-                    ThaumicTinkerer.tcProxy.sparkle(
-                            (float) player.posX + player.worldObj.rand.nextFloat() - 0.5F,
-                            (float) player.posY + player.worldObj.rand.nextFloat(),
-                            (float) player.posZ + player.worldObj.rand.nextFloat() - 0.5F,
-                            6);
+                for (int i = 0; i < 20; i++) ThaumicTinkerer.tcProxy.sparkle(
+                        (float) player.posX + player.worldObj.rand.nextFloat() - 0.5F,
+                        (float) player.posY + player.worldObj.rand.nextFloat(),
+                        (float) player.posZ + player.worldObj.rand.nextFloat() - 0.5F,
+                        6);
 
                 player.worldObj.playSoundAtEntity(player, "thaumcraft:wand", 1F, 0.1F);
                 return true;
-            } else if (!player.worldObj.isRemote)
-                player.addChatMessage(new ChatComponentTranslation("ttmisc.noTeleport"));
+            } else
+                if (!player.worldObj.isRemote) player.addChatMessage(new ChatComponentTranslation("ttmisc.noTeleport"));
         } else if (!player.worldObj.isRemote) player.addChatMessage(new ChatComponentTranslation("ttmisc.noDest"));
 
         return false;
@@ -88,17 +83,16 @@ public class TileWarpGate extends TileEntity implements IInventory {
                 AxisAlignedBB.getBoundingBox(xCoord, yCoord + 1, zCoord, xCoord + 1, yCoord + 1.5, zCoord + 1));
 
         EntityPlayer clientPlayer = ThaumicTinkerer.proxy.getClientPlayer();
-        for (EntityPlayer player : players)
-            if (player != null && player == clientPlayer && player.isSneaking()) {
-                player.openGui(
-                        ThaumicTinkerer.instance,
-                        LibGuiIDs.GUI_ID_WARP_GATE_DESTINATIONS,
-                        worldObj,
-                        xCoord,
-                        yCoord,
-                        zCoord);
-                break;
-            }
+        for (EntityPlayer player : players) if (player != null && player == clientPlayer && player.isSneaking()) {
+            player.openGui(
+                    ThaumicTinkerer.instance,
+                    LibGuiIDs.GUI_ID_WARP_GATE_DESTINATIONS,
+                    worldObj,
+                    xCoord,
+                    yCoord,
+                    zCoord);
+            break;
+        }
 
         teleportedThisTick = false;
     }

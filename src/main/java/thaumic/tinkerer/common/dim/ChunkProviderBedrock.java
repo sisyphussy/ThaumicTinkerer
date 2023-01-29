@@ -2,6 +2,7 @@ package thaumic.tinkerer.common.dim;
 
 import java.util.List;
 import java.util.Random;
+
 import net.minecraft.block.Block;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.init.Blocks;
@@ -61,16 +62,16 @@ public class ChunkProviderBedrock implements IChunkProvider {
 
             for (int i1 = 0; i1 < 16; ++i1) {
                 for (int j1 = 0; j1 < 16; ++j1) {
-                    extendedblockstorage.func_150818_a(
-                            i1, k & 15, j1, Block.getBlockById(this.cachedBlockIDs[k] & 255));
+                    extendedblockstorage
+                            .func_150818_a(i1, k & 15, j1, Block.getBlockById(this.cachedBlockIDs[k] & 255));
                     extendedblockstorage.setExtBlockMetadata(i1, k & 15, j1, this.cachedBlockMetadata[k]);
                 }
             }
         }
 
         chunk.generateSkylightMap();
-        BiomeGenBase[] abiomegenbase =
-                this.worldObj.getWorldChunkManager().loadBlockGeneratorData(null, par1 * 16, par2 * 16, 16, 16);
+        BiomeGenBase[] abiomegenbase = this.worldObj.getWorldChunkManager()
+                .loadBlockGeneratorData(null, par1 * 16, par2 * 16, 16, 16);
         byte[] abyte = chunk.getBiomeArray();
 
         for (int k1 = 0; k1 < abyte.length; ++k1) {
@@ -113,15 +114,15 @@ public class ChunkProviderBedrock implements IChunkProvider {
     }
 
     /**
-     * Two modes of operation: if passed true, save all Chunks in one go.  If passed false, save up to two chunks.
-     * Return true if all chunks have been saved.
+     * Two modes of operation: if passed true, save all Chunks in one go. If passed false, save up to two chunks. Return
+     * true if all chunks have been saved.
      */
     public boolean saveChunks(boolean par1, IProgressUpdate par2IProgressUpdate) {
         return true;
     }
 
     /**
-     * Save extra data not associated with any Chunk.  Not saved during autosave, only during world unload.  Currently
+     * Save extra data not associated with any Chunk. Not saved during autosave, only during world unload. Currently
      * unimplemented.
      */
     public void saveExtraData() {}

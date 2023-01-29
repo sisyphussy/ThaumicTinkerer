@@ -1,24 +1,19 @@
 /**
- * This class was created by <Vazkii>. It's distributed as
- * part of the ThaumicTinkerer Mod.
+ * This class was created by <Vazkii>. It's distributed as part of the ThaumicTinkerer Mod.
  *
- * ThaumicTinkerer is Open Source and distributed under a
- * Creative Commons Attribution-NonCommercial-ShareAlike 3.0 License
- * (http://creativecommons.org/licenses/by-nc-sa/3.0/deed.en_GB)
+ * ThaumicTinkerer is Open Source and distributed under a Creative Commons Attribution-NonCommercial-ShareAlike 3.0
+ * License (http://creativecommons.org/licenses/by-nc-sa/3.0/deed.en_GB)
  *
- * ThaumicTinkerer is a Derivative Work on Thaumcraft 4.
- * Thaumcraft 4 (c) Azanor 2012
+ * ThaumicTinkerer is a Derivative Work on Thaumcraft 4. Thaumcraft 4 (c) Azanor 2012
  * (http://www.minecraftforum.net/topic/1585216-)
  *
  * File Created @ [14 Sep 2013, 01:07:25 (GMT)]
  */
 package thaumic.tinkerer.common.block.tile;
 
-import appeng.api.movable.IMovableTile;
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.relauncher.Side;
 import java.util.ArrayList;
 import java.util.List;
+
 import net.minecraft.block.Block;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.player.EntityPlayer;
@@ -30,7 +25,9 @@ import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.Constants;
+
 import org.apache.commons.lang3.ArrayUtils;
+
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.common.Thaumcraft;
@@ -40,6 +37,9 @@ import thaumic.tinkerer.common.core.helper.Tuple4Int;
 import thaumic.tinkerer.common.enchantment.core.EnchantmentManager;
 import thaumic.tinkerer.common.lib.LibBlockNames;
 import thaumic.tinkerer.common.lib.LibFeatures;
+import appeng.api.movable.IMovableTile;
+import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.relauncher.Side;
 
 public class TileEnchanter extends TileEntity implements ISidedInventory, IMovableTile {
 
@@ -105,10 +105,9 @@ public class TileEnchanter extends TileEntity implements ISidedInventory, IMovab
             checkPillars();
 
             if (!working) // Pillar check
-            return;
+                return;
 
-            enchantItem:
-            {
+            enchantItem: {
                 for (Aspect aspect : LibFeatures.PRIMAL_ASPECTS) {
                     int currentAmount = currentAspects.getAmount(aspect);
                     int totalAmount = totalAspects.getAmount(aspect);
@@ -136,8 +135,7 @@ public class TileEnchanter extends TileEntity implements ISidedInventory, IMovab
 
             ItemStack wand = getStackInSlot(1);
 
-            if (wand != null
-                    && wand.getItem() instanceof ItemWandCasting
+            if (wand != null && wand.getItem() instanceof ItemWandCasting
                     && !((ItemWandCasting) wand.getItem()).isStaff(wand)) {
                 ItemWandCasting wandItem = (ItemWandCasting) wand.getItem();
                 AspectList wandAspects = wandItem.getAllVis(wand);
@@ -202,8 +200,8 @@ public class TileEnchanter extends TileEntity implements ISidedInventory, IMovab
         }
     }
 
-    public boolean consumeAllVisCrafting(
-            ItemStack is, EntityPlayer player, AspectList aspects, boolean doit, ItemWandCasting wandItem) {
+    public boolean consumeAllVisCrafting(ItemStack is, EntityPlayer player, AspectList aspects, boolean doit,
+            ItemWandCasting wandItem) {
         if (aspects != null && aspects.size() != 0) {
             AspectList aspectList = new AspectList();
             Aspect[] aspectArray = aspects.getAspects();
@@ -292,13 +290,12 @@ public class TileEnchanter extends TileEntity implements ISidedInventory, IMovab
 
     public boolean assignPillars() {
         int y = yCoord;
-        for (int x = xCoord - 4; x <= xCoord + 4; x++)
-            for (int z = zCoord - 4; z <= zCoord + 4; z++) {
-                int height = findPillar(x, y, z);
-                if (height != -1) pillars.add(new Tuple4Int(x, y, z, height));
+        for (int x = xCoord - 4; x <= xCoord + 4; x++) for (int z = zCoord - 4; z <= zCoord + 4; z++) {
+            int height = findPillar(x, y, z);
+            if (height != -1) pillars.add(new Tuple4Int(x, y, z, height));
 
-                if (pillars.size() == 6) return false;
-            }
+            if (pillars.size() == 6) return false;
+        }
 
         pillars.clear();
         return true;
@@ -372,7 +369,8 @@ public class TileEnchanter extends TileEntity implements ISidedInventory, IMovab
         par1NBTTagCompound.setIntArray(TAG_LEVELS, ArrayUtils.toPrimitive(levels.toArray(new Integer[levels.size()])));
 
         par1NBTTagCompound.setIntArray(
-                TAG_ENCHANTS, ArrayUtils.toPrimitive(enchantments.toArray(new Integer[enchantments.size()])));
+                TAG_ENCHANTS,
+                ArrayUtils.toPrimitive(enchantments.toArray(new Integer[enchantments.size()])));
 
         NBTTagCompound totalAspectsCmp = new NBTTagCompound();
         totalAspects.writeToNBT(totalAspectsCmp);

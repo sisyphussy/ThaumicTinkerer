@@ -1,27 +1,19 @@
 /**
- * This class was created by <Vazkii>. It's distributed as
- * part of the ThaumicTinkerer Mod.
+ * This class was created by <Vazkii>. It's distributed as part of the ThaumicTinkerer Mod.
  *
- * ThaumicTinkerer is Open Source and distributed under a
- * Creative Commons Attribution-NonCommercial-ShareAlike 3.0 License
- * (http://creativecommons.org/licenses/by-nc-sa/3.0/deed.en_GB)
+ * ThaumicTinkerer is Open Source and distributed under a Creative Commons Attribution-NonCommercial-ShareAlike 3.0
+ * License (http://creativecommons.org/licenses/by-nc-sa/3.0/deed.en_GB)
  *
- * ThaumicTinkerer is a Derivative Work on Thaumcraft 4.
- * Thaumcraft 4 (c) Azanor 2012
+ * ThaumicTinkerer is a Derivative Work on Thaumcraft 4. Thaumcraft 4 (c) Azanor 2012
  * (http://www.minecraftforum.net/topic/1585216-)
  *
  * File Created @ [11 Sep 2013, 15:45:16 (GMT)]
  */
 package thaumic.tinkerer.common.item;
 
-import baubles.api.BaubleType;
-import baubles.api.BaublesApi;
-import baubles.api.IBauble;
-import cpw.mods.fml.relauncher.ReflectionHelper;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import java.util.Collection;
 import java.util.List;
+
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -33,7 +25,9 @@ import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
+
 import org.apache.commons.lang3.ArrayUtils;
+
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.research.ResearchPage;
@@ -53,6 +47,12 @@ import thaumic.tinkerer.common.registry.ThaumicTinkererRecipe;
 import thaumic.tinkerer.common.research.IRegisterableResearch;
 import thaumic.tinkerer.common.research.ResearchHelper;
 import thaumic.tinkerer.common.research.TTResearchItem;
+import baubles.api.BaubleType;
+import baubles.api.BaublesApi;
+import baubles.api.IBauble;
+import cpw.mods.fml.relauncher.ReflectionHelper;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public class ItemCleansingTalisman extends ItemBase implements IBauble {
 
@@ -98,18 +98,14 @@ public class ItemCleansingTalisman extends ItemBase implements IBauble {
     @Override
     public IRegisterableResearch getResearchItem() {
         return (TTResearchItem) new TTResearchItem(
-                        LibResearch.KEY_CLEANSING_TALISMAN,
-                        new AspectList()
-                                .add(Aspect.HEAL, 2)
-                                .add(Aspect.ORDER, 1)
-                                .add(Aspect.POISON, 1),
-                        -3,
-                        4,
-                        3,
-                        new ItemStack(this))
-                .setSecondary()
-                .setParents(LibResearch.KEY_DARK_QUARTZ)
-                .setPages(new ResearchPage("0"), ResearchHelper.infusionPage(LibResearch.KEY_CLEANSING_TALISMAN));
+                LibResearch.KEY_CLEANSING_TALISMAN,
+                new AspectList().add(Aspect.HEAL, 2).add(Aspect.ORDER, 1).add(Aspect.POISON, 1),
+                -3,
+                4,
+                3,
+                new ItemStack(this)).setSecondary().setParents(LibResearch.KEY_DARK_QUARTZ).setPages(
+                        new ResearchPage("0"),
+                        ResearchHelper.infusionPage(LibResearch.KEY_CLEANSING_TALISMAN));
     }
 
     @Override
@@ -118,11 +114,7 @@ public class ItemCleansingTalisman extends ItemBase implements IBauble {
                 LibResearch.KEY_CLEANSING_TALISMAN,
                 new ItemStack(this),
                 5,
-                new AspectList()
-                        .add(Aspect.HEAL, 10)
-                        .add(Aspect.TOOL, 10)
-                        .add(Aspect.MAN, 20)
-                        .add(Aspect.LIFE, 10),
+                new AspectList().add(Aspect.HEAL, 10).add(Aspect.TOOL, 10).add(Aspect.MAN, 20).add(Aspect.LIFE, 10),
                 new ItemStack(Items.ender_pearl),
                 new ItemStack(ThaumicTinkerer.registry.getFirstItemFromClass(ItemDarkQuartz.class)),
                 new ItemStack(ThaumicTinkerer.registry.getFirstItemFromClass(ItemDarkQuartz.class)),
@@ -169,39 +161,35 @@ public class ItemCleansingTalisman extends ItemBase implements IBauble {
                     if (player.isBurning()) {
                         player.extinguish();
                         removed = true;
-                    } else
-                        for (PotionEffect potion : potions) {
-                            int id = potion.getPotionID();
-                            boolean badEffect;
-                            badEffect = ReflectionHelper.getPrivateValue(
-                                    Potion.class, Potion.potionTypes[id], new String[] {"isBadEffect", "field_76418_K"
-                                    });
-                            if (Potion.potionTypes[id] instanceof PotionWarpWard) {
-                                badEffect = false;
-                            }
-                            if (badEffect) {
-                                player.removePotionEffect(id);
-                                removed = true;
-                                int[] warpPotionIDs = new int[] {
-                                    Config.potionBlurredID,
-                                    Config.potionDeathGazeID,
-                                    Config.potionInfVisExhaustID,
-                                    Config.potionSunScornedID,
-                                    Config.potionUnHungerID
-                                };
-                                if (ArrayUtils.contains(warpPotionIDs, potion.getPotionID())) {
-                                    damage = 10;
-                                }
-                                break;
-                            }
+                    } else for (PotionEffect potion : potions) {
+                        int id = potion.getPotionID();
+                        boolean badEffect;
+                        badEffect = ReflectionHelper.getPrivateValue(
+                                Potion.class,
+                                Potion.potionTypes[id],
+                                new String[] { "isBadEffect", "field_76418_K" });
+                        if (Potion.potionTypes[id] instanceof PotionWarpWard) {
+                            badEffect = false;
                         }
+                        if (badEffect) {
+                            player.removePotionEffect(id);
+                            removed = true;
+                            int[] warpPotionIDs = new int[] { Config.potionBlurredID, Config.potionDeathGazeID,
+                                    Config.potionInfVisExhaustID, Config.potionSunScornedID, Config.potionUnHungerID };
+                            if (ArrayUtils.contains(warpPotionIDs, potion.getPotionID())) {
+                                damage = 10;
+                            }
+                            break;
+                        }
+                    }
 
                     if (removed) {
 
                         par1ItemStack.damageItem(damage, player);
                         if (par1ItemStack.getItemDamage() <= 0) {
-                            BaublesApi.getBaubles((EntityPlayer) player)
-                                    .setInventorySlotContents(0, null); // Slot 0 = Talisman Slot
+                            BaublesApi.getBaubles((EntityPlayer) player).setInventorySlotContents(0, null); // Slot 0 =
+                                                                                                            // Talisman
+                                                                                                            // Slot
                         }
                         par2World.playSoundAtEntity(player, "thaumcraft:wand", 0.3F, 0.1F);
                     }

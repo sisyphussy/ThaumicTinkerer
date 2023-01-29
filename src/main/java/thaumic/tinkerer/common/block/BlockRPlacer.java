@@ -2,6 +2,7 @@ package thaumic.tinkerer.common.block;
 
 import java.util.ArrayList;
 import java.util.Random;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockPistonBase;
 import net.minecraft.block.material.Material;
@@ -15,6 +16,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.research.ResearchPage;
@@ -38,6 +40,7 @@ import thaumic.tinkerer.common.research.TTResearchItem;
  * Created by nekosune on 28/06/14.
  */
 public class BlockRPlacer extends BlockCamo implements IWandable {
+
     IIcon[] icons = new IIcon[2];
 
     public BlockRPlacer() {
@@ -45,16 +48,8 @@ public class BlockRPlacer extends BlockCamo implements IWandable {
     }
 
     @Override
-    public boolean onBlockActivated(
-            World par1World,
-            int par2,
-            int par3,
-            int par4,
-            EntityPlayer par5EntityPlayer,
-            int par6,
-            float par7,
-            float par8,
-            float par9) {
+    public boolean onBlockActivated(World par1World, int par2, int par3, int par4, EntityPlayer par5EntityPlayer,
+            int par6, float par7, float par8, float par9) {
         TileEntity tile = par1World.getTileEntity(par2, par3, par4);
 
         TileRPlacer dislocator = (TileRPlacer) tile;
@@ -111,18 +106,12 @@ public class BlockRPlacer extends BlockCamo implements IWandable {
     @Override
     public IRegisterableResearch getResearchItem() {
         return (IRegisterableResearch) new TTResearchItem(
-                        LibResearch.KEY_REMOTE_PLACER,
-                        new AspectList()
-                                .add(Aspect.MECHANISM, 2)
-                                .add(Aspect.MOTION, 1)
-                                .add(Aspect.SENSES, 1),
-                        -6,
-                        3,
-                        3,
-                        new ItemStack(this))
-                .setParents(LibResearch.KEY_ANIMATION_TABLET)
-                .setConcealed()
-                .setPages(
+                LibResearch.KEY_REMOTE_PLACER,
+                new AspectList().add(Aspect.MECHANISM, 2).add(Aspect.MOTION, 1).add(Aspect.SENSES, 1),
+                -6,
+                3,
+                3,
+                new ItemStack(this)).setParents(LibResearch.KEY_ANIMATION_TABLET).setConcealed().setPages(
                         new ResearchPage("0"),
                         new ResearchPage("1"),
                         ResearchHelper.arcaneRecipePage(LibResearch.KEY_REMOTE_PLACER));
@@ -134,11 +123,7 @@ public class BlockRPlacer extends BlockCamo implements IWandable {
                 LibResearch.KEY_REMOTE_PLACER,
                 LibResearch.KEY_REMOTE_PLACER,
                 new ItemStack(this),
-                new AspectList()
-                        .add(Aspect.AIR, 20)
-                        .add(Aspect.ORDER, 5)
-                        .add(Aspect.EARTH, 15)
-                        .add(Aspect.ENTROPY, 5),
+                new AspectList().add(Aspect.AIR, 20).add(Aspect.ORDER, 5).add(Aspect.EARTH, 15).add(Aspect.ENTROPY, 5),
                 "ses",
                 "sds",
                 "sss",
@@ -161,22 +146,17 @@ public class BlockRPlacer extends BlockCamo implements IWandable {
     }
 
     @Override
-    public void onBlockPlacedBy(
-            World par1World,
-            int par2,
-            int par3,
-            int par4,
-            EntityLivingBase par5EntityLivingBase,
+    public void onBlockPlacedBy(World par1World, int par2, int par3, int par4, EntityLivingBase par5EntityLivingBase,
             ItemStack par6ItemStack) {
         TileEntity tile = par1World.getTileEntity(par2, par3, par4);
-        ((TileRPlacer) tile).orientation =
-                BlockPistonBase.determineOrientation(par1World, par2, par3, par4, par5EntityLivingBase);
+        ((TileRPlacer) tile).orientation = BlockPistonBase
+                .determineOrientation(par1World, par2, par3, par4, par5EntityLivingBase);
         par1World.markBlockForUpdate(par2, par3, par4);
     }
 
     @Override
-    public int onWandRightClick(
-            World world, ItemStack itemStack, EntityPlayer entityPlayer, int i, int i2, int i3, int i4, int i5) {
+    public int onWandRightClick(World world, ItemStack itemStack, EntityPlayer entityPlayer, int i, int i2, int i3,
+            int i4, int i5) {
         if (!world.isRemote) {
             if (entityPlayer.isSneaking()) {
                 entityPlayer.openGui(ThaumicTinkerer.instance, LibGuiIDs.GUI_ID_REMOTE_PLACER, world, i, i2, i3);

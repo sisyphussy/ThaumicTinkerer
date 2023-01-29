@@ -8,7 +8,7 @@ import thaumcraft.common.tiles.TileSensor;
 public class ArcaneEarImplementation {
 
     public static Object[] getNote(TileSensor ear) {
-        return new Double[] {(double) ear.note};
+        return new Double[] { (double) ear.note };
     }
 
     public static Object[] setNote(TileSensor ear, byte note) {

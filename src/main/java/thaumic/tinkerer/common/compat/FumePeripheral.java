@@ -9,6 +9,7 @@ import dan200.computercraft.api.peripheral.IPeripheral;
  * Created by Katrina on 04/02/2015.
  */
 public class FumePeripheral implements IPeripheral {
+
     @Override
     public String getType() {
         return "gasRemover";

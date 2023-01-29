@@ -1,6 +1,7 @@
 package thaumic.tinkerer.common.block;
 
 import java.util.ArrayList;
+
 import net.minecraft.block.BlockStairs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -10,6 +11,7 @@ import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
+
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.config.ConfigBlocks;
 import thaumic.tinkerer.common.core.handler.ModCreativeTab;
@@ -67,14 +69,15 @@ public class BlockTravelStairs extends BlockStairs implements ITTinkererBlock {
 
     @Override
     public ThaumicTinkererRecipe getRecipeItem() {
-        return new ThaumicTinkererRecipeMulti(new ThaumicTinkererCraftingBenchRecipe(
-                "PAVETRAVEL",
-                new ItemStack(this, 4),
-                "  Q",
-                " QQ",
-                "QQQ",
-                'Q',
-                new ItemStack(ConfigBlocks.blockCosmeticSolid, 1, 2)));
+        return new ThaumicTinkererRecipeMulti(
+                new ThaumicTinkererCraftingBenchRecipe(
+                        "PAVETRAVEL",
+                        new ItemStack(this, 4),
+                        "  Q",
+                        " QQ",
+                        "QQQ",
+                        'Q',
+                        new ItemStack(ConfigBlocks.blockCosmeticSolid, 1, 2)));
     }
 
     @Override

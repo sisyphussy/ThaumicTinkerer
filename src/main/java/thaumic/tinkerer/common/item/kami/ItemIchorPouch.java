@@ -1,24 +1,18 @@
 /**
- * This class was created by <Vazkii>. It's distributed as
- * part of the ThaumicTinkerer Mod.
+ * This class was created by <Vazkii>. It's distributed as part of the ThaumicTinkerer Mod.
  *
- * ThaumicTinkerer is Open Source and distributed under a
- * Creative Commons Attribution-NonCommercial-ShareAlike 3.0 License
- * (http://creativecommons.org/licenses/by-nc-sa/3.0/deed.en_GB)
+ * ThaumicTinkerer is Open Source and distributed under a Creative Commons Attribution-NonCommercial-ShareAlike 3.0
+ * License (http://creativecommons.org/licenses/by-nc-sa/3.0/deed.en_GB)
  *
- * ThaumicTinkerer is a Derivative Work on Thaumcraft 4.
- * Thaumcraft 4 (c) Azanor 2012
+ * ThaumicTinkerer is a Derivative Work on Thaumcraft 4. Thaumcraft 4 (c) Azanor 2012
  * (http://www.minecraftforum.net/topic/1585216-)
  *
  * File Created @ [Dec 29, 2013, 10:15:39 PM (GMT)]
  */
 package thaumic.tinkerer.common.item.kami;
 
-import baubles.api.BaubleType;
-import baubles.api.IBauble;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import java.util.ArrayList;
+
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -30,6 +24,7 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
+
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.research.ResearchPage;
@@ -50,6 +45,10 @@ import thaumic.tinkerer.common.registry.ThaumicTinkererRecipe;
 import thaumic.tinkerer.common.research.IRegisterableResearch;
 import thaumic.tinkerer.common.research.KamiResearchItem;
 import thaumic.tinkerer.common.research.ResearchHelper;
+import baubles.api.BaubleType;
+import baubles.api.IBauble;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public class ItemIchorPouch extends ItemFocusPouch implements IBauble, ITTinkererItem {
 
@@ -143,18 +142,13 @@ public class ItemIchorPouch extends ItemFocusPouch implements IBauble, ITTinkere
     public IRegisterableResearch getResearchItem() {
         if (!ConfigHandler.enableKami) return null;
         return (IRegisterableResearch) new KamiResearchItem(
-                        LibResearch.KEY_ICHOR_POUCH,
-                        new AspectList()
-                                .add(Aspect.VOID, 2)
-                                .add(Aspect.CLOTH, 1)
-                                .add(Aspect.ELDRITCH, 1)
-                                .add(Aspect.MAN, 1),
-                        13,
-                        6,
-                        5,
-                        new ItemStack(this))
-                .setParents(LibResearch.KEY_ICHOR_CLOTH)
-                .setPages(new ResearchPage("0"), ResearchHelper.infusionPage(LibResearch.KEY_ICHOR_POUCH));
+                LibResearch.KEY_ICHOR_POUCH,
+                new AspectList().add(Aspect.VOID, 2).add(Aspect.CLOTH, 1).add(Aspect.ELDRITCH, 1).add(Aspect.MAN, 1),
+                13,
+                6,
+                5,
+                new ItemStack(this)).setParents(LibResearch.KEY_ICHOR_CLOTH)
+                        .setPages(new ResearchPage("0"), ResearchHelper.infusionPage(LibResearch.KEY_ICHOR_POUCH));
     }
 
     @Override
@@ -163,11 +157,7 @@ public class ItemIchorPouch extends ItemFocusPouch implements IBauble, ITTinkere
                 LibResearch.KEY_ICHOR_POUCH,
                 new ItemStack(this),
                 9,
-                new AspectList()
-                        .add(Aspect.VOID, 64)
-                        .add(Aspect.MAN, 32)
-                        .add(Aspect.CLOTH, 32)
-                        .add(Aspect.ELDRITCH, 32)
+                new AspectList().add(Aspect.VOID, 64).add(Aspect.MAN, 32).add(Aspect.CLOTH, 32).add(Aspect.ELDRITCH, 32)
                         .add(Aspect.AIR, 64),
                 new ItemStack(ConfigItems.itemFocusPouch),
                 new ItemStack(ThaumicTinkerer.registry.getFirstItemFromClass(ItemKamiResource.class), 1, 1),

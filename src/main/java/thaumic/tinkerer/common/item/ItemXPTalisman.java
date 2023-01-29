@@ -1,24 +1,18 @@
 /**
- * This class was created by <Vazkii>. It's distributed as
- * part of the ThaumicTinkerer Mod.
+ * This class was created by <Vazkii>. It's distributed as part of the ThaumicTinkerer Mod.
  *
- * ThaumicTinkerer is Open Source and distributed under a
- * Creative Commons Attribution-NonCommercial-ShareAlike 3.0 License
- * (http://creativecommons.org/licenses/by-nc-sa/3.0/deed.en_GB)
+ * ThaumicTinkerer is Open Source and distributed under a Creative Commons Attribution-NonCommercial-ShareAlike 3.0
+ * License (http://creativecommons.org/licenses/by-nc-sa/3.0/deed.en_GB)
  *
- * ThaumicTinkerer is a Derivative Work on Thaumcraft 4.
- * Thaumcraft 4 (c) Azanor 2012
+ * ThaumicTinkerer is a Derivative Work on Thaumcraft 4. Thaumcraft 4 (c) Azanor 2012
  * (http://www.minecraftforum.net/topic/1585216-)
  *
  * File Created @ [28 Sep 2013, 18:27:56 (GMT)]
  */
 package thaumic.tinkerer.common.item;
 
-import baubles.api.BaubleType;
-import baubles.api.IBauble;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import java.util.List;
+
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityXPOrb;
@@ -30,6 +24,7 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
+
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.research.ResearchPage;
@@ -46,6 +41,10 @@ import thaumic.tinkerer.common.registry.ThaumicTinkererRecipe;
 import thaumic.tinkerer.common.research.IRegisterableResearch;
 import thaumic.tinkerer.common.research.ResearchHelper;
 import thaumic.tinkerer.common.research.TTResearchItem;
+import baubles.api.BaubleType;
+import baubles.api.IBauble;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public class ItemXPTalisman extends ItemBase implements IBauble {
 
@@ -81,16 +80,16 @@ public class ItemXPTalisman extends ItemBase implements IBauble {
             boolean has = par3EntityPlayer.inventory.consumeInventoryItem(Items.glass_bottle);
             if (has) {
                 if (!par3EntityPlayer.inventory.addItemStackToInventory(new ItemStack(Items.experience_bottle, 1))
-                        && !par2World.isRemote) par3EntityPlayer.dropItem(Items.experience_bottle, 1);
+                        && !par2World.isRemote)
+                    par3EntityPlayer.dropItem(Items.experience_bottle, 1);
                 int xp = getXP(par1ItemStack);
                 setXP(par1ItemStack, xp - LibFeatures.XP_TALISMAN_ENCHANTING_BOTTLE_COST);
                 par2World.playSoundAtEntity(par3EntityPlayer, "random.orb", 0.1F, (float) (0.1F + Math.random() / 2F));
-                for (int i = 0; par2World.isRemote && i < 6; i++)
-                    ThaumicTinkerer.tcProxy.sparkle(
-                            (float) (par3EntityPlayer.posX + (Math.random() - 0.5)),
-                            (float) (par3EntityPlayer.posY + Math.random() - 0.5),
-                            (float) (par3EntityPlayer.posZ + (Math.random() - 0.5)),
-                            3);
+                for (int i = 0; par2World.isRemote && i < 6; i++) ThaumicTinkerer.tcProxy.sparkle(
+                        (float) (par3EntityPlayer.posX + (Math.random() - 0.5)),
+                        (float) (par3EntityPlayer.posY + Math.random() - 0.5),
+                        (float) (par3EntityPlayer.posZ + (Math.random() - 0.5)),
+                        3);
             }
         }
 
@@ -100,8 +99,8 @@ public class ItemXPTalisman extends ItemBase implements IBauble {
     private void consumeXPOrb(EntityXPOrb orb) {
         orb.setDead();
         orb.worldObj.playSoundAtEntity(orb, "thaumcraft:zap", orb.getXpValue() / 10F, 1F);
-        ThaumicTinkerer.tcProxy.wispFX(
-                orb.worldObj, orb.posX, orb.posY, orb.posZ, orb.getXpValue() / 5F, 0.1F, 0.9F, 0.1F);
+        ThaumicTinkerer.tcProxy
+                .wispFX(orb.worldObj, orb.posX, orb.posY, orb.posZ, orb.getXpValue() / 5F, 0.1F, 0.9F, 0.1F);
     }
 
     @Override
@@ -135,19 +134,14 @@ public class ItemXPTalisman extends ItemBase implements IBauble {
     @Override
     public IRegisterableResearch getResearchItem() {
         return (TTResearchItem) new TTResearchItem(
-                        LibResearch.KEY_XP_TALISMAN,
-                        new AspectList()
-                                .add(Aspect.GREED, 1)
-                                .add(Aspect.MAGIC, 1)
-                                .add(Aspect.MAN, 1),
-                        4,
-                        -1,
-                        2,
-                        new ItemStack(this, 1, 1))
-                .setParents("JARBRAIN", LibResearch.KEY_SPELL_CLOTH)
-                .setConcealed()
-                .setPages(new ResearchPage("0"), ResearchHelper.infusionPage(LibResearch.KEY_XP_TALISMAN))
-                .setSecondary();
+                LibResearch.KEY_XP_TALISMAN,
+                new AspectList().add(Aspect.GREED, 1).add(Aspect.MAGIC, 1).add(Aspect.MAN, 1),
+                4,
+                -1,
+                2,
+                new ItemStack(this, 1, 1)).setParents("JARBRAIN", LibResearch.KEY_SPELL_CLOTH).setConcealed()
+                        .setPages(new ResearchPage("0"), ResearchHelper.infusionPage(LibResearch.KEY_XP_TALISMAN))
+                        .setSecondary();
     }
 
     @Override
@@ -156,10 +150,7 @@ public class ItemXPTalisman extends ItemBase implements IBauble {
                 LibResearch.KEY_XP_TALISMAN,
                 new ItemStack(this),
                 6,
-                new AspectList()
-                        .add(Aspect.GREED, 20)
-                        .add(Aspect.EXCHANGE, 10)
-                        .add(Aspect.BEAST, 10)
+                new AspectList().add(Aspect.GREED, 20).add(Aspect.EXCHANGE, 10).add(Aspect.BEAST, 10)
                         .add(Aspect.MECHANISM, 5),
                 new ItemStack(Items.gold_ingot),
                 new ItemStack(Items.quartz),

@@ -4,12 +4,14 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
+
 import thaumic.tinkerer.common.block.tile.TileRPlacer;
 
 /**
  * Created by nekosune on 30/06/14.
  */
 public class ContainerRemotePlacer extends ContainerPlayerInv {
+
     public TileRPlacer placer;
 
     public ContainerRemotePlacer(TileRPlacer placer, InventoryPlayer playerInv) {

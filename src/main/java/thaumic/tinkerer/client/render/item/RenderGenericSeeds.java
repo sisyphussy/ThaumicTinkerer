@@ -8,7 +8,9 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraftforge.client.IItemRenderer;
+
 import org.lwjgl.opengl.GL11;
+
 import thaumcraft.api.aspects.Aspect;
 import thaumic.tinkerer.common.item.ItemInfusedSeeds;
 
@@ -126,10 +128,10 @@ public class RenderGenericSeeds implements IItemRenderer {
 
     private void setColorForAspect(Aspect aspect) {
         // if(!aspect.isPrimal()){
-        //    float r = (aspect.getColor() >> 16 & 0xFF) / 255.0F;
-        //    float g = (aspect.getColor() >> 8 & 0xFF) / 255.0F;
-        //    float b = (aspect.getColor() & 0xFF) / 255.0F;
-        //    GL11.glColor3f(r, g, b);
+        // float r = (aspect.getColor() >> 16 & 0xFF) / 255.0F;
+        // float g = (aspect.getColor() >> 8 & 0xFF) / 255.0F;
+        // float b = (aspect.getColor() & 0xFF) / 255.0F;
+        // GL11.glColor3f(r, g, b);
         // }
     }
 }

@@ -1,9 +1,10 @@
 package thaumic.tinkerer.client.core.handler.kami;
 
-import cpw.mods.fml.client.FMLClientHandler;
 import net.minecraft.util.StatCollector;
+
 import thaumic.tinkerer.common.ThaumicTinkerer;
 import thaumic.tinkerer.common.network.packet.kami.PacketToggleArmor;
+import cpw.mods.fml.client.FMLClientHandler;
 
 /**
  * Created by Katrina on 02/03/14.

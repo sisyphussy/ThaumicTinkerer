@@ -1,30 +1,26 @@
 /**
- * This class was created by <Vazkii>. It's distributed as
- * part of the ThaumicTinkerer Mod.
+ * This class was created by <Vazkii>. It's distributed as part of the ThaumicTinkerer Mod.
  *
- * ThaumicTinkerer is Open Source and distributed under a
- * Creative Commons Attribution-NonCommercial-ShareAlike 3.0 License
- * (http://creativecommons.org/licenses/by-nc-sa/3.0/deed.en_GB)
+ * ThaumicTinkerer is Open Source and distributed under a Creative Commons Attribution-NonCommercial-ShareAlike 3.0
+ * License (http://creativecommons.org/licenses/by-nc-sa/3.0/deed.en_GB)
  *
- * ThaumicTinkerer is a Derivative Work on Thaumcraft 4.
- * Thaumcraft 4 (c) Azanor 2012
+ * ThaumicTinkerer is a Derivative Work on Thaumcraft 4. Thaumcraft 4 (c) Azanor 2012
  * (http://www.minecraftforum.net/topic/1585216-)
  *
  * File Created @ [Dec 26, 2013, 4:18:27 PM (GMT)]
  */
 package thaumic.tinkerer.common.item.kami.armor;
 
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import java.util.ArrayList;
 import java.util.List;
+
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
+
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.research.ResearchPage;
@@ -42,6 +38,9 @@ import thaumic.tinkerer.common.registry.ThaumicTinkererRecipe;
 import thaumic.tinkerer.common.research.IRegisterableResearch;
 import thaumic.tinkerer.common.research.KamiResearchItem;
 import thaumic.tinkerer.common.research.ResearchHelper;
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public class ItemGemChest extends ItemIchorclothArmorAdv {
 
@@ -57,8 +56,7 @@ public class ItemGemChest extends ItemIchorclothArmorAdv {
 
     private static boolean shouldPlayerHaveFlight(EntityPlayer player) {
         ItemStack armor = player.getCurrentArmor(2);
-        return armor != null
-                && armor.getItem() == ThaumicTinkerer.registry.getFirstItemFromClass(ItemGemChest.class)
+        return armor != null && armor.getItem() == ThaumicTinkerer.registry.getFirstItemFromClass(ItemGemChest.class)
                 && ThaumicTinkerer.proxy.armorStatus(player)
                 && armor.getItemDamage() == 0
                 && ConfigHandler.enableFlight;
@@ -92,18 +90,14 @@ public class ItemGemChest extends ItemIchorclothArmorAdv {
     public IRegisterableResearch getResearchItem() {
         if (!ConfigHandler.enableKami) return null;
         return (IRegisterableResearch) new KamiResearchItem(
-                        LibResearch.KEY_ICHORCLOTH_CHEST_GEM,
-                        new AspectList()
-                                .add(Aspect.AIR, 2)
-                                .add(Aspect.MOTION, 1)
-                                .add(Aspect.FLIGHT, 1)
-                                .add(Aspect.ELDRITCH, 1),
-                        17,
-                        7,
-                        5,
-                        new ItemStack(this))
-                .setParents(LibResearch.KEY_ICHORCLOTH_ARMOR)
-                .setPages(new ResearchPage("0"), ResearchHelper.infusionPage(LibResearch.KEY_ICHORCLOTH_CHEST_GEM));
+                LibResearch.KEY_ICHORCLOTH_CHEST_GEM,
+                new AspectList().add(Aspect.AIR, 2).add(Aspect.MOTION, 1).add(Aspect.FLIGHT, 1).add(Aspect.ELDRITCH, 1),
+                17,
+                7,
+                5,
+                new ItemStack(this)).setParents(LibResearch.KEY_ICHORCLOTH_ARMOR).setPages(
+                        new ResearchPage("0"),
+                        ResearchHelper.infusionPage(LibResearch.KEY_ICHORCLOTH_CHEST_GEM));
     }
 
     @Override
@@ -112,16 +106,11 @@ public class ItemGemChest extends ItemIchorclothArmorAdv {
                 LibResearch.KEY_ICHORCLOTH_CHEST_GEM,
                 new ItemStack(this),
                 13,
-                new AspectList()
-                        .add(Aspect.AIR, 50)
-                        .add(Aspect.ARMOR, 32)
-                        .add(Aspect.FLIGHT, 32)
-                        .add(Aspect.ORDER, 32)
-                        .add(Aspect.LIGHT, 64)
-                        .add(Aspect.ELDRITCH, 16)
-                        .add(Aspect.SENSES, 16),
-                new ItemStack(ThaumicTinkerer.registry.getItemFromClassAndName(
-                        ItemIchorclothArmor.class, LibItemNames.ICHOR_CHEST)),
+                new AspectList().add(Aspect.AIR, 50).add(Aspect.ARMOR, 32).add(Aspect.FLIGHT, 32).add(Aspect.ORDER, 32)
+                        .add(Aspect.LIGHT, 64).add(Aspect.ELDRITCH, 16).add(Aspect.SENSES, 16),
+                new ItemStack(
+                        ThaumicTinkerer.registry
+                                .getItemFromClassAndName(ItemIchorclothArmor.class, LibItemNames.ICHOR_CHEST)),
                 new ItemStack(Items.diamond, 1),
                 new ItemStack(ThaumicTinkerer.registry.getFirstItemFromClass(ItemKamiResource.class)),
                 new ItemStack(ThaumicTinkerer.registry.getFirstItemFromClass(ItemKamiResource.class)),

@@ -2,6 +2,7 @@ package thaumic.tinkerer.common.block;
 
 import java.util.ArrayList;
 import java.util.Random;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockCrops;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -11,6 +12,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.common.lib.research.ResearchManager;
@@ -103,7 +105,7 @@ public class BlockInfusedGrain extends BlockCrops implements ITTinkererBlock {
     @Override
     public void registerBlockIcons(IIconRegister par1IconRegister) {
         icons = new IIcon[7][4];
-        String[] names = {"aer", "ignis", "aqua", "terra", "ordo", "perditio", "generic"};
+        String[] names = { "aer", "ignis", "aqua", "terra", "ordo", "perditio", "generic" };
         for (int j = 0; j < names.length; j++) {
             String s = names[j];
             for (int i = 0; i < 4; i++) {
@@ -184,10 +186,9 @@ public class BlockInfusedGrain extends BlockCrops implements ITTinkererBlock {
                 AspectList farmlandAspectList = ((TileInfusedFarmland) world.getTileEntity(x, y - 1, z)).aspectList;
                 for (Aspect aspect : farmlandAspectList.getAspects()) {
                     Random rand = new Random();
-                    if (rand.nextInt(BREEDING_CHANCE)
-                            < (getPrimalTendencyCount(world, x, y, z, Aspect.FIRE) + 1)
-                                    * farmlandAspectList.getAmount(aspect)
-                                    * farmlandAspectList.getAmount(aspect)) {
+                    if (rand.nextInt(BREEDING_CHANCE) < (getPrimalTendencyCount(world, x, y, z, Aspect.FIRE) + 1)
+                            * farmlandAspectList.getAmount(aspect)
+                            * farmlandAspectList.getAmount(aspect)) {
                         if (ResearchManager.getCombinationResult(aspect, currentAspect) != null) {
                             return ResearchManager.getCombinationResult(aspect, currentAspect);
                         }

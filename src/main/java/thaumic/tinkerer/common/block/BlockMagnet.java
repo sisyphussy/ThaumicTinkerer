@@ -1,25 +1,21 @@
 /**
- * This class was created by <Vazkii>. It's distributed as
- * part of the ThaumicTinkerer Mod.
+ * This class was created by <Vazkii>. It's distributed as part of the ThaumicTinkerer Mod.
  *
- * ThaumicTinkerer is Open Source and distributed under a
- * Creative Commons Attribution-NonCommercial-ShareAlike 3.0 License
- * (http://creativecommons.org/licenses/by-nc-sa/3.0/deed.en_GB)
+ * ThaumicTinkerer is Open Source and distributed under a Creative Commons Attribution-NonCommercial-ShareAlike 3.0
+ * License (http://creativecommons.org/licenses/by-nc-sa/3.0/deed.en_GB)
  *
- * ThaumicTinkerer is a Derivative Work on Thaumcraft 4.
- * Thaumcraft 4 (c) Azanor 2012
+ * ThaumicTinkerer is a Derivative Work on Thaumcraft 4. Thaumcraft 4 (c) Azanor 2012
  * (http://www.minecraftforum.net/topic/1585216-)
  *
  * File Created @ [12 Sep 2013, 17:01:27 (GMT)]
  */
 package thaumic.tinkerer.common.block;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
@@ -33,6 +29,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
+
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.research.ResearchPage;
@@ -56,6 +53,8 @@ import thaumic.tinkerer.common.research.IRegisterableResearch;
 import thaumic.tinkerer.common.research.RecipeHelper;
 import thaumic.tinkerer.common.research.ResearchHelper;
 import thaumic.tinkerer.common.research.TTResearchItem;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public class BlockMagnet extends BlockModContainer implements IMultiTileEntityBlock {
 
@@ -72,22 +71,19 @@ public class BlockMagnet extends BlockModContainer implements IMultiTileEntityBl
     }
 
     @Override
-    public boolean onBlockActivated(
-            World par1World,
-            int par2,
-            int par3,
-            int par4,
-            EntityPlayer par5EntityPlayer,
-            int par6,
-            float par7,
-            float par8,
-            float par9) {
+    public boolean onBlockActivated(World par1World, int par2, int par3, int par4, EntityPlayer par5EntityPlayer,
+            int par6, float par7, float par8, float par9) {
         if (par5EntityPlayer.getCurrentEquippedItem() != null) {
             if (par5EntityPlayer.getCurrentEquippedItem().getItem() instanceof ItemWandCasting) {
                 TileEntity tile = par1World.getTileEntity(par2, par3, par4);
                 if (tile != null && tile instanceof TileMobMagnet) {
                     par5EntityPlayer.openGui(
-                            ThaumicTinkerer.instance, LibGuiIDs.GUI_ID_MOB_MAGNET, par1World, par2, par3, par4);
+                            ThaumicTinkerer.instance,
+                            LibGuiIDs.GUI_ID_MOB_MAGNET,
+                            par1World,
+                            par2,
+                            par3,
+                            par4);
                     if (!par1World.isRemote) {
                         par1World.playSoundEffect(par2, par3, par4, "thaumcraft:key", 1F, 0.5F);
                     }
@@ -118,9 +114,8 @@ public class BlockMagnet extends BlockModContainer implements IMultiTileEntityBl
                     float f1 = random.nextFloat() * 0.8F + 0.1F;
                     EntityItem entityitem;
 
-                    for (float f2 = random.nextFloat() * 0.8F + 0.1F;
-                            itemstack.stackSize > 0;
-                            par1World.spawnEntityInWorld(entityitem)) {
+                    for (float f2 = random.nextFloat() * 0.8F + 0.1F; itemstack.stackSize > 0; par1World
+                            .spawnEntityInWorld(entityitem)) {
                         int k1 = random.nextInt(21) + 10;
 
                         if (k1 > itemstack.stackSize) k1 = itemstack.stackSize;
@@ -137,9 +132,8 @@ public class BlockMagnet extends BlockModContainer implements IMultiTileEntityBl
                         entityitem.motionY = (float) random.nextGaussian() * f3 + 0.2F;
                         entityitem.motionZ = (float) random.nextGaussian() * f3;
 
-                        if (itemstack.hasTagCompound())
-                            entityitem.getEntityItem().setTagCompound((NBTTagCompound)
-                                    itemstack.getTagCompound().copy());
+                        if (itemstack.hasTagCompound()) entityitem.getEntityItem()
+                                .setTagCompound((NBTTagCompound) itemstack.getTagCompound().copy());
                     }
                 }
             }
@@ -230,24 +224,18 @@ public class BlockMagnet extends BlockModContainer implements IMultiTileEntityBl
     @Override
     public IRegisterableResearch getResearchItem() {
         return (IRegisterableResearch) new TTResearchItem(
-                        LibResearch.KEY_MAGNETS,
-                        new AspectList()
-                                .add(Aspect.MECHANISM, 2)
-                                .add(Aspect.MOTION, 1)
-                                .add(Aspect.SENSES, 1),
-                        -6,
-                        3,
-                        3,
-                        new ItemStack(this))
-                .setParents(LibResearch.KEY_INTERFACE)
-                .setParentsHidden(LibResearch.KEY_FOCUS_TELEKINESIS)
-                .setConcealed()
-                .setPages(
-                        new ResearchPage("0"),
-                        new ResearchPage("1"),
-                        ResearchHelper.arcaneRecipePage(LibResearch.KEY_MAGNET),
-                        ResearchHelper.arcaneRecipePage(LibResearch.KEY_MOB_MAGNET),
-                        ResearchHelper.crucibleRecipePage(LibResearch.KEY_MAGNETS));
+                LibResearch.KEY_MAGNETS,
+                new AspectList().add(Aspect.MECHANISM, 2).add(Aspect.MOTION, 1).add(Aspect.SENSES, 1),
+                -6,
+                3,
+                3,
+                new ItemStack(this)).setParents(LibResearch.KEY_INTERFACE)
+                        .setParentsHidden(LibResearch.KEY_FOCUS_TELEKINESIS).setConcealed().setPages(
+                                new ResearchPage("0"),
+                                new ResearchPage("1"),
+                                ResearchHelper.arcaneRecipePage(LibResearch.KEY_MAGNET),
+                                ResearchHelper.arcaneRecipePage(LibResearch.KEY_MOB_MAGNET),
+                                ResearchHelper.crucibleRecipePage(LibResearch.KEY_MAGNETS));
     }
 
     @Override
@@ -258,10 +246,7 @@ public class BlockMagnet extends BlockModContainer implements IMultiTileEntityBl
                         LibResearch.KEY_MAGNET,
                         LibResearch.KEY_MAGNETS,
                         new ItemStack(this),
-                        new AspectList()
-                                .add(Aspect.AIR, 20)
-                                .add(Aspect.ORDER, 5)
-                                .add(Aspect.EARTH, 15)
+                        new AspectList().add(Aspect.AIR, 20).add(Aspect.ORDER, 5).add(Aspect.EARTH, 15)
                                 .add(Aspect.ENTROPY, 5),
                         " I ",
                         "SIs",
@@ -280,10 +265,7 @@ public class BlockMagnet extends BlockModContainer implements IMultiTileEntityBl
                         LibResearch.KEY_MOB_MAGNET,
                         LibResearch.KEY_MAGNETS,
                         new ItemStack(this, 1, 1),
-                        new AspectList()
-                                .add(Aspect.AIR, 20)
-                                .add(Aspect.ORDER, 5)
-                                .add(Aspect.EARTH, 15)
+                        new AspectList().add(Aspect.AIR, 20).add(Aspect.ORDER, 5).add(Aspect.EARTH, 15)
                                 .add(Aspect.ENTROPY, 5),
                         " G ",
                         "SGs",

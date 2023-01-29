@@ -1,13 +1,14 @@
 package thaumic.tinkerer.common.core.helper;
 
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import net.minecraft.block.IGrowable;
 import net.minecraftforge.event.entity.player.BonemealEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
+
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.config.ConfigItems;
 import thaumic.tinkerer.common.block.BlockInfusedGrain;
 import thaumic.tinkerer.common.core.handler.ConfigHandler;
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
 /**
  * Created by pixlepix on 8/28/14.

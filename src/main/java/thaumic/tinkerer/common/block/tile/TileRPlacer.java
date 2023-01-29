@@ -15,12 +15,14 @@ import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.common.util.FakePlayerFactory;
 import net.minecraftforge.common.util.ForgeDirection;
+
 import thaumic.tinkerer.common.lib.LibBlockNames;
 
 /**
  * Created by nekosune on 30/06/14.
  */
 public class TileRPlacer extends TileCamo implements IInventory {
+
     private static final String TAG_ORIENTATION = "orientation";
     private static final String TAG_BLOCKS = "blocks";
     public int orientation;
@@ -205,19 +207,26 @@ public class TileRPlacer extends TileCamo implements IInventory {
             if (this.worldObj.getBlock(x, y, z) == Blocks.air) {
                 // if (this.worldObj.setBlock(x, y, z, ((ItemBlock) this.inventorySlots[0].getItem()).field_150939_a,
                 // this.inventorySlots[0].getItemDamage(), 1 | 2)) {
-                //  this.decrStackSize(0, 1);
+                // this.decrStackSize(0, 1);
                 // markDirty();
                 // Block block = worldObj.getBlock(x, y, z);
                 boolean done = false;
                 FakePlayer player = FakePlayerFactory.getMinecraft((WorldServer) worldObj);
                 Item item = inventorySlots[0].getItem();
                 ItemStack stack = inventorySlots[0];
-                if (!done)
-                    item.onItemUseFirst(
-                            stack, player, worldObj, x, y, z, ForgeDirection.OPPOSITES[orientation], 0F, 0F, 0F);
-                if (!done)
-                    done = item.onItemUse(
-                            stack, player, worldObj, x, y, z, ForgeDirection.OPPOSITES[orientation], 0F, 0F, 0F);
+                if (!done) item.onItemUseFirst(
+                        stack,
+                        player,
+                        worldObj,
+                        x,
+                        y,
+                        z,
+                        ForgeDirection.OPPOSITES[orientation],
+                        0F,
+                        0F,
+                        0F);
+                if (!done) done = item
+                        .onItemUse(stack, player, worldObj, x, y, z, ForgeDirection.OPPOSITES[orientation], 0F, 0F, 0F);
                 if (!done) {
                     item.onItemRightClick(stack, worldObj, player);
                     done = true;

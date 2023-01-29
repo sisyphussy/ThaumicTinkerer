@@ -1,11 +1,10 @@
 package thaumic.tinkerer.common.block;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
+
 import net.minecraft.block.BlockSlab;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
@@ -23,6 +22,7 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.config.ConfigBlocks;
 import thaumic.tinkerer.common.ThaumicTinkerer;
@@ -34,6 +34,8 @@ import thaumic.tinkerer.common.registry.ITTinkererBlock;
 import thaumic.tinkerer.common.registry.ThaumicTinkererCraftingBenchRecipe;
 import thaumic.tinkerer.common.registry.ThaumicTinkererRecipe;
 import thaumic.tinkerer.common.research.IRegisterableResearch;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 /**
  * Created by Katrina on 13/04/2015.
@@ -72,7 +74,7 @@ public class BlockWardSlab extends BlockSlab implements ITTinkererBlock, ITileEn
 
     // @Override
     // public int idDropped(int par1, Random par2Random, int par3) {
-    //	return ThaumicTinkerer.registry.getFirstBlockFromClass(BlockDarkQuartzSlab.class).blockID;
+    // return ThaumicTinkerer.registry.getFirstBlockFromClass(BlockDarkQuartzSlab.class).blockID;
     // }
 
     @Override
@@ -164,51 +166,54 @@ public class BlockWardSlab extends BlockSlab implements ITTinkererBlock, ITileEn
                             -0.02F);
                 }
             } else if (world.getBlock(x, y + 1, z) != ConfigBlocks.blockAiry
-                            && world.getBlock(x, y + 1, z).getBlocksMovement(world, x, y + 1, z)
+                    && world.getBlock(x, y + 1, z).getBlocksMovement(world, x, y + 1, z)
                     || world.getBlock(x, y + 2, z) != ConfigBlocks.blockAiry
                             && world.getBlock(x, y + 1, z).getBlocksMovement(world, x, y + 1, z)) {
-                for (list = 0; list < Thaumcraft.proxy.particleCount(3); ++list) {
-                    Thaumcraft.proxy.blockRunes(
-                            world,
-                            (double) x,
-                            (double) ((float) y + 0.7F),
-                            (double) z,
-                            0.9F + world.rand.nextFloat() * 0.1F,
-                            world.rand.nextFloat() * 0.3F,
-                            world.rand.nextFloat() * 0.3F,
-                            24,
-                            -0.02F);
-                }
-            } else {
-                List var10 = world.getEntitiesWithinAABBExcludingEntity(
-                        (Entity) null,
-                        AxisAlignedBB.getBoundingBox(
-                                        (double) x, (double) y, (double) z, (double) (x + 1), (double) (y + 1), (double)
-                                                (z + 1))
-                                .expand(1.0D, 1.0D, 1.0D));
-                if (!var10.isEmpty()) {
-                    Iterator iterator = var10.iterator();
+                                for (list = 0; list < Thaumcraft.proxy.particleCount(3); ++list) {
+                                    Thaumcraft.proxy.blockRunes(
+                                            world,
+                                            (double) x,
+                                            (double) ((float) y + 0.7F),
+                                            (double) z,
+                                            0.9F + world.rand.nextFloat() * 0.1F,
+                                            world.rand.nextFloat() * 0.3F,
+                                            world.rand.nextFloat() * 0.3F,
+                                            24,
+                                            -0.02F);
+                                }
+                            } else {
+                                List var10 = world.getEntitiesWithinAABBExcludingEntity(
+                                        (Entity) null,
+                                        AxisAlignedBB.getBoundingBox(
+                                                (double) x,
+                                                (double) y,
+                                                (double) z,
+                                                (double) (x + 1),
+                                                (double) (y + 1),
+                                                (double) (z + 1)).expand(1.0D, 1.0D, 1.0D));
+                                if (!var10.isEmpty()) {
+                                    Iterator iterator = var10.iterator();
 
-                    while (iterator.hasNext()) {
-                        Entity entity = (Entity) iterator.next();
-                        if (entity instanceof EntityLivingBase && !(entity instanceof EntityPlayer)) {
-                            Thaumcraft.proxy.blockRunes(
-                                    world,
-                                    (double) x,
-                                    (double) ((float) y
-                                            + 0.6F
-                                            + world.rand.nextFloat() * Math.max(0.8F, entity.getEyeHeight())),
-                                    (double) z,
-                                    0.6F + world.rand.nextFloat() * 0.4F,
-                                    0.0F,
-                                    0.3F + world.rand.nextFloat() * 0.7F,
-                                    20,
-                                    0.0F);
-                            break;
-                        }
-                    }
-                }
-            }
+                                    while (iterator.hasNext()) {
+                                        Entity entity = (Entity) iterator.next();
+                                        if (entity instanceof EntityLivingBase && !(entity instanceof EntityPlayer)) {
+                                            Thaumcraft.proxy.blockRunes(
+                                                    world,
+                                                    (double) x,
+                                                    (double) ((float) y + 0.6F
+                                                            + world.rand.nextFloat()
+                                                                    * Math.max(0.8F, entity.getEyeHeight())),
+                                                    (double) z,
+                                                    0.6F + world.rand.nextFloat() * 0.4F,
+                                                    0.0F,
+                                                    0.3F + world.rand.nextFloat() * 0.7F,
+                                                    20,
+                                                    0.0F);
+                                            break;
+                                        }
+                                    }
+                                }
+                            }
         }
     }
 

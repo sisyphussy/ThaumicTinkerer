@@ -3,11 +3,14 @@ package thaumic.tinkerer.common.core.helper;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
+
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
+
 import org.apache.commons.lang3.text.WordUtils;
+
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.common.config.ConfigBlocks;
@@ -23,8 +26,7 @@ import thaumic.tinkerer.common.item.ItemInfusedGrain;
  */
 public class AspectCropLootManager {
 
-    private static HashMap<Aspect, HashMap<ItemStack, Integer>> lootMap =
-            new HashMap<Aspect, HashMap<ItemStack, Integer>>();
+    private static HashMap<Aspect, HashMap<ItemStack, Integer>> lootMap = new HashMap<Aspect, HashMap<ItemStack, Integer>>();
 
     public static ItemStack getLootForAspect(Aspect aspect) {
         HashMap<ItemStack, Integer> aspectHashmap = lootMap.get(aspect);
@@ -178,7 +180,8 @@ public class AspectCropLootManager {
         addAspectLoot(Aspect.LIGHT, new ItemStack(Items.glowstone_dust, 16), 5);
         addAspectLoot(Aspect.LIGHT, new ItemStack(ConfigItems.itemResource, 4, 1));
         addAspectLoot(
-                Aspect.LIGHT, new ItemStack(ThaumicTinkerer.registry.getFirstItemFromClass(ItemBrightNitor.class)));
+                Aspect.LIGHT,
+                new ItemStack(ThaumicTinkerer.registry.getFirstItemFromClass(ItemBrightNitor.class)));
 
         addAspectLoot(Aspect.MECHANISM, new ItemStack(Blocks.piston, 8));
         // addAspectLoot(Aspect.MECHANISM, "gear");

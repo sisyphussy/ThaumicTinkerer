@@ -1,13 +1,10 @@
 /**
- * This class was created by <Vazkii>. It's distributed as
- * part of the ThaumicTinkerer Mod.
+ * This class was created by <Vazkii>. It's distributed as part of the ThaumicTinkerer Mod.
  *
- * ThaumicTinkerer is Open Source and distributed under a
- * Creative Commons Attribution-NonCommercial-ShareAlike 3.0 License
- * (http://creativecommons.org/licenses/by-nc-sa/3.0/deed.en_GB)
+ * ThaumicTinkerer is Open Source and distributed under a Creative Commons Attribution-NonCommercial-ShareAlike 3.0
+ * License (http://creativecommons.org/licenses/by-nc-sa/3.0/deed.en_GB)
  *
- * ThaumicTinkerer is a Derivative Work on Thaumcraft 4.
- * Thaumcraft 4 (c) Azanor 2012
+ * ThaumicTinkerer is a Derivative Work on Thaumcraft 4. Thaumcraft 4 (c) Azanor 2012
  * (http://www.minecraftforum.net/topic/1585216-)
  *
  * File Created @ [15 Sep 2013, 00:58:22 (GMT)]
@@ -17,13 +14,16 @@ package thaumic.tinkerer.client.gui;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
+
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+
 import org.lwjgl.opengl.GL11;
+
 import thaumcraft.api.aspects.Aspect;
 import thaumic.tinkerer.client.core.helper.ClientHelper;
 import thaumic.tinkerer.client.gui.button.GuiButtonEnchant;
@@ -111,8 +111,8 @@ public class GuiEnchanting extends GuiContainer {
 
         for (int enchant : EnchantmentManager.enchantmentData.keySet()) {
             if (currentStack.getItem().getItemEnchantability() != 0
-                    && EnchantmentManager.canApply(
-                            currentStack, Enchantment.enchantmentsList[enchant], enchanter.enchantments)
+                    && EnchantmentManager
+                            .canApply(currentStack, Enchantment.enchantmentsList[enchant], enchanter.enchantments)
                     && EnchantmentManager.canEnchantmentBeUsed(
                             ClientHelper.clientPlayer().getGameProfile().getName(),
                             Enchantment.enchantmentsList[enchant])) {
@@ -130,9 +130,8 @@ public class GuiEnchanting extends GuiContainer {
             ThaumicTinkerer.netHandler.sendToServer(new PacketEnchanterStartWorking(enchanter));
         } else if (par1GuiButton.id <= 16) {
             GuiButtonEnchantment button = enchantButtons[par1GuiButton.id - 1];
-            if (button != null && button.enchant != null)
-                ThaumicTinkerer.netHandler.sendToServer(
-                        new PacketEnchanterAddEnchant(enchanter, button.enchant.effectId, 0));
+            if (button != null && button.enchant != null) ThaumicTinkerer.netHandler
+                    .sendToServer(new PacketEnchanterAddEnchant(enchanter, button.enchant.effectId, 0));
         } else {
             int type = (par1GuiButton.id - 17) % 3;
             int index = (par1GuiButton.id - 17) / 3;
@@ -145,8 +144,8 @@ public class GuiEnchanting extends GuiContainer {
 
             switch (type) {
                 case 0: {
-                    ThaumicTinkerer.netHandler.sendToServer(
-                            new PacketEnchanterAddEnchant(enchanter, enchant.effectId, -1));
+                    ThaumicTinkerer.netHandler
+                            .sendToServer(new PacketEnchanterAddEnchant(enchanter, enchant.effectId, -1));
                     break;
                 }
                 case 1: {
@@ -155,8 +154,8 @@ public class GuiEnchanting extends GuiContainer {
                     break;
                 }
                 case 2: {
-                    ThaumicTinkerer.netHandler.sendToServer(
-                            new PacketEnchanterAddEnchant(enchanter, enchant.effectId, level + 1));
+                    ThaumicTinkerer.netHandler
+                            .sendToServer(new PacketEnchanterAddEnchant(enchanter, enchant.effectId, level + 1));
                     break;
                 }
             }
@@ -169,9 +168,9 @@ public class GuiEnchanting extends GuiContainer {
     public void updateScreen() {
         currentStack = enchanter.getStackInSlot(0);
         buildButtonList();
-        if (currentStack != lastTickStack
-                || !lastTickEnchants.equals(enchanter.enchantments)
-                || !lastTickLevels.equals(enchanter.levels)) buildButtonList();
+        if (currentStack != lastTickStack || !lastTickEnchants.equals(enchanter.enchantments)
+                || !lastTickLevels.equals(enchanter.levels))
+            buildButtonList();
 
         lastTickStack = currentStack;
         lastTickEnchants = new ArrayList(enchanter.enchantments);

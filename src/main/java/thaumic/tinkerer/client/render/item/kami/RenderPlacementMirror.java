@@ -7,7 +7,9 @@ import net.minecraft.client.renderer.entity.RenderItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraftforge.client.IItemRenderer;
+
 import org.lwjgl.opengl.GL11;
+
 import thaumic.tinkerer.common.ThaumicTinkerer;
 import thaumic.tinkerer.common.item.kami.ItemPlacementMirror;
 
@@ -40,8 +42,7 @@ public class RenderPlacementMirror implements IItemRenderer {
             }
             case EQUIPPED: {
                 for (int i = 1; i >= 0; i--) {
-                    IIcon icon = ThaumicTinkerer.registry
-                            .getFirstItemFromClass(ItemPlacementMirror.class)
+                    IIcon icon = ThaumicTinkerer.registry.getFirstItemFromClass(ItemPlacementMirror.class)
                             .getIconFromDamageForRenderPass(0, i);
                     if (i == 0) {
                         GL11.glEnable(GL11.GL_BLEND);
@@ -53,7 +54,14 @@ public class RenderPlacementMirror implements IItemRenderer {
                     float f2 = icon.getMinV();
                     float f3 = icon.getMaxV();
                     ItemRenderer.renderItemIn2D(
-                            Tessellator.instance, f1, f2, f, f3, icon.getIconWidth(), icon.getIconHeight(), 1F / 16F);
+                            Tessellator.instance,
+                            f1,
+                            f2,
+                            f,
+                            f3,
+                            icon.getIconWidth(),
+                            icon.getIconHeight(),
+                            1F / 16F);
                 }
                 GL11.glDisable(GL11.GL_BLEND);
                 break;

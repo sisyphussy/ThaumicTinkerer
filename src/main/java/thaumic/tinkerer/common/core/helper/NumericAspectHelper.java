@@ -1,6 +1,7 @@
 package thaumic.tinkerer.common.core.helper;
 
 import java.util.ArrayList;
+
 import thaumcraft.api.aspects.Aspect;
 
 public class NumericAspectHelper {

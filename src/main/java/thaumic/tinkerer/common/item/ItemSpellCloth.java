@@ -1,27 +1,24 @@
 /**
- * This class was created by <Vazkii>. It's distributed as
- * part of the ThaumicTinkerer Mod.
+ * This class was created by <Vazkii>. It's distributed as part of the ThaumicTinkerer Mod.
  *
- * ThaumicTinkerer is Open Source and distributed under a
- * Creative Commons Attribution-NonCommercial-ShareAlike 3.0 License
- * (http://creativecommons.org/licenses/by-nc-sa/3.0/deed.en_GB)
+ * ThaumicTinkerer is Open Source and distributed under a Creative Commons Attribution-NonCommercial-ShareAlike 3.0
+ * License (http://creativecommons.org/licenses/by-nc-sa/3.0/deed.en_GB)
  *
- * ThaumicTinkerer is a Derivative Work on Thaumcraft 4.
- * Thaumcraft 4 (c) Azanor 2012
+ * ThaumicTinkerer is a Derivative Work on Thaumcraft 4. Thaumcraft 4 (c) Azanor 2012
  * (http://www.minecraftforum.net/topic/1585216-)
  *
  * File Created @ [9 Sep 2013, 01:20:22 (GMT)]
  */
 package thaumic.tinkerer.common.item;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import java.awt.*;
+
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraftforge.oredict.RecipeSorter;
+
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.research.ResearchPage;
@@ -35,6 +32,8 @@ import thaumic.tinkerer.common.registry.ThaumicTinkererRecipe;
 import thaumic.tinkerer.common.research.IRegisterableResearch;
 import thaumic.tinkerer.common.research.ResearchHelper;
 import thaumic.tinkerer.common.research.TTResearchItem;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public class ItemSpellCloth extends ItemBase {
 
@@ -61,14 +60,14 @@ public class ItemSpellCloth extends ItemBase {
     public IRegisterableResearch getResearchItem() {
 
         IRegisterableResearch research = (TTResearchItem) new TTResearchItem(
-                        LibResearch.KEY_SPELL_CLOTH,
-                        new AspectList().add(Aspect.MAGIC, 2).add(Aspect.CLOTH, 1),
-                        3,
-                        2,
-                        2,
-                        new ItemStack(this))
-                .setParentsHidden("ENCHFABRIC")
-                .setPages(new ResearchPage("0"), ResearchHelper.crucibleRecipePage(LibResearch.KEY_SPELL_CLOTH));
+                LibResearch.KEY_SPELL_CLOTH,
+                new AspectList().add(Aspect.MAGIC, 2).add(Aspect.CLOTH, 1),
+                3,
+                2,
+                2,
+                new ItemStack(this)).setParentsHidden("ENCHFABRIC").setPages(
+                        new ResearchPage("0"),
+                        ResearchHelper.crucibleRecipePage(LibResearch.KEY_SPELL_CLOTH));
         return research;
     }
 

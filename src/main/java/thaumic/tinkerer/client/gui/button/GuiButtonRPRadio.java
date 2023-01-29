@@ -6,6 +6,7 @@ import java.util.List;
  * Created by nekosune on 30/06/14.
  */
 public class GuiButtonRPRadio extends GuiButtonRP implements IRadioButton {
+
     List<IRadioButton> linkedButtons;
 
     public GuiButtonRPRadio(int par1, int par2, int par3, boolean enabled, List<IRadioButton> linkedButtons) {

@@ -1,29 +1,16 @@
 /**
- * This class was created by <Vazkii>. It's distributed as
- * part of the ThaumicTinkerer Mod.
+ * This class was created by <Vazkii>. It's distributed as part of the ThaumicTinkerer Mod.
  *
- * ThaumicTinkerer is Open Source and distributed under a
- * Creative Commons Attribution-NonCommercial-ShareAlike 3.0 License
- * (http://creativecommons.org/licenses/by-nc-sa/3.0/deed.en_GB)
+ * ThaumicTinkerer is Open Source and distributed under a Creative Commons Attribution-NonCommercial-ShareAlike 3.0
+ * License (http://creativecommons.org/licenses/by-nc-sa/3.0/deed.en_GB)
  *
- * ThaumicTinkerer is a Derivative Work on Thaumcraft 4.
- * Thaumcraft 4 (c) Azanor 2012
+ * ThaumicTinkerer is a Derivative Work on Thaumcraft 4. Thaumcraft 4 (c) Azanor 2012
  * (http://www.minecraftforum.net/topic/1585216-)
  *
  * File Created @ [8 Sep 2013, 19:01:20 (GMT)]
  */
 package thaumic.tinkerer.common.block.tile.transvector;
 
-import cofh.api.energy.IEnergyHandler;
-import cofh.api.energy.IEnergyProvider;
-import cofh.api.energy.IEnergyReceiver;
-import cpw.mods.fml.common.Loader;
-import cpw.mods.fml.common.Optional;
-import dan200.computercraft.api.lua.ILuaContext;
-import dan200.computercraft.api.lua.LuaException;
-import dan200.computercraft.api.peripheral.IComputerAccess;
-import dan200.computercraft.api.peripheral.IPeripheral;
-import ic2.api.energy.tile.*;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
@@ -34,36 +21,36 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
+
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.aspects.IAspectContainer;
 import thaumcraft.api.aspects.IEssentiaTransport;
 import thaumic.tinkerer.common.compat.IndustrialcraftUnloadHelper;
 import thaumic.tinkerer.common.lib.LibFeatures;
+import cofh.api.energy.IEnergyHandler;
+import cofh.api.energy.IEnergyProvider;
+import cofh.api.energy.IEnergyReceiver;
+import cpw.mods.fml.common.Loader;
+import cpw.mods.fml.common.Optional;
+import dan200.computercraft.api.lua.ILuaContext;
+import dan200.computercraft.api.lua.LuaException;
+import dan200.computercraft.api.peripheral.IComputerAccess;
+import dan200.computercraft.api.peripheral.IPeripheral;
+import ic2.api.energy.tile.*;
 
 @Optional.InterfaceList({
-    @Optional.Interface(iface = "dan200.computercraft.api.peripheral.IPeripheral", modid = "ComputerCraft"),
-    @Optional.Interface(iface = "cofh.api.energy.IEnergyHandler", modid = "CoFHCore"),
-    @Optional.Interface(iface = "cofh.api.energy.IEnergyReceiver", modid = "CoFHCore"),
-    @Optional.Interface(iface = "cofh.api.energy.IEnergyProvider", modid = "CoFHCore"),
-    @Optional.Interface(iface = "ic2.api.energy.tile.IEnergySink", modid = "IC2"),
-    @Optional.Interface(iface = "ic2.api.energy.tile.IEnergyEmitter", modid = "IC2"),
-    @Optional.Interface(iface = "ic2.api.energy.tile.IEnergySource", modid = "IC2"),
-    @Optional.Interface(iface = "ic2.api.energy.tile.IEnergyConductor", modid = "IC2")
-})
+        @Optional.Interface(iface = "dan200.computercraft.api.peripheral.IPeripheral", modid = "ComputerCraft"),
+        @Optional.Interface(iface = "cofh.api.energy.IEnergyHandler", modid = "CoFHCore"),
+        @Optional.Interface(iface = "cofh.api.energy.IEnergyReceiver", modid = "CoFHCore"),
+        @Optional.Interface(iface = "cofh.api.energy.IEnergyProvider", modid = "CoFHCore"),
+        @Optional.Interface(iface = "ic2.api.energy.tile.IEnergySink", modid = "IC2"),
+        @Optional.Interface(iface = "ic2.api.energy.tile.IEnergyEmitter", modid = "IC2"),
+        @Optional.Interface(iface = "ic2.api.energy.tile.IEnergySource", modid = "IC2"),
+        @Optional.Interface(iface = "ic2.api.energy.tile.IEnergyConductor", modid = "IC2") })
 public class TileTransvectorInterface extends TileTransvector
-        implements ISidedInventory,
-                IEnergyEmitter,
-                IEnergySink,
-                IEnergyConductor,
-                IEnergySource,
-                IFluidHandler,
-                IEnergyHandler,
-                IEnergyReceiver,
-                IAspectContainer,
-                IEssentiaTransport,
-                IPeripheral,
-                IEnergyProvider {
+        implements ISidedInventory, IEnergyEmitter, IEnergySink, IEnergyConductor, IEnergySource, IFluidHandler,
+        IEnergyHandler, IEnergyReceiver, IAspectContainer, IEssentiaTransport, IPeripheral, IEnergyProvider {
 
     public boolean addedToICEnergyNet = false;
 
@@ -225,24 +212,21 @@ public class TileTransvectorInterface extends TileTransvector
     @Override
     public int[] getAccessibleSlotsFromSide(int var1) {
         TileEntity tile = getTile();
-        return tile instanceof ISidedInventory
-                ? ((ISidedInventory) tile).getAccessibleSlotsFromSide(var1)
+        return tile instanceof ISidedInventory ? ((ISidedInventory) tile).getAccessibleSlotsFromSide(var1)
                 : tile instanceof IInventory ? buildSlotsForLinearInventory((IInventory) tile) : new int[0];
     }
 
     @Override
     public boolean canInsertItem(int i, ItemStack itemstack, int j) {
         TileEntity tile = getTile();
-        return tile instanceof ISidedInventory
-                ? ((ISidedInventory) tile).canInsertItem(i, itemstack, j)
+        return tile instanceof ISidedInventory ? ((ISidedInventory) tile).canInsertItem(i, itemstack, j)
                 : tile instanceof IInventory;
     }
 
     @Override
     public boolean canExtractItem(int i, ItemStack itemstack, int j) {
         TileEntity tile = getTile();
-        return tile instanceof ISidedInventory
-                ? ((ISidedInventory) tile).canExtractItem(i, itemstack, j)
+        return tile instanceof ISidedInventory ? ((ISidedInventory) tile).canExtractItem(i, itemstack, j)
                 : tile instanceof IInventory;
     }
 
@@ -420,8 +404,7 @@ public class TileTransvectorInterface extends TileTransvector
     @Override
     public int addEssentia(Aspect arg0, int arg1, ForgeDirection forgeDirection) {
         TileEntity tile = getTile();
-        return tile instanceof IEssentiaTransport
-                ? ((IEssentiaTransport) tile).addEssentia(arg0, arg1, forgeDirection)
+        return tile instanceof IEssentiaTransport ? ((IEssentiaTransport) tile).addEssentia(arg0, arg1, forgeDirection)
                 : 0;
     }
 
@@ -441,8 +424,7 @@ public class TileTransvectorInterface extends TileTransvector
     @Override
     @Optional.Method(modid = "ComputerCraft")
     public String getType() {
-        return getTile() instanceof IPeripheral
-                ? ((IPeripheral) getTile()).getType()
+        return getTile() instanceof IPeripheral ? ((IPeripheral) getTile()).getType()
                 : "Transvector Interface Unconnected Peripherad";
     }
 

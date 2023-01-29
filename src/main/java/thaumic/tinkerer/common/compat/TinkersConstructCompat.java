@@ -3,6 +3,7 @@ package thaumic.tinkerer.common.compat;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+
 import tconstruct.library.tools.AbilityHelper;
 import tconstruct.library.tools.ToolCore;
 import thaumic.tinkerer.common.core.helper.ItemNBTHelper;

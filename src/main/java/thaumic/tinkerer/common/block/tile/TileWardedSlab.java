@@ -2,17 +2,20 @@ package thaumic.tinkerer.common.block.tile;
 
 import java.util.Iterator;
 import java.util.List;
+
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.MathHelper;
+
 import thaumcraft.common.config.ConfigBlocks;
 
 /**
  * Created by Katrina on 14/04/2015.
  */
 public class TileWardedSlab extends TileEntity {
+
     int count = 0;
 
     public TileWardedSlab() {}
@@ -35,13 +38,12 @@ public class TileWardedSlab extends TileEntity {
                 List targets = this.worldObj.getEntitiesWithinAABB(
                         EntityLivingBase.class,
                         AxisAlignedBB.getBoundingBox(
-                                        (double) this.xCoord,
-                                        (double) this.yCoord - 1,
-                                        (double) this.zCoord,
-                                        (double) (this.xCoord + 1),
-                                        (double) (this.yCoord + 3),
-                                        (double) (this.zCoord + 1))
-                                .expand(0.1D, 0.1D, 0.1D));
+                                (double) this.xCoord,
+                                (double) this.yCoord - 1,
+                                (double) this.zCoord,
+                                (double) (this.xCoord + 1),
+                                (double) (this.yCoord + 3),
+                                (double) (this.zCoord + 1)).expand(0.1D, 0.1D, 0.1D));
                 if (targets.size() > 0) {
                     Iterator i$ = targets.iterator();
 
@@ -59,17 +61,15 @@ public class TileWardedSlab extends TileEntity {
 
             if (++this.count % 100 == 0) {
                 if ((this.worldObj.getBlock(this.xCoord, this.yCoord + 1, this.zCoord) != ConfigBlocks.blockAiry
-                                || this.worldObj.getBlockMetadata(this.xCoord, this.yCoord + 1, this.zCoord) != 3)
-                        && this.worldObj
-                                .getBlock(this.xCoord, this.yCoord + 1, this.zCoord)
+                        || this.worldObj.getBlockMetadata(this.xCoord, this.yCoord + 1, this.zCoord) != 3)
+                        && this.worldObj.getBlock(this.xCoord, this.yCoord + 1, this.zCoord)
                                 .isReplaceable(this.worldObj, this.xCoord, this.yCoord + 1, this.zCoord)) {
                     this.worldObj.setBlock(this.xCoord, this.yCoord + 1, this.zCoord, ConfigBlocks.blockAiry, 4, 3);
                 }
 
                 if ((this.worldObj.getBlock(this.xCoord, this.yCoord + 2, this.zCoord) != ConfigBlocks.blockAiry
-                                || this.worldObj.getBlockMetadata(this.xCoord, this.yCoord + 2, this.zCoord) != 3)
-                        && this.worldObj
-                                .getBlock(this.xCoord, this.yCoord + 2, this.zCoord)
+                        || this.worldObj.getBlockMetadata(this.xCoord, this.yCoord + 2, this.zCoord) != 3)
+                        && this.worldObj.getBlock(this.xCoord, this.yCoord + 2, this.zCoord)
                                 .isReplaceable(this.worldObj, this.xCoord, this.yCoord + 2, this.zCoord)) {
                     this.worldObj.setBlock(this.xCoord, this.yCoord + 2, this.zCoord, ConfigBlocks.blockAiry, 4, 3);
                 }

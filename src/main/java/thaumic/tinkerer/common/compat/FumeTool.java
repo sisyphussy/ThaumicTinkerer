@@ -1,20 +1,21 @@
 package thaumic.tinkerer.common.compat;
 
-import cpw.mods.fml.common.Optional;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import dan200.computercraft.api.peripheral.IPeripheral;
-import dan200.computercraft.api.turtle.*;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.IIcon;
 import net.minecraftforge.client.event.TextureStitchEvent;
+
 import thaumic.tinkerer.common.ThaumicTinkerer;
 import thaumic.tinkerer.common.block.BlockGas;
 import thaumic.tinkerer.common.item.ItemGasRemover;
+import cpw.mods.fml.common.Optional;
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import dan200.computercraft.api.peripheral.IPeripheral;
+import dan200.computercraft.api.turtle.*;
 
 /**
  * Created by Katrina on 04/02/2015.
@@ -66,15 +67,14 @@ public class FumeTool implements ITurtleUpgrade {
             int zs = (int) pos.posZ;
 
             for (int x = xs - 3; x < xs + 3; x++)
-                for (int y = ys - 3; y < ys + 3; y++)
-                    for (int z = zs - 3; z < zs + 3; z++) {
-                        Block block = turtle.getWorld().getBlock(x, y, z);
-                        if (block != null && block instanceof BlockGas) {
-                            BlockGas gas = (BlockGas) block;
-                            gas.placeParticle(turtle.getWorld(), x, y, z);
-                            turtle.getWorld().setBlock(x, y, z, Blocks.air, 0, 1 | 2);
-                        }
+                for (int y = ys - 3; y < ys + 3; y++) for (int z = zs - 3; z < zs + 3; z++) {
+                    Block block = turtle.getWorld().getBlock(x, y, z);
+                    if (block != null && block instanceof BlockGas) {
+                        BlockGas gas = (BlockGas) block;
+                        gas.placeParticle(turtle.getWorld(), x, y, z);
+                        turtle.getWorld().setBlock(x, y, z, Blocks.air, 0, 1 | 2);
                     }
+                }
 
             // turtle.getWorld().playSoundAtEntity(turtle., "thaumcraft.wand", 0.2F, 1F);
             return TurtleCommandResult.success();

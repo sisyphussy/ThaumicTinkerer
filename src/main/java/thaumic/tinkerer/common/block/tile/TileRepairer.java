@@ -1,23 +1,19 @@
 /**
- * x * This class was created by <Vazkii>. It's distributed as
- * part of the ThaumicTinkerer Mod.
+ * x * This class was created by <Vazkii>. It's distributed as part of the ThaumicTinkerer Mod.
  *
- * ThaumicTinkerer is Open Source and distributed under a
- * Creative Commons Attribution-NonCommercial-ShareAlike 3.0 License
- * (http://creativecommons.org/licenses/by-nc-sa/3.0/deed.en_GB)
+ * ThaumicTinkerer is Open Source and distributed under a Creative Commons Attribution-NonCommercial-ShareAlike 3.0
+ * License (http://creativecommons.org/licenses/by-nc-sa/3.0/deed.en_GB)
  *
- * ThaumicTinkerer is a Derivative Work on Thaumcraft 4.
- * Thaumcraft 4 (c) Azanor 2012
+ * ThaumicTinkerer is a Derivative Work on Thaumcraft 4. Thaumcraft 4 (c) Azanor 2012
  * (http://www.minecraftforum.net/topic/1585216-)
  *
  * File Created @ [Nov 30, 2013, 5:39:09 PM (GMT)]
  */
 package thaumic.tinkerer.common.block.tile;
 
-import appeng.api.movable.IMovableTile;
-import cpw.mods.fml.common.Loader;
 import java.util.HashMap;
 import java.util.Map;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
@@ -28,6 +24,7 @@ import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.ForgeDirection;
+
 import thaumcraft.api.ThaumcraftApiHelper;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
@@ -37,8 +34,10 @@ import thaumic.tinkerer.common.ThaumicTinkerer;
 import thaumic.tinkerer.common.compat.TinkersConstructCompat;
 import thaumic.tinkerer.common.core.handler.ConfigHandler;
 import thaumic.tinkerer.common.lib.LibBlockNames;
+import appeng.api.movable.IMovableTile;
+import cpw.mods.fml.common.Loader;
 
-/*import thaumic.tinkerer.common.compat.TinkersConstructCompat;*/
+/* import thaumic.tinkerer.common.compat.TinkersConstructCompat; */
 
 public class TileRepairer extends TileEntity
         implements ISidedInventory, IAspectContainer, IEssentiaTransport, IMovableTile {
@@ -76,8 +75,8 @@ public class TileRepairer extends TileEntity
                                 tookLastTick = true;
                             } else tookLastTick = false;
                         } else tookLastTick = false;
-                        dmgLastTick =
-                                inventorySlots[0] == null ? 0 : TinkersConstructCompat.getDamage(inventorySlots[0]);
+                        dmgLastTick = inventorySlots[0] == null ? 0
+                                : TinkersConstructCompat.getDamage(inventorySlots[0]);
                         return;
                     }
                 }
@@ -231,7 +230,7 @@ public class TileRepairer extends TileEntity
 
     @Override
     public int[] getAccessibleSlotsFromSide(int var1) {
-        return new int[] {0};
+        return new int[] { 0 };
     }
 
     @Override
@@ -256,10 +255,10 @@ public class TileRepairer extends TileEntity
             IEssentiaTransport ic = (IEssentiaTransport) te;
             if (!ic.canOutputTo(orientation.getOpposite())) return 0;
 
-            for (Aspect aspect : repairValues.keySet())
-                if (ic.getSuctionType(orientation.getOpposite()) == aspect
-                        && ic.getSuctionAmount(orientation.getOpposite()) < getSuctionAmount(orientation)
-                        && ic.takeEssentia(aspect, 1, orientation.getOpposite()) == 1) return repairValues.get(aspect);
+            for (Aspect aspect : repairValues.keySet()) if (ic.getSuctionType(orientation.getOpposite()) == aspect
+                    && ic.getSuctionAmount(orientation.getOpposite()) < getSuctionAmount(orientation)
+                    && ic.takeEssentia(aspect, 1, orientation.getOpposite()) == 1)
+                return repairValues.get(aspect);
         }
         return 0;
     }

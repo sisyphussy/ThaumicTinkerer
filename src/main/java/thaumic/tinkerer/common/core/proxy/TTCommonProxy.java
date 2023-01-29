@@ -1,30 +1,18 @@
 /**
- * This class was created by <Vazkii>. It's distributed as
- * part of the ThaumicTinkerer Mod.
+ * This class was created by <Vazkii>. It's distributed as part of the ThaumicTinkerer Mod.
  *
- * ThaumicTinkerer is Open Source and distributed under a
- * Creative Commons Attribution-NonCommercial-ShareAlike 3.0 License
- * (http://creativecommons.org/licenses/by-nc-sa/3.0/deed.en_GB)
+ * ThaumicTinkerer is Open Source and distributed under a Creative Commons Attribution-NonCommercial-ShareAlike 3.0
+ * License (http://creativecommons.org/licenses/by-nc-sa/3.0/deed.en_GB)
  *
- * ThaumicTinkerer is a Derivative Work on Thaumcraft 4.
- * Thaumcraft 4 (c) Azanor 2012
+ * ThaumicTinkerer is a Derivative Work on Thaumcraft 4. Thaumcraft 4 (c) Azanor 2012
  * (http://www.minecraftforum.net/topic/1585216-)
  *
  * File Created @ [4 Sep 2013, 16:29:41 (GMT)]
  */
 package thaumic.tinkerer.common.core.proxy;
 
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.Loader;
-import cpw.mods.fml.common.Optional;
-import cpw.mods.fml.common.event.FMLInitializationEvent;
-import cpw.mods.fml.common.event.FMLInterModComms;
-import cpw.mods.fml.common.event.FMLPostInitializationEvent;
-import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import cpw.mods.fml.common.network.NetworkRegistry;
-import cpw.mods.fml.relauncher.Side;
-import dan200.computercraft.api.ComputerCraftAPI;
 import li.cil.oc.api.Driver;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
@@ -33,6 +21,7 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.EnumHelper;
+
 import thaumcraft.api.aspects.IEssentiaTransport;
 import thaumcraft.api.wands.WandCap;
 import thaumcraft.api.wands.WandRod;
@@ -70,6 +59,16 @@ import thaumic.tinkerer.common.peripheral.OpenComputers.*;
 import thaumic.tinkerer.common.peripheral.PeripheralHandler;
 import thaumic.tinkerer.common.potion.ModPotions;
 import thaumic.tinkerer.common.research.ResearchHelper;
+import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.Loader;
+import cpw.mods.fml.common.Optional;
+import cpw.mods.fml.common.event.FMLInitializationEvent;
+import cpw.mods.fml.common.event.FMLInterModComms;
+import cpw.mods.fml.common.event.FMLPostInitializationEvent;
+import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import cpw.mods.fml.common.network.NetworkRegistry;
+import cpw.mods.fml.relauncher.Side;
+import dan200.computercraft.api.ComputerCraftAPI;
 
 public class TTCommonProxy {
 
@@ -97,7 +96,7 @@ public class TTCommonProxy {
         registerVersionChecker();
 
         kamiRarity = EnumHelper.addEnum(
-                new Class[][] {{EnumRarity.class, EnumChatFormatting.class, String.class}},
+                new Class[][] { { EnumRarity.class, EnumChatFormatting.class, String.class } },
                 EnumRarity.class,
                 "KAMI",
                 EnumChatFormatting.LIGHT_PURPLE,
@@ -142,26 +141,32 @@ public class TTCommonProxy {
     }
 
     protected void registerPackets() {
+        ThaumicTinkerer.netHandler
+                .registerMessage(PacketSoulHearts.class, PacketSoulHearts.class, 142 + 0, Side.CLIENT);
+        ThaumicTinkerer.netHandler
+                .registerMessage(PacketToggleArmor.class, PacketToggleArmor.class, 142 + 1, Side.CLIENT);
+        ThaumicTinkerer.netHandler
+                .registerMessage(PacketToggleArmor.class, PacketToggleArmor.class, 142 + 2, Side.SERVER);
+        ThaumicTinkerer.netHandler
+                .registerMessage(PacketWarpGateButton.class, PacketWarpGateButton.class, 142 + 3, Side.SERVER);
+        ThaumicTinkerer.netHandler
+                .registerMessage(PacketWarpGateTeleport.class, PacketWarpGateTeleport.class, 142 + 4, Side.SERVER);
         ThaumicTinkerer.netHandler.registerMessage(
-                PacketSoulHearts.class, PacketSoulHearts.class, 142 + 0, Side.CLIENT);
+                PacketEnchanterAddEnchant.class,
+                PacketEnchanterAddEnchant.class,
+                142 + 5,
+                Side.SERVER);
         ThaumicTinkerer.netHandler.registerMessage(
-                PacketToggleArmor.class, PacketToggleArmor.class, 142 + 1, Side.CLIENT);
-        ThaumicTinkerer.netHandler.registerMessage(
-                PacketToggleArmor.class, PacketToggleArmor.class, 142 + 2, Side.SERVER);
-        ThaumicTinkerer.netHandler.registerMessage(
-                PacketWarpGateButton.class, PacketWarpGateButton.class, 142 + 3, Side.SERVER);
-        ThaumicTinkerer.netHandler.registerMessage(
-                PacketWarpGateTeleport.class, PacketWarpGateTeleport.class, 142 + 4, Side.SERVER);
-        ThaumicTinkerer.netHandler.registerMessage(
-                PacketEnchanterAddEnchant.class, PacketEnchanterAddEnchant.class, 142 + 5, Side.SERVER);
-        ThaumicTinkerer.netHandler.registerMessage(
-                PacketEnchanterStartWorking.class, PacketEnchanterStartWorking.class, 142 + 6, Side.SERVER);
-        ThaumicTinkerer.netHandler.registerMessage(
-                PacketMobMagnetButton.class, PacketMobMagnetButton.class, 142 + 7, Side.SERVER);
-        ThaumicTinkerer.netHandler.registerMessage(
-                PacketTabletButton.class, PacketTabletButton.class, 142 + 8, Side.SERVER);
-        ThaumicTinkerer.netHandler.registerMessage(
-                PacketPlacerButton.class, PacketPlacerButton.class, 142 + 9, Side.SERVER);
+                PacketEnchanterStartWorking.class,
+                PacketEnchanterStartWorking.class,
+                142 + 6,
+                Side.SERVER);
+        ThaumicTinkerer.netHandler
+                .registerMessage(PacketMobMagnetButton.class, PacketMobMagnetButton.class, 142 + 7, Side.SERVER);
+        ThaumicTinkerer.netHandler
+                .registerMessage(PacketTabletButton.class, PacketTabletButton.class, 142 + 8, Side.SERVER);
+        ThaumicTinkerer.netHandler
+                .registerMessage(PacketPlacerButton.class, PacketPlacerButton.class, 142 + 9, Side.SERVER);
     }
 
     public void registerVersionChecker() {
@@ -188,25 +193,11 @@ public class TTCommonProxy {
     protected void initCCPeripherals() {
         PeripheralHandler handler = new PeripheralHandler();
 
-        Class[] peripheralClasses = new Class[] {
-            TileAlembic.class,
-            TileCentrifuge.class,
-            TileCrucible.class,
-            TileFunnel.class,
-            TileInfusionMatrix.class,
-            TileJarFillable.class,
-            TileJarNode.class,
-            TileNode.class,
-            TileRepairer.class,
-            TileTubeFilter.class,
-            TileTransvectorInterface.class,
-            TileWandPedestal.class,
-            TileDeconstructionTable.class,
-            TileJarBrain.class,
-            TileSensor.class,
-            TileArcaneBore.class,
-            IEssentiaTransport.class
-        };
+        Class[] peripheralClasses = new Class[] { TileAlembic.class, TileCentrifuge.class, TileCrucible.class,
+                TileFunnel.class, TileInfusionMatrix.class, TileJarFillable.class, TileJarNode.class, TileNode.class,
+                TileRepairer.class, TileTubeFilter.class, TileTransvectorInterface.class, TileWandPedestal.class,
+                TileDeconstructionTable.class, TileJarBrain.class, TileSensor.class, TileArcaneBore.class,
+                IEssentiaTransport.class };
         handler.registerPeripheralProvider();
 
         ComputerCraftAPI.registerTurtleUpgrade(new FumeTool());

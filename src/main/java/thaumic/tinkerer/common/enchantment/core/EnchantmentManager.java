@@ -1,26 +1,23 @@
 /**
- * This class was created by <Vazkii>. It's distributed as
- * part of the ThaumicTinkerer Mod.
+ * This class was created by <Vazkii>. It's distributed as part of the ThaumicTinkerer Mod.
  *
- * ThaumicTinkerer is Open Source and distributed under a
- * Creative Commons Attribution-NonCommercial-ShareAlike 3.0 License
- * (http://creativecommons.org/licenses/by-nc-sa/3.0/deed.en_GB)
+ * ThaumicTinkerer is Open Source and distributed under a Creative Commons Attribution-NonCommercial-ShareAlike 3.0
+ * License (http://creativecommons.org/licenses/by-nc-sa/3.0/deed.en_GB)
  *
- * ThaumicTinkerer is a Derivative Work on Thaumcraft 4.
- * Thaumcraft 4 (c) Azanor 2012
+ * ThaumicTinkerer is a Derivative Work on Thaumcraft 4. Thaumcraft 4 (c) Azanor 2012
  * (http://www.minecraftforum.net/topic/1585216-)
  *
  * File Created @ [14 Sep 2013, 15:05:23 (GMT)]
  */
 package thaumic.tinkerer.common.enchantment.core;
 
-import com.google.common.collect.ArrayListMultimap;
-import com.google.common.collect.Multimap;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.item.ItemStack;
+
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.common.config.Config;
@@ -30,6 +27,9 @@ import thaumic.tinkerer.common.core.helper.MiscHelper;
 import thaumic.tinkerer.common.enchantment.ModEnchantments;
 import thaumic.tinkerer.common.enchantment.core.rule.BasicCompatibilityRule;
 import thaumic.tinkerer.common.lib.LibResearch;
+
+import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.Multimap;
 
 public final class EnchantmentManager {
 
@@ -80,7 +80,10 @@ public final class EnchantmentManager {
                 new AspectList().add(Aspect.EARTH, 10).add(Aspect.ENTROPY, 12));
 
         registerExponentialCostData(
-                Enchantment.sharpness, LibResources.ENCHANT_SHARPNESS, true, new AspectList().add(Aspect.ORDER, 10));
+                Enchantment.sharpness,
+                LibResources.ENCHANT_SHARPNESS,
+                true,
+                new AspectList().add(Aspect.ORDER, 10));
         registerExponentialCostData(
                 Enchantment.smite,
                 LibResources.ENCHANT_SMITE,
@@ -105,13 +108,8 @@ public final class EnchantmentManager {
                 Enchantment.looting,
                 LibResources.ENCHANT_LOOTING,
                 true,
-                new AspectList()
-                        .add(Aspect.AIR, 10)
-                        .add(Aspect.FIRE, 10)
-                        .add(Aspect.WATER, 10)
-                        .add(Aspect.EARTH, 10)
-                        .add(Aspect.ORDER, 15)
-                        .add(Aspect.ENTROPY, 15));
+                new AspectList().add(Aspect.AIR, 10).add(Aspect.FIRE, 10).add(Aspect.WATER, 10).add(Aspect.EARTH, 10)
+                        .add(Aspect.ORDER, 15).add(Aspect.ENTROPY, 15));
 
         registerExponentialCostData(
                 Enchantment.efficiency,
@@ -132,13 +130,8 @@ public final class EnchantmentManager {
                 Enchantment.fortune,
                 LibResources.ENCHANT_FORTUNE,
                 true,
-                new AspectList()
-                        .add(Aspect.AIR, 10)
-                        .add(Aspect.FIRE, 10)
-                        .add(Aspect.WATER, 10)
-                        .add(Aspect.EARTH, 10)
-                        .add(Aspect.ORDER, 15)
-                        .add(Aspect.ENTROPY, 15));
+                new AspectList().add(Aspect.AIR, 10).add(Aspect.FIRE, 10).add(Aspect.WATER, 10).add(Aspect.EARTH, 10)
+                        .add(Aspect.ORDER, 15).add(Aspect.ENTROPY, 15));
 
         registerExponentialCostData(
                 Enchantment.power,
@@ -181,13 +174,8 @@ public final class EnchantmentManager {
                 Config.enchRepair,
                 LibResources.ENCHANT_REPAIR,
                 true,
-                new AspectList()
-                        .add(Aspect.WATER, 20)
-                        .add(Aspect.FIRE, 20)
-                        .add(Aspect.EARTH, 20)
-                        .add(Aspect.AIR, 20)
-                        .add(Aspect.ORDER, 20)
-                        .add(Aspect.ENTROPY, 5));
+                new AspectList().add(Aspect.WATER, 20).add(Aspect.FIRE, 20).add(Aspect.EARTH, 20).add(Aspect.AIR, 20)
+                        .add(Aspect.ORDER, 20).add(Aspect.ENTROPY, 5));
 
         registerExponentialCostData(
                 ModEnchantments.ascentBoost,
@@ -289,9 +277,9 @@ public final class EnchantmentManager {
     }
 
     public static boolean canApply(ItemStack stack, Enchantment enchant, List<Integer> currentEnchants) {
-        if (!enchant.canApply(stack)
-                || !enchant.type.canEnchantItem(stack.getItem())
-                || currentEnchants.contains(enchant.effectId)) return false;
+        if (!enchant.canApply(stack) || !enchant.type.canEnchantItem(stack.getItem())
+                || currentEnchants.contains(enchant.effectId))
+            return false;
 
         for (IEnchantmentRule rule : rules.get(enchant.effectId))
             if (rule.cantApplyAlongside(currentEnchants)) return false;
@@ -306,16 +294,19 @@ public final class EnchantmentManager {
         return data.research.isEmpty() || ResearchManager.isResearchComplete(player, data.research);
     }
 
-    public static void registerExponentialCostData(
-            Enchantment enchantment, String texture, boolean vanilla, AspectList level1Aspects) {
+    public static void registerExponentialCostData(Enchantment enchantment, String texture, boolean vanilla,
+            AspectList level1Aspects) {
         registerExponentialCostData(enchantment, texture, vanilla, level1Aspects, "");
     }
 
-    public static void registerExponentialCostData(
-            Enchantment enchantment, String texture, boolean vanilla, AspectList level1Aspects, String research) {
+    public static void registerExponentialCostData(Enchantment enchantment, String texture, boolean vanilla,
+            AspectList level1Aspects, String research) {
         for (double i = enchantment.getMinLevel(); i <= enchantment.getMaxLevel(); i++) {
             EnchantmentData data = new EnchantmentData(
-                    texture, vanilla, MiscHelper.multiplyAspectList(level1Aspects, i * (1D + i * 0.2)), research);
+                    texture,
+                    vanilla,
+                    MiscHelper.multiplyAspectList(level1Aspects, i * (1D + i * 0.2)),
+                    research);
             registerData(enchantment.effectId, (int) i, data);
         }
     }
@@ -328,13 +319,12 @@ public final class EnchantmentManager {
 
     private static void registerCompatibilityRules() {
         for (Enchantment ench : Enchantment.enchantmentsList) {
-            if (ench != null)
-                for (Enchantment ench1 : Enchantment.enchantmentsList) {
-                    if (ench1 == null || ench == ench1) continue;
+            if (ench != null) for (Enchantment ench1 : Enchantment.enchantmentsList) {
+                if (ench1 == null || ench == ench1) continue;
 
-                    if (!ench.canApplyTogether(ench1) || !ench1.canApplyTogether(ench))
-                        rules.put(ench.effectId, new BasicCompatibilityRule(ench1));
-                }
+                if (!ench.canApplyTogether(ench1) || !ench1.canApplyTogether(ench))
+                    rules.put(ench.effectId, new BasicCompatibilityRule(ench1));
+            }
         }
     }
 

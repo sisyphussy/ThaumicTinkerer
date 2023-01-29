@@ -5,6 +5,7 @@ import net.minecraft.world.Teleporter;
 import net.minecraft.world.WorldServer;
 
 public class TeleporterBedrock extends Teleporter {
+
     public TeleporterBedrock(WorldServer w) {
         super(w);
     }

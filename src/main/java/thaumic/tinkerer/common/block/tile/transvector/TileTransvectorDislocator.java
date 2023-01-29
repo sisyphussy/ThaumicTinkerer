@@ -1,13 +1,10 @@
 /**
- * This class was created by <Vazkii>. It's distributed as
- * part of the ThaumicTinkerer Mod.
+ * This class was created by <Vazkii>. It's distributed as part of the ThaumicTinkerer Mod.
  *
- * ThaumicTinkerer is Open Source and distributed under a
- * Creative Commons Attribution-NonCommercial-ShareAlike 3.0 License
- * (http://creativecommons.org/licenses/by-nc-sa/3.0/deed.en_GB)
+ * ThaumicTinkerer is Open Source and distributed under a Creative Commons Attribution-NonCommercial-ShareAlike 3.0
+ * License (http://creativecommons.org/licenses/by-nc-sa/3.0/deed.en_GB)
  *
- * ThaumicTinkerer is a Derivative Work on Thaumcraft 4.
- * Thaumcraft 4 (c) Azanor 2012
+ * ThaumicTinkerer is a Derivative Work on Thaumcraft 4. Thaumcraft 4 (c) Azanor 2012
  * (http://www.minecraftforum.net/topic/1585216-)
  *
  * File Created @ [Nov 24, 2013, 6:48:04 PM (GMT)]
@@ -15,6 +12,7 @@
 package thaumic.tinkerer.common.block.tile.transvector;
 
 import java.util.List;
+
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -24,6 +22,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraftforge.common.util.ForgeDirection;
+
 import thaumcraft.api.ThaumcraftApi;
 import thaumcraft.codechicken.lib.vec.Vector3;
 import thaumcraft.common.config.ConfigBlocks;
@@ -92,10 +91,9 @@ public class TileTransvectorDislocator extends TileTransvector {
         Block block = worldObj.getBlock(coords.posX, coords.posY, coords.posZ);
         int meta = worldObj.getBlockMetadata(coords.posX, coords.posY, coords.posZ);
 
-        return !(block == ConfigBlocks.blockAiry && meta == 0)
-                        && !ThaumcraftApi.portableHoleBlackList.contains(block)
-                        && block != null
-                        && block.getBlockHardness(worldObj, coords.posX, coords.posY, coords.posZ) != -1F
+        return !(block == ConfigBlocks.blockAiry && meta == 0) && !ThaumcraftApi.portableHoleBlackList.contains(block)
+                && block != null
+                && block.getBlockHardness(worldObj, coords.posX, coords.posY, coords.posZ) != -1F
                 || block != Blocks.air;
     }
 
@@ -103,7 +101,12 @@ public class TileTransvectorDislocator extends TileTransvector {
         return worldObj.getEntitiesWithinAABB(
                 Entity.class,
                 AxisAlignedBB.getBoundingBox(
-                        coords.posX, coords.posY, coords.posZ, coords.posX + 1, coords.posY + 1, coords.posZ + 1));
+                        coords.posX,
+                        coords.posY,
+                        coords.posZ,
+                        coords.posX + 1,
+                        coords.posY + 1,
+                        coords.posZ + 1));
     }
 
     private Vector3 asVector(ChunkCoordinates source, ChunkCoordinates target) {
@@ -168,8 +171,7 @@ public class TileTransvectorDislocator extends TileTransvector {
                 NBTTagCompound cmp = new NBTTagCompound();
                 tile.writeToNBT(cmp);
                 this.tile = cmp;
-            }
-            ;
+            } ;
 
             this.coords = coords;
         }
@@ -204,7 +206,7 @@ public class TileTransvectorDislocator extends TileTransvector {
             }
 
             // if (block != null)
-            //	block.onNeighborBlockChange(worldObj, coords.posX, coords.posY, coords.posZ,
+            // block.onNeighborBlockChange(worldObj, coords.posX, coords.posY, coords.posZ,
             // ThaumicTinkerer.registry.getFirstBlockFromClass(BlockTransvectorDislocator.class));
 
             worldObj.setBlockMetadataWithNotify(coords.posX, coords.posY, coords.posZ, meta, 2);
@@ -212,13 +214,12 @@ public class TileTransvectorDislocator extends TileTransvector {
 
         public void notify(ChunkCoordinates coords) {
 
-            if (block != null)
-                block.onNeighborBlockChange(
-                        worldObj,
-                        coords.posX,
-                        coords.posY,
-                        coords.posZ,
-                        ThaumicTinkerer.registry.getFirstBlockFromClass(BlockTransvectorDislocator.class));
+            if (block != null) block.onNeighborBlockChange(
+                    worldObj,
+                    coords.posX,
+                    coords.posY,
+                    coords.posZ,
+                    ThaumicTinkerer.registry.getFirstBlockFromClass(BlockTransvectorDislocator.class));
         }
     }
 }

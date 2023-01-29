@@ -1,16 +1,18 @@
 package thaumic.tinkerer.common.potion;
 
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.common.gameevent.TickEvent;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Random;
+
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
+
 import thaumic.tinkerer.common.ThaumicTinkerer;
 import thaumic.tinkerer.common.block.BlockForcefield;
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.common.gameevent.TickEvent;
 
 /**
  * Created by pixlepix on 4/19/14.
@@ -46,8 +48,8 @@ public class PotionEffectHandler {
                                         centerY + i,
                                         centerZ + j,
                                         ThaumicTinkerer.registry.getFirstBlockFromClass(BlockForcefield.class));
-                                ThaumicTinkerer.tcProxy.blockSparkle(
-                                        p.worldObj, centerX, centerY + i, centerZ + j, 100, 100);
+                                ThaumicTinkerer.tcProxy
+                                        .blockSparkle(p.worldObj, centerX, centerY + i, centerZ + j, 100, 100);
                             }
                         } else {
                             if (p.worldObj.isAirBlock(centerX + j, centerY + i, centerZ)) {
@@ -57,8 +59,8 @@ public class PotionEffectHandler {
                                         centerZ,
                                         ThaumicTinkerer.registry.getFirstBlockFromClass(BlockForcefield.class));
 
-                                ThaumicTinkerer.tcProxy.blockSparkle(
-                                        p.worldObj, centerX + j, centerY + i, centerZ, 100, 100);
+                                ThaumicTinkerer.tcProxy
+                                        .blockSparkle(p.worldObj, centerX + j, centerY + i, centerZ, 100, 100);
                             }
                         }
                     }

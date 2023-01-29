@@ -1,23 +1,19 @@
 /**
- * This class was created by <Vazkii>. It's distributed as
- * part of the ThaumicTinkerer Mod.
+ * This class was created by <Vazkii>. It's distributed as part of the ThaumicTinkerer Mod.
  *
- * ThaumicTinkerer is Open Source and distributed under a
- * Creative Commons Attribution-NonCommercial-ShareAlike 3.0 License
- * (http://creativecommons.org/licenses/by-nc-sa/3.0/deed.en_GB)
+ * ThaumicTinkerer is Open Source and distributed under a Creative Commons Attribution-NonCommercial-ShareAlike 3.0
+ * License (http://creativecommons.org/licenses/by-nc-sa/3.0/deed.en_GB)
  *
- * ThaumicTinkerer is a Derivative Work on Thaumcraft 4.
- * Thaumcraft 4 (c) Azanor 2012
+ * ThaumicTinkerer is a Derivative Work on Thaumcraft 4. Thaumcraft 4 (c) Azanor 2012
  * (http://www.minecraftforum.net/topic/1585216-)
  *
  * File Created @ [Dec 27, 2013, 7:41:50 PM (GMT)]
  */
 package thaumic.tinkerer.common.item.kami;
 
-import baubles.api.BaubleType;
-import baubles.api.IBauble;
 import java.util.ArrayList;
 import java.util.List;
+
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
@@ -34,6 +30,7 @@ import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
+
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.research.ResearchPage;
@@ -48,6 +45,8 @@ import thaumic.tinkerer.common.registry.ThaumicTinkererRecipe;
 import thaumic.tinkerer.common.research.IRegisterableResearch;
 import thaumic.tinkerer.common.research.KamiResearchItem;
 import thaumic.tinkerer.common.research.ResearchHelper;
+import baubles.api.BaubleType;
+import baubles.api.IBauble;
 
 public class ItemCatAmulet extends ItemKamiBase implements IBauble {
 
@@ -73,8 +72,10 @@ public class ItemCatAmulet extends ItemKamiBase implements IBauble {
     }
 
     private void messWithGetTargetAI(EntityAINearestAttackableTarget aiEntry) {
-        if (aiEntry.targetClass == EntityPlayer.class)
-            aiEntry.targetClass = EntityEnderCrystal.class; // Something random that won't be around
+        if (aiEntry.targetClass == EntityPlayer.class) aiEntry.targetClass = EntityEnderCrystal.class; // Something
+                                                                                                       // random that
+                                                                                                       // won't be
+                                                                                                       // around
     }
 
     @Override
@@ -141,18 +142,13 @@ public class ItemCatAmulet extends ItemKamiBase implements IBauble {
     public IRegisterableResearch getResearchItem() {
         if (!ConfigHandler.enableKami) return null;
         return (IRegisterableResearch) new KamiResearchItem(
-                        LibResearch.KEY_CAT_AMULET,
-                        new AspectList()
-                                .add(Aspect.MIND, 2)
-                                .add(Aspect.ORDER, 1)
-                                .add(Aspect.DARKNESS, 1)
-                                .add(Aspect.DEATH, 1),
-                        13,
-                        10,
-                        5,
-                        new ItemStack(this))
-                .setParents(LibResearch.KEY_ICHORIUM)
-                .setPages(new ResearchPage("0"), ResearchHelper.infusionPage(LibResearch.KEY_CAT_AMULET));
+                LibResearch.KEY_CAT_AMULET,
+                new AspectList().add(Aspect.MIND, 2).add(Aspect.ORDER, 1).add(Aspect.DARKNESS, 1).add(Aspect.DEATH, 1),
+                13,
+                10,
+                5,
+                new ItemStack(this)).setParents(LibResearch.KEY_ICHORIUM)
+                        .setPages(new ResearchPage("0"), ResearchHelper.infusionPage(LibResearch.KEY_CAT_AMULET));
     }
 
     @Override

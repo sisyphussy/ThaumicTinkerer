@@ -1,12 +1,14 @@
 package thaumic.tinkerer.common.item;
 
 import java.util.List;
+
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
+
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.aspects.IEssentiaContainerItem;
@@ -92,10 +94,12 @@ public class ItemInfusedGrain extends ItemBase implements IEssentiaContainerItem
     public void setAspects(ItemStack itemStack, AspectList aspectList) {}
 
     private enum PRIMAL_ASPECT_ENUM {
+
         AIR(Aspect.AIR),
         FIRE(Aspect.FIRE),
         EARTH(Aspect.EARTH),
         WATER(Aspect.WATER);
+
         Aspect aspect;
 
         PRIMAL_ASPECT_ENUM(Aspect a) {

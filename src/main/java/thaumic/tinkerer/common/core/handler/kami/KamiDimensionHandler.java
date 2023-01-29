@@ -1,10 +1,11 @@
 package thaumic.tinkerer.common.core.handler.kami;
 
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
+
 import thaumic.tinkerer.common.item.kami.tool.ItemIchorPickAdv;
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
 /**
  * Created by Katrina on 31/03/14.

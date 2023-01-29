@@ -1,7 +1,7 @@
 package thaumic.tinkerer.client.core.handler.kami;
 
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import java.util.List;
+
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderBlocks;
@@ -13,9 +13,12 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.World;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
+
 import org.lwjgl.opengl.GL11;
+
 import thaumic.tinkerer.common.ThaumicTinkerer;
 import thaumic.tinkerer.common.item.kami.ItemPlacementMirror;
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
 public final class PlacementMirrorPredictionRenderer {
 
@@ -40,8 +43,10 @@ public final class PlacementMirrorPredictionRenderer {
     private void renderPlayerLook(EntityPlayer player, ItemStack stack) {
         ChunkCoordinates[] coords = ItemPlacementMirror.getBlocksToPlace(stack, player);
         if (ItemPlacementMirror.hasBlocks(stack, player, coords)) {
-            ItemStack block =
-                    new ItemStack(ItemPlacementMirror.getBlock(stack), 1, ItemPlacementMirror.getBlockMeta(stack));
+            ItemStack block = new ItemStack(
+                    ItemPlacementMirror.getBlock(stack),
+                    1,
+                    ItemPlacementMirror.getBlockMeta(stack));
             ChunkCoordinates lastCoords = new ChunkCoordinates(0, 0, 0);
 
             GL11.glPushMatrix();

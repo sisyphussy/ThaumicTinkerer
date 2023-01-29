@@ -2,6 +2,7 @@ package thaumic.tinkerer.common.item.kami.foci;
 
 import java.awt.*;
 import java.util.List;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -9,6 +10,7 @@ import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
+
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.research.ResearchPage;
@@ -91,8 +93,12 @@ public class ItemFocusXPDrain extends ItemModKamiFocus {
     @Override
     protected void addVisCostTooltip(AspectList cost, ItemStack stack, EntityPlayer player, List list, boolean par4) {
         list.add(StatCollector.translateToLocal(isVisCostPerTick(stack) ? "item.Focus.cost2" : "item.Focus.cost1"));
-        list.add(" " + EnumChatFormatting.GREEN + StatCollector.translateToLocal("ttmisc.experience")
-                + EnumChatFormatting.WHITE + " x " + getXpUse(stack));
+        list.add(
+                " " + EnumChatFormatting.GREEN
+                        + StatCollector.translateToLocal("ttmisc.experience")
+                        + EnumChatFormatting.WHITE
+                        + " x "
+                        + getXpUse(stack));
     }
 
     @Override
@@ -119,18 +125,13 @@ public class ItemFocusXPDrain extends ItemModKamiFocus {
     public IRegisterableResearch getResearchItem() {
         if (!ConfigHandler.enableKami) return null;
         return (IRegisterableResearch) new KamiResearchItem(
-                        LibResearch.KEY_FOCUS_XP_DRAIN,
-                        new AspectList()
-                                .add(Aspect.MIND, 2)
-                                .add(Aspect.MAGIC, 1)
-                                .add(Aspect.AURA, 1)
-                                .add(Aspect.MAN, 1),
-                        12,
-                        3,
-                        5,
-                        new ItemStack(this))
-                .setParents(LibResearch.KEY_ICHORCLOTH_ROD)
-                .setPages(new ResearchPage("0"), ResearchHelper.infusionPage(LibResearch.KEY_FOCUS_XP_DRAIN));
+                LibResearch.KEY_FOCUS_XP_DRAIN,
+                new AspectList().add(Aspect.MIND, 2).add(Aspect.MAGIC, 1).add(Aspect.AURA, 1).add(Aspect.MAN, 1),
+                12,
+                3,
+                5,
+                new ItemStack(this)).setParents(LibResearch.KEY_ICHORCLOTH_ROD)
+                        .setPages(new ResearchPage("0"), ResearchHelper.infusionPage(LibResearch.KEY_FOCUS_XP_DRAIN));
     }
 
     @Override
@@ -139,11 +140,7 @@ public class ItemFocusXPDrain extends ItemModKamiFocus {
                 LibResearch.KEY_FOCUS_XP_DRAIN,
                 new ItemStack(this),
                 12,
-                new AspectList()
-                        .add(Aspect.MIND, 65)
-                        .add(Aspect.TAINT, 16)
-                        .add(Aspect.MAGIC, 50)
-                        .add(Aspect.AURA, 32),
+                new AspectList().add(Aspect.MIND, 65).add(Aspect.TAINT, 16).add(Aspect.MAGIC, 50).add(Aspect.AURA, 32),
                 new ItemStack(Items.ender_pearl),
                 new ItemStack(ThaumicTinkerer.registry.getFirstItemFromClass(ItemKamiResource.class)),
                 new ItemStack(Items.experience_bottle),

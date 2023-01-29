@@ -1,14 +1,16 @@
 package thaumic.tinkerer.client.render.block;
 
-import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.world.IBlockAccess;
+
 import org.lwjgl.opengl.GL11;
+
 import thaumcraft.api.aspects.Aspect;
 import thaumic.tinkerer.client.lib.LibRenderIDs;
 import thaumic.tinkerer.common.block.BlockInfusedGrain;
+import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 
 /**
  * Created by pixlepix on 8/4/14.
@@ -19,8 +21,8 @@ public class RenderInfusedCrops implements ISimpleBlockRenderingHandler {
     public void renderInventoryBlock(Block block, int metadata, int modelId, RenderBlocks renderer) {}
 
     @Override
-    public boolean renderWorldBlock(
-            IBlockAccess world, int x, int y, int z, Block block, int modelId, RenderBlocks renderer) {
+    public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId,
+            RenderBlocks renderer) {
         GL11.glPushMatrix();
         Aspect aspect = BlockInfusedGrain.getAspect(world, x, y, z);
 

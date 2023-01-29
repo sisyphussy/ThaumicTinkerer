@@ -1,28 +1,26 @@
 /**
- * This class was created by <Vazkii>. It's distributed as
- * part of the ThaumicTinkerer Mod.
+ * This class was created by <Vazkii>. It's distributed as part of the ThaumicTinkerer Mod.
  *
- * ThaumicTinkerer is Open Source and distributed under a
- * Creative Commons Attribution-NonCommercial-ShareAlike 3.0 License
- * (http://creativecommons.org/licenses/by-nc-sa/3.0/deed.en_GB)
+ * ThaumicTinkerer is Open Source and distributed under a Creative Commons Attribution-NonCommercial-ShareAlike 3.0
+ * License (http://creativecommons.org/licenses/by-nc-sa/3.0/deed.en_GB)
  *
- * ThaumicTinkerer is a Derivative Work on Thaumcraft 4.
- * Thaumcraft 4 (c) Azanor 2012
+ * ThaumicTinkerer is a Derivative Work on Thaumcraft 4. Thaumcraft 4 (c) Azanor 2012
  * (http://www.minecraftforum.net/topic/1585216-)
  *
  * File Created @ [Dec 8, 2013, 6:26:09 PM (GMT)]
  */
 package thaumic.tinkerer.common.item.foci;
 
-import cpw.mods.fml.common.Loader;
 import java.util.ArrayList;
 import java.util.List;
+
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.IProjectile;
 import net.minecraft.entity.item.EntityExpBottle;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
+
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.research.ResearchPage;
@@ -44,12 +42,12 @@ import thaumic.tinkerer.common.research.IRegisterableResearch;
 import thaumic.tinkerer.common.research.ResearchHelper;
 import thaumic.tinkerer.common.research.TTResearchItem;
 import vazkii.botania.api.internal.IManaBurst;
+import cpw.mods.fml.common.Loader;
 
 public class ItemFocusDeflect extends ItemModFocus {
 
     public static List<Class<?>> DeflectBlacklist = new ArrayList<Class<?>>();
-    private static final AspectList visUsage =
-            new AspectList().add(Aspect.ORDER, 8).add(Aspect.AIR, 4);
+    private static final AspectList visUsage = new AspectList().add(Aspect.ORDER, 8).add(Aspect.AIR, 4);
 
     public static void setupBlackList() {
         DeflectBlacklist.add(EntityExpBottle.class);
@@ -77,10 +75,9 @@ public class ItemFocusDeflect extends ItemModFocus {
 
         for (Entity e : projectiles) {
             if (CheckBlackList(e) || ProjectileHelper.getOwner(e) == p) continue;
-            Vector3 motionVec = new Vector3(e.motionX, e.motionY, e.motionZ)
-                    .normalize()
-                    .multiply(Math.sqrt((e.posX - p.posX) * (e.posX - p.posX)
-                                    + (e.posY - p.posY) * (e.posY - p.posY)
+            Vector3 motionVec = new Vector3(e.motionX, e.motionY, e.motionZ).normalize().multiply(
+                    Math.sqrt(
+                            (e.posX - p.posX) * (e.posX - p.posX) + (e.posY - p.posY) * (e.posY - p.posY)
                                     + (e.posZ - p.posZ) * (e.posZ - p.posZ))
                             * 2);
 
@@ -97,15 +94,15 @@ public class ItemFocusDeflect extends ItemModFocus {
     public FocusUpgradeType[] getPossibleUpgradesByRank(ItemStack itemstack, int rank) {
         switch (rank) {
             case 1:
-                return new FocusUpgradeType[] {FocusUpgradeType.frugal};
+                return new FocusUpgradeType[] { FocusUpgradeType.frugal };
             case 2:
-                return new FocusUpgradeType[] {FocusUpgradeType.frugal, FocusUpgradeType.enlarge};
+                return new FocusUpgradeType[] { FocusUpgradeType.frugal, FocusUpgradeType.enlarge };
             case 3:
-                return new FocusUpgradeType[] {FocusUpgradeType.frugal};
+                return new FocusUpgradeType[] { FocusUpgradeType.frugal };
             case 4:
-                return new FocusUpgradeType[] {FocusUpgradeType.frugal, FocusUpgradeType.enlarge};
+                return new FocusUpgradeType[] { FocusUpgradeType.frugal, FocusUpgradeType.enlarge };
             case 5:
-                return new FocusUpgradeType[] {FocusUpgradeType.frugal};
+                return new FocusUpgradeType[] { FocusUpgradeType.frugal };
         }
         return null;
     }
@@ -159,20 +156,14 @@ public class ItemFocusDeflect extends ItemModFocus {
             return null;
         }
         return (TTResearchItem) new TTResearchItem(
-                        LibResearch.KEY_FOCUS_DEFLECT,
-                        new AspectList()
-                                .add(Aspect.MOTION, 2)
-                                .add(Aspect.AIR, 1)
-                                .add(Aspect.ORDER, 1)
-                                .add(Aspect.DEATH, 1),
-                        -4,
-                        -3,
-                        3,
-                        new ItemStack(this))
-                .setConcealed()
-                .setParents(LibResearch.KEY_FOCUS_SMELT)
-                .setPages(new ResearchPage("0"), ResearchHelper.infusionPage(LibResearch.KEY_FOCUS_DEFLECT))
-                .setSecondary();
+                LibResearch.KEY_FOCUS_DEFLECT,
+                new AspectList().add(Aspect.MOTION, 2).add(Aspect.AIR, 1).add(Aspect.ORDER, 1).add(Aspect.DEATH, 1),
+                -4,
+                -3,
+                3,
+                new ItemStack(this)).setConcealed().setParents(LibResearch.KEY_FOCUS_SMELT)
+                        .setPages(new ResearchPage("0"), ResearchHelper.infusionPage(LibResearch.KEY_FOCUS_DEFLECT))
+                        .setSecondary();
     }
 
     @Override
