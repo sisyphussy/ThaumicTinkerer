@@ -118,7 +118,7 @@ public class AspectCropLootManager {
         addAspectLoot(Aspect.ELDRITCH, new ItemStack(Items.ender_eye, 4), 5);
         addAspectLoot(Aspect.ELDRITCH, "bucketEnder");
 
-        addAspectLoot(Aspect.TREE, "wood");
+        // addAspectLoot(Aspect.TREE, "wood");
 
         addAspectLoot(Aspect.TREE, new ItemStack(Blocks.log));
 
