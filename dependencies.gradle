@@ -2,7 +2,7 @@
 
 dependencies {
     compile('com.github.GTNewHorizons:Baubles:1.0.1.14:dev')
-    compile('com.github.GTNewHorizons:Applied-Energistics-2-Unofficial:rv3-beta-147-GTNH:api')
+    compile('com.github.GTNewHorizons:Applied-Energistics-2-Unofficial:rv3-beta-195-GTNH:api')
 
     compile('thaumcraft:Thaumcraft:1.7.10-4.2.3.5:dev')
 
@@ -14,7 +14,7 @@ dependencies {
     compileOnly('com.github.GTNewHorizons:TinkersConstruct:1.9.0.13-GTNH:dev') {transitive=false}
     compileOnly('com.github.GTNewHorizons:ForgeMultipart:1.2.7:dev') {transitive=false}
     compileOnly('com.github.GTNewHorizons:CodeChickenLib:1.1.5.3:dev') {transitive=false}
-    compileOnly('com.github.GTNewHorizons:OpenComputers:1.7.5.23-GTNH:api') {transitive=false}
+    compileOnly('com.github.GTNewHorizons:OpenComputers:1.9.1-GTNH:api') {transitive=false}
 
     compileOnly('curse.maven:computercraft-67504:2269339')
     compileOnly('curse.maven:cofh-lib-220333:2388748')
