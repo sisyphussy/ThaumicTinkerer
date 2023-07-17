@@ -73,20 +73,29 @@ public class ContainerIchorPouch extends ContainerPlayerInv {
         if (par1 == blockSlot) {
             return null;
         }
-        return super.slotClick(par1, par2, par3, par4EntityPlayer);
+
+        ItemStack stack = super.slotClick(par1, par2, par3, par4EntityPlayer);
+        if (!this.player.worldObj.isRemote) {
+            saveInventory();
+        }
+        return stack;
     }
 
     @Override
     public void onContainerClosed(EntityPlayer par1EntityPlayer) {
         super.onContainerClosed(par1EntityPlayer);
         if (!player.worldObj.isRemote) {
-            ((ItemFocusPouch) pouch.getItem()).setInventory(pouch, ((InventoryIchorPouch) inv).stackList);
-            if (player == null) return;
-            if (player.getHeldItem() != null && player.getHeldItem().isItemEqual(pouch))
-                player.setCurrentItemOrArmor(0, pouch);
-
-            player.inventory.markDirty();
+            saveInventory();
         }
+    }
+
+    private void saveInventory() {
+        ((ItemFocusPouch) pouch.getItem()).setInventory(pouch, ((InventoryIchorPouch) inv).stackList);
+        if (player == null) return;
+        if (player.getHeldItem() != null && player.getHeldItem().isItemEqual(pouch))
+            player.setCurrentItemOrArmor(0, pouch);
+
+        player.inventory.markDirty();
     }
 
     @Override
