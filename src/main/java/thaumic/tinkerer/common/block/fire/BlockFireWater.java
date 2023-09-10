@@ -2,16 +2,16 @@ package thaumic.tinkerer.common.block.fire;
 
 import java.util.HashMap;
 
+import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
-import net.minecraft.world.World;
+import net.minecraft.world.IBlockAccess;
 
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.research.ResearchPage;
 import thaumcraft.common.config.ConfigItems;
 import thaumic.tinkerer.common.core.handler.ConfigHandler;
-import thaumic.tinkerer.common.core.helper.BlockTuple;
 import thaumic.tinkerer.common.lib.LibBlockNames;
 import thaumic.tinkerer.common.lib.LibResearch;
 import thaumic.tinkerer.common.registry.ThaumicTinkererCrucibleRecipe;
@@ -21,6 +21,8 @@ import thaumic.tinkerer.common.research.ResearchHelper;
 import thaumic.tinkerer.common.research.TTResearchItem;
 
 public class BlockFireWater extends BlockFireBase {
+
+    private static HashMap<Block, Block> blockTransformation = null;
 
     public BlockFireWater() {
         super();
@@ -55,21 +57,27 @@ public class BlockFireWater extends BlockFireBase {
                 new AspectList().add(Aspect.FIRE, 5).add(Aspect.MAGIC, 5).add(Aspect.WATER, 5));
     }
 
-    @Override
-    public HashMap<BlockTuple, BlockTuple> getBlockTransformation() {
-        HashMap<BlockTuple, BlockTuple> result = new HashMap<BlockTuple, BlockTuple>();
-        result.put(new BlockTuple(Blocks.sand), new BlockTuple(Blocks.ice));
-        result.put(new BlockTuple(Blocks.netherrack), new BlockTuple(Blocks.snow));
-        result.put(new BlockTuple(Blocks.soul_sand), new BlockTuple(Blocks.ice));
-        result.put(new BlockTuple(Blocks.glowstone), new BlockTuple(Blocks.ice));
-        result.put(new BlockTuple(Blocks.lava), new BlockTuple(Blocks.obsidian));
-        result.put(new BlockTuple(Blocks.flowing_lava), new BlockTuple(Blocks.obsidian));
-        return result;
+    private static void initBlockTransformation() {
+        blockTransformation = new HashMap<>();
+        blockTransformation.put(Blocks.sand, Blocks.ice);
+        blockTransformation.put(Blocks.netherrack, Blocks.snow);
+        blockTransformation.put(Blocks.soul_sand, Blocks.ice);
+        blockTransformation.put(Blocks.glowstone, Blocks.ice);
+        blockTransformation.put(Blocks.lava, Blocks.obsidian);
+        blockTransformation.put(Blocks.flowing_lava, Blocks.obsidian);
     }
 
     @Override
-    public HashMap<thaumic.tinkerer.common.core.helper.BlockTuple, thaumic.tinkerer.common.core.helper.BlockTuple> getBlockTransformation(
-            World w, int x, int y, int z) {
+    public HashMap<Block, Block> getBlockTransformation() {
+        if (blockTransformation == null) {
+            initBlockTransformation();
+        }
+
+        return blockTransformation;
+    }
+
+    @Override
+    public HashMap<Block, Block> getBlockTransformation(IBlockAccess w, int x, int y, int z) {
         return getBlockTransformation();
     }
 }

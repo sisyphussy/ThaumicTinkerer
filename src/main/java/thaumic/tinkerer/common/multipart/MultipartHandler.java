@@ -13,11 +13,11 @@ package thaumic.tinkerer.common.multipart;
 
 import net.minecraft.block.Block;
 
+import codechicken.microblock.BlockMicroMaterial;
+import codechicken.microblock.MicroMaterialRegistry;
 import thaumcraft.common.config.ConfigBlocks;
 import thaumic.tinkerer.common.ThaumicTinkerer;
 import thaumic.tinkerer.common.block.quartz.BlockDarkQuartz;
-import codechicken.microblock.BlockMicroMaterial;
-import codechicken.microblock.MicroMaterialRegistry;
 
 public class MultipartHandler {
 
@@ -32,10 +32,6 @@ public class MultipartHandler {
         registerMultipartMetadataLine(ConfigBlocks.blockCosmeticOpaque, 1);
         registerMultipartMetadataLine(ConfigBlocks.blockCosmeticSolid, 7);
         registerMultipartMetadataLine(ThaumicTinkerer.registry.getFirstBlockFromClass(BlockDarkQuartz.class), 2);
-        // new RegisterBlockPart(ConfigBlocks.blockCandle, PartCandle.class,
-        // ConfigBlocks.blockCandle.getUnlocalizedName()).init();
-        // (new RegisterBlockPart(ConfigBlocks.blockAiry, PartNitor.class,
-        // ConfigBlocks.blockAiry.getUnlocalizedName())).init();
     }
 
     private static void registerMultipartMetadataLine(Block block, int maxMeta) {

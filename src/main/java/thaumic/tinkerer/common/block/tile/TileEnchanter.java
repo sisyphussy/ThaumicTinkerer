@@ -28,6 +28,9 @@ import net.minecraftforge.common.util.Constants;
 
 import org.apache.commons.lang3.ArrayUtils;
 
+import appeng.api.movable.IMovableTile;
+import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.relauncher.Side;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.common.Thaumcraft;
@@ -37,9 +40,6 @@ import thaumic.tinkerer.common.core.helper.Tuple4Int;
 import thaumic.tinkerer.common.enchantment.core.EnchantmentManager;
 import thaumic.tinkerer.common.lib.LibBlockNames;
 import thaumic.tinkerer.common.lib.LibFeatures;
-import appeng.api.movable.IMovableTile;
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.relauncher.Side;
 
 public class TileEnchanter extends TileEntity implements ISidedInventory, IMovableTile {
 
@@ -49,15 +49,15 @@ public class TileEnchanter extends TileEntity implements ISidedInventory, IMovab
     private static final String TAG_CURRENT_ASPECTS = "currentAspects";
     private static final String TAG_WORKING = "working";
 
-    public List<Integer> enchantments = new ArrayList();
-    public List<Integer> levels = new ArrayList();
+    public List<Integer> enchantments = new ArrayList<>();
+    public List<Integer> levels = new ArrayList<>();
 
     public AspectList totalAspects = new AspectList();
     public AspectList currentAspects = new AspectList();
 
     public boolean working = false;
     ItemStack[] inventorySlots = new ItemStack[2];
-    private List<Tuple4Int> pillars = new ArrayList();
+    private List<Tuple4Int> pillars = new ArrayList<>();
 
     public void clearEnchants() {
         enchantments.clear();
@@ -141,7 +141,7 @@ public class TileEnchanter extends TileEntity implements ISidedInventory, IMovab
                 AspectList wandAspects = wandItem.getAllVis(wand);
 
                 int missing, onWand;
-                List<Aspect> aspectsThatCanGet = new ArrayList();
+                List<Aspect> aspectsThatCanGet = new ArrayList<>();
 
                 for (Aspect aspect : LibFeatures.PRIMAL_ASPECTS) {
                     missing = totalAspects.getAmount(aspect) - currentAspects.getAmount(aspect);
@@ -207,8 +207,7 @@ public class TileEnchanter extends TileEntity implements ISidedInventory, IMovab
             Aspect[] aspectArray = aspects.getAspects();
             int arrayLength = aspectArray.length;
 
-            for (int i$ = 0; i$ < arrayLength; ++i$) {
-                Aspect aspect = aspectArray[i$];
+            for (Aspect aspect : aspectArray) {
                 int cost = aspects.getAmount(aspect) * 100;
                 aspectList.add(aspect, cost);
             }

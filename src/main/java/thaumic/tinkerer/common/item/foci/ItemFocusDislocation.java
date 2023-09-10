@@ -27,6 +27,8 @@ import net.minecraft.util.IIcon;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import thaumcraft.api.ThaumcraftApi;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
@@ -46,8 +48,6 @@ import thaumic.tinkerer.common.registry.ThaumicTinkererRecipe;
 import thaumic.tinkerer.common.research.IRegisterableResearch;
 import thaumic.tinkerer.common.research.ResearchHelper;
 import thaumic.tinkerer.common.research.TTResearchItem;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
 public class ItemFocusDislocation extends ItemModFocus {
 
@@ -65,7 +65,7 @@ public class ItemFocusDislocation extends ItemModFocus {
             .add(Aspect.EARTH, 500);
     private static final AspectList visUsageSpawner = new AspectList().add(Aspect.ENTROPY, 10000)
             .add(Aspect.ORDER, 10000).add(Aspect.EARTH, 5000);
-    private static ArrayList<Block> blacklist = new ArrayList<Block>();
+    private static ArrayList<Block> blacklist = new ArrayList<>();
     private IIcon ornament;
 
     private static AspectList getCost(TileEntity tile) {
@@ -207,10 +207,6 @@ public class ItemFocusDislocation extends ItemModFocus {
         }
         int meta = ItemNBTHelper.getInt(focus, TAG_BLOCK_META, 0);
         ItemStack stck;
-        // if(block instanceof BlockReed)
-        // {
-        // stck=new ItemStack(Items.reeds,1,meta);
-        // }
         stck = new ItemStack(new ItemBlock(block), 1, meta);
         return stck;
     }

@@ -25,6 +25,7 @@ import net.minecraft.util.Facing;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import appeng.api.movable.IMovableTile;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.aspects.IAspectContainer;
@@ -33,7 +34,6 @@ import thaumcraft.common.blocks.ItemJarFilled;
 import thaumcraft.common.tiles.TileJarFillable;
 import thaumcraft.common.tiles.TileJarFillableVoid;
 import thaumic.tinkerer.common.lib.LibBlockNames;
-import appeng.api.movable.IMovableTile;
 
 public class TileFunnel extends TileEntity implements ISidedInventory, IAspectContainer, IMovableTile {
 
@@ -135,18 +135,6 @@ public class TileFunnel extends TileEntity implements ISidedInventory, IAspectCo
     @Override
     public ItemStack getStackInSlot(int i) {
         AspectList aspects = getAspects();
-        // if(inventorySlots[i] != null && inventorySlots[i].itemID == ConfigItems.itemJarFilled.itemID && aspects ==
-        // null) {
-        // Aspect filter=((ItemJarFilled)inventorySlots[i].getItem()).getFilter(inventorySlots[i]);
-        // inventorySlots[i] = new ItemStack(ConfigBlocks.blockJar,1,inventorySlots[i].getItemDamage());
-        // if(filter!=null)
-        // {
-        // if(inventorySlots[i].getTagCompound()==null)
-        // inventorySlots[i].setTagCompound(new NBTTagCompound());
-        // inventorySlots[i].getTagCompound().setString("AspectFilter",filter.getTag());
-        // }
-        // onInventoryChanged();
-        // }
 
         return inventorySlots[i];
     }

@@ -31,6 +31,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
 
+import baubles.api.BaubleType;
+import baubles.api.IBauble;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.research.ResearchPage;
@@ -45,8 +47,6 @@ import thaumic.tinkerer.common.registry.ThaumicTinkererRecipe;
 import thaumic.tinkerer.common.research.IRegisterableResearch;
 import thaumic.tinkerer.common.research.KamiResearchItem;
 import thaumic.tinkerer.common.research.ResearchHelper;
-import baubles.api.BaubleType;
-import baubles.api.IBauble;
 
 public class ItemCatAmulet extends ItemKamiBase implements IBauble {
 
@@ -98,8 +98,8 @@ public class ItemCatAmulet extends ItemKamiBase implements IBauble {
                         player.posZ + range));
 
         for (EntityLiving entity : entities) {
-            List<EntityAITasks.EntityAITaskEntry> entries = new ArrayList(entity.tasks.taskEntries);
-            entries.addAll(new ArrayList(entity.targetTasks.taskEntries));
+            List<EntityAITasks.EntityAITaskEntry> entries = new ArrayList<>(entity.tasks.taskEntries);
+            entries.addAll(new ArrayList<>(entity.targetTasks.taskEntries));
 
             boolean avoidsOcelots = false;
             for (EntityAITasks.EntityAITaskEntry entry : entries) {

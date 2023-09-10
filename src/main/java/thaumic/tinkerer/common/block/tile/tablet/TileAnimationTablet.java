@@ -14,11 +14,6 @@ package thaumic.tinkerer.common.block.tile.tablet;
 import java.util.ArrayList;
 import java.util.List;
 
-import li.cil.oc.api.machine.Arguments;
-import li.cil.oc.api.machine.Callback;
-import li.cil.oc.api.machine.Context;
-import li.cil.oc.api.network.SimpleComponent;
-
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
@@ -44,9 +39,6 @@ import net.minecraftforge.event.ForgeEventFactory;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent.Action;
 
-import thaumic.tinkerer.common.ThaumicTinkerer;
-import thaumic.tinkerer.common.block.BlockAnimationTablet;
-import thaumic.tinkerer.common.lib.LibBlockNames;
 import appeng.api.movable.IMovableTile;
 import cpw.mods.fml.common.Optional;
 import cpw.mods.fml.common.eventhandler.Event;
@@ -54,6 +46,13 @@ import dan200.computercraft.api.lua.ILuaContext;
 import dan200.computercraft.api.lua.LuaException;
 import dan200.computercraft.api.peripheral.IComputerAccess;
 import dan200.computercraft.api.peripheral.IPeripheral;
+import li.cil.oc.api.machine.Arguments;
+import li.cil.oc.api.machine.Callback;
+import li.cil.oc.api.machine.Context;
+import li.cil.oc.api.network.SimpleComponent;
+import thaumic.tinkerer.common.ThaumicTinkerer;
+import thaumic.tinkerer.common.block.BlockAnimationTablet;
+import thaumic.tinkerer.common.lib.LibBlockNames;
 
 @Optional.InterfaceList({ @Optional.Interface(iface = "li.cil.oc.api.network.SimpleComponent", modid = "OpenComputers"),
         @Optional.Interface(iface = "dan200.computercraft.api.peripheral.IPeripheral", modid = "ComputerCraft") })
@@ -76,7 +75,7 @@ public class TileAnimationTablet extends TileEntity implements IInventory, IMova
     public boolean leftClick = true;
     public boolean redstone = false;
     public int swingProgress = 0;
-    List<Entity> detectedEntities = new ArrayList();
+    List<Entity> detectedEntities = new ArrayList<>();
     ItemStack[] inventorySlots = new ItemStack[1];
     // public String Owner;
     TabletFakePlayer player;
@@ -137,11 +136,6 @@ public class TileAnimationTablet extends TileEntity implements IInventory, IMova
         Block block = worldObj.getBlock(coords.posX, coords.posY, coords.posZ);
 
         player.setCurrentItemOrArmor(0, stack);
-        // EntityPlayer realPlayer=MinecraftServer.getServer().getConfigurationManager().getPlayerForUsername(Owner);
-        // NBTTagCompound data=realPlayer.getEntityData().getCompoundTag("PlayerPersisted");
-        // player.getEntityData().setCompoundTag("PlayerPersisted",data);
-        // NBTTagCompound cmp=player.getEntityData().getCompoundTag("PlayerPersisted");
-        // System.out.println(cmp.getCompoundTag("TCResearch").getTagList("TCResearchList").tagCount());
 
         boolean done = false;
 
@@ -413,10 +407,6 @@ public class TileAnimationTablet extends TileEntity implements IInventory, IMova
 
         swingProgress = par1NBTTagCompound.getInteger(TAG_PROGRESS);
 
-        // if(par1NBTTagCompound.hasKey(TAG_OWNER))
-        // Owner=par1NBTTagCompound.getString(TAG_OWNER);
-        // else
-        // Owner="";
         readCustomNBT(par1NBTTagCompound);
     }
 
@@ -433,14 +423,6 @@ public class TileAnimationTablet extends TileEntity implements IInventory, IMova
     public void readCustomNBT(NBTTagCompound par1NBTTagCompound) {
         leftClick = par1NBTTagCompound.getBoolean(TAG_LEFT_CLICK);
         redstone = par1NBTTagCompound.getBoolean(TAG_REDSTONE);
-        // if(par1NBTTagCompound.hasKey("isBreaking"))
-        // isBreaking = par1NBTTagCompound.getBoolean("isBreaking");
-        // if(par1NBTTagCompound.hasKey("initialDamage"))
-        // initialDamage = par1NBTTagCompound.getInteger("initialDamage");
-        // if(par1NBTTagCompound.hasKey("curblockDamage"))
-        // curblockDamage = par1NBTTagCompound.getInteger("curblockDamage");
-        // if(par1NBTTagCompound.hasKey("durabilityRemainingOnBlock"))
-        // durabilityRemainingOnBlock=par1NBTTagCompound.getInteger("durabilityRemainingOnBlock");
         NBTTagList var2 = par1NBTTagCompound.getTagList("Items", Constants.NBT.TAG_COMPOUND);
         inventorySlots = new ItemStack[getSizeInventory()];
         for (int var3 = 0; var3 < var2.tagCount(); ++var3) {
@@ -453,10 +435,6 @@ public class TileAnimationTablet extends TileEntity implements IInventory, IMova
     public void writeCustomNBT(NBTTagCompound par1NBTTagCompound) {
         par1NBTTagCompound.setBoolean(TAG_LEFT_CLICK, leftClick);
         par1NBTTagCompound.setBoolean(TAG_REDSTONE, redstone);
-        // par1NBTTagCompound.setBoolean("isBreaking",isBreaking);
-        // par1NBTTagCompound.setInteger("initialDamage", initialDamage);
-        // par1NBTTagCompound.setInteger("curblockDamage",curblockDamage);
-        // par1NBTTagCompound.setInteger("durabilityRemainingOnBlock",durabilityRemainingOnBlock);
         NBTTagList var2 = new NBTTagList();
         for (int var3 = 0; var3 < inventorySlots.length; ++var3) {
             if (inventorySlots[var3] != null) {

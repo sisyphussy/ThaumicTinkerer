@@ -12,7 +12,6 @@
 package thaumic.tinkerer.common.core.handler;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import net.minecraft.block.Block;
@@ -33,7 +32,7 @@ public class ModCreativeTab extends CreativeTabs {
 
     public static ModCreativeTab INSTANCE;
     // Holds the registered items and blocks before they are sorted
-    public ArrayList<ItemStack> creativeTabQueue = new ArrayList<ItemStack>();
+    public ArrayList<ItemStack> creativeTabQueue = new ArrayList<>();
     ItemStack displayItem;
     List list = new ArrayList();
 
@@ -92,7 +91,7 @@ public class ModCreativeTab extends CreativeTabs {
     }
 
     public void addAllItemsAndBlocks() {
-        Collections.sort(creativeTabQueue, new ItemStackCompatator());
+        creativeTabQueue.sort(new ItemStackCompatator());
         list.addAll(creativeTabQueue);
     }
 }

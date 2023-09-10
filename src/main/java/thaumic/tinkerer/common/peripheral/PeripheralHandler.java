@@ -17,19 +17,19 @@ import java.util.List;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
+import dan200.computercraft.api.ComputerCraftAPI;
+import dan200.computercraft.api.peripheral.IPeripheral;
+import dan200.computercraft.api.peripheral.IPeripheralProvider;
 import thaumcraft.api.aspects.IAspectContainer;
 import thaumcraft.api.aspects.IEssentiaTransport;
 import thaumcraft.common.tiles.TileArcaneBore;
 import thaumcraft.common.tiles.TileDeconstructionTable;
 import thaumcraft.common.tiles.TileJarBrain;
 import thaumcraft.common.tiles.TileSensor;
-import dan200.computercraft.api.ComputerCraftAPI;
-import dan200.computercraft.api.peripheral.IPeripheral;
-import dan200.computercraft.api.peripheral.IPeripheralProvider;
 
 public final class PeripheralHandler implements IPeripheralProvider {
 
-    public static List<String> Blacklist = new ArrayList<String>();
+    public static List<String> Blacklist = new ArrayList<>();
 
     public IPeripheral getPeripheral(TileEntity tile) {
         for (String s : Blacklist) {

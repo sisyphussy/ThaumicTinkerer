@@ -11,12 +11,7 @@
  */
 package thaumic.tinkerer.common.block.tile;
 
-import li.cil.oc.api.machine.Arguments;
-import li.cil.oc.api.machine.Callback;
-import li.cil.oc.api.machine.Context;
-
 import net.minecraft.command.IEntitySelector;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityAgeable;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLivingBase;
@@ -29,12 +24,15 @@ import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraftforge.common.util.Constants;
 
-import thaumic.tinkerer.common.item.ItemSoulMould;
-import thaumic.tinkerer.common.lib.LibBlockNames;
 import appeng.api.movable.IMovableTile;
 import cpw.mods.fml.common.Optional;
 import dan200.computercraft.api.lua.ILuaContext;
 import dan200.computercraft.api.peripheral.IComputerAccess;
+import li.cil.oc.api.machine.Arguments;
+import li.cil.oc.api.machine.Callback;
+import li.cil.oc.api.machine.Context;
+import thaumic.tinkerer.common.item.ItemSoulMould;
+import thaumic.tinkerer.common.lib.LibBlockNames;
 
 public class TileMobMagnet extends TileMagnet implements IInventory, IMovableTile {
 
@@ -44,24 +42,20 @@ public class TileMobMagnet extends TileMagnet implements IInventory, IMovableTil
 
     @Override
     IEntitySelector getEntitySelector() {
-        return new IEntitySelector() {
+        return entity -> {
+            if (!(entity instanceof EntityLivingBase) || entity instanceof EntityPlayer) return false;
 
-            @Override
-            public boolean isEntityApplicable(Entity entity) {
-                if (!(entity instanceof EntityLivingBase) || entity instanceof EntityPlayer) return false;
+            boolean can = false;
+            if (entity instanceof EntityAgeable) can = adult != ((EntityAgeable) entity).isChild();
+            else can = true;
 
-                boolean can = false;
-                if (entity instanceof EntityAgeable) can = adult != ((EntityAgeable) entity).isChild();
-                else can = true;
-
-                if (can && inventorySlots[0] != null) {
-                    String pattern = ItemSoulMould.getPatternName(inventorySlots[0]);
-                    String name = EntityList.getEntityString(entity);
-                    return name != null && name.equals(pattern);
-                }
-
-                return can;
+            if (can && inventorySlots[0] != null) {
+                String pattern = ItemSoulMould.getPatternName(inventorySlots[0]);
+                String name = EntityList.getEntityString(entity);
+                return name != null && name.equals(pattern);
             }
+
+            return can;
         };
     }
 

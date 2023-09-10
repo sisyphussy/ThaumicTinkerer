@@ -20,7 +20,6 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.world.BlockEvent;
 
-import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.codechicken.lib.vec.Vector3;
 import thaumic.tinkerer.common.ThaumicTinkerer;
@@ -67,8 +66,7 @@ public final class MiscHelper {
         AspectList newList = list.copy();
         if (multiplier == 1) return newList;
 
-        for (Aspect aspect : newList.aspects.keySet())
-            newList.aspects.put(aspect, (int) ((double) newList.aspects.get(aspect) * multiplier));
+        newList.aspects.replaceAll((a, v) -> (int) ((double) newList.aspects.get(a) * multiplier));
 
         return newList;
     }

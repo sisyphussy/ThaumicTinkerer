@@ -9,18 +9,18 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 
-import thaumic.tinkerer.common.ThaumicTinkerer;
-import thaumic.tinkerer.common.block.BlockForcefield;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
+import thaumic.tinkerer.common.ThaumicTinkerer;
+import thaumic.tinkerer.common.block.BlockForcefield;
 
 /**
  * Created by pixlepix on 4/19/14.
  */
 public class PotionEffectHandler {
 
-    public static HashMap<Entity, Long> airPotionHit = new HashMap<Entity, Long>();
-    public static HashMap<Entity, Long> firePotionHit = new HashMap<Entity, Long>();
+    public static HashMap<Entity, Long> airPotionHit = new HashMap<>();
+    public static HashMap<Entity, Long> firePotionHit = new HashMap<>();
 
     @SubscribeEvent
     public void onLivingHurt(LivingAttackEvent e) {
@@ -89,7 +89,7 @@ public class PotionEffectHandler {
     @SubscribeEvent
     public void onTick(TickEvent.ServerTickEvent e) {
 
-        Iterator iter = airPotionHit.keySet().iterator();
+        Iterator<Entity> iter = airPotionHit.keySet().iterator();
         while (iter.hasNext()) {
             Entity target = (Entity) iter.next();
             if (target.isEntityAlive()) {

@@ -25,7 +25,7 @@ public class TileSummon extends TileEntity {
                 return;
             }
             for (int radius = 1; radius < 6; radius++) {
-                ArrayList<TileEntity> pedestals = new ArrayList<TileEntity>();
+                ArrayList<TileEntity> pedestals = new ArrayList<>();
                 for (int x = xCoord - radius; x <= xCoord + radius; x++) {
                     for (int z = zCoord - radius; z <= zCoord + radius; z++) {
                         TileEntity tile = worldObj.getTileEntity(x, yCoord, z);
@@ -38,13 +38,13 @@ public class TileSummon extends TileEntity {
 
                 for (int i = 0; i < pedestals.size(); i++) {
                     for (int j = 0; j < pedestals.size(); j++) {
-                        for (int k = 0; k < pedestals.size(); k++) {
+                        for (TileEntity pedestal : pedestals) {
                             TilePedestal ped1 = (TilePedestal) pedestals.get(i);
                             TilePedestal ped2 = (TilePedestal) pedestals.get(j);
-                            TilePedestal ped3 = (TilePedestal) pedestals.get(k);
+                            TilePedestal ped3 = (TilePedestal) pedestal;
 
                             if ((ped1 != ped2) && (ped2 != ped3) && (ped1 != ped3)) {
-                                ArrayList<Aspect> aspects = new ArrayList<Aspect>();
+                                ArrayList<Aspect> aspects = new ArrayList<>();
                                 aspects.add(ItemMobAspect.getAspect(ped1.getStackInSlot(0)));
 
                                 aspects.add(ItemMobAspect.getAspect(ped2.getStackInSlot(0)));

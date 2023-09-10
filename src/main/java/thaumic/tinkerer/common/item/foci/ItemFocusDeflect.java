@@ -21,6 +21,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
 
+import cpw.mods.fml.common.Loader;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.research.ResearchPage;
@@ -42,11 +43,10 @@ import thaumic.tinkerer.common.research.IRegisterableResearch;
 import thaumic.tinkerer.common.research.ResearchHelper;
 import thaumic.tinkerer.common.research.TTResearchItem;
 import vazkii.botania.api.internal.IManaBurst;
-import cpw.mods.fml.common.Loader;
 
 public class ItemFocusDeflect extends ItemModFocus {
 
-    public static List<Class<?>> DeflectBlacklist = new ArrayList<Class<?>>();
+    public static List<Class<?>> DeflectBlacklist = new ArrayList<>();
     private static final AspectList visUsage = new AspectList().add(Aspect.ORDER, 8).add(Aspect.AIR, 4);
 
     public static void setupBlackList() {
@@ -126,6 +126,7 @@ public class ItemFocusDeflect extends ItemModFocus {
         if (wand.consumeAllVis(stack, p, getVisCost(stack), true, false)) protectFromProjectiles(p, stack);
     }
 
+    @Override
     public String getSortingHelper(ItemStack itemstack) {
         return "TTDF" + super.getSortingHelper(itemstack);
     }

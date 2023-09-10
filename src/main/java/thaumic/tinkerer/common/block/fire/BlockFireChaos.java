@@ -2,8 +2,10 @@ package thaumic.tinkerer.common.block.fire;
 
 import java.util.HashMap;
 
+import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 import thaumcraft.api.aspects.Aspect;
@@ -12,7 +14,6 @@ import thaumcraft.api.research.ResearchPage;
 import thaumcraft.common.config.ConfigItems;
 import thaumic.tinkerer.common.ThaumicTinkerer;
 import thaumic.tinkerer.common.core.handler.ConfigHandler;
-import thaumic.tinkerer.common.core.helper.BlockTuple;
 import thaumic.tinkerer.common.lib.LibBlockNames;
 import thaumic.tinkerer.common.lib.LibResearch;
 import thaumic.tinkerer.common.registry.ThaumicTinkererCrucibleRecipe;
@@ -22,6 +23,8 @@ import thaumic.tinkerer.common.research.ResearchHelper;
 import thaumic.tinkerer.common.research.TTResearchItem;
 
 public class BlockFireChaos extends BlockFireBase {
+
+    private static HashMap<Block, Block> blockTransformation = null;
 
     @Override
     public String getBlockName() {
@@ -60,31 +63,26 @@ public class BlockFireChaos extends BlockFireBase {
         return 1;
     }
 
-    @Override
-    public HashMap<BlockTuple, BlockTuple> getBlockTransformation() {
-        HashMap<BlockTuple, BlockTuple> result = new HashMap<BlockTuple, BlockTuple>();
-        result.put(
-                new BlockTuple(ThaumicTinkerer.registry.getFirstBlockFromClass(BlockFireAir.class)),
-                new BlockTuple(Blocks.fire));
-        result.put(
-                new BlockTuple(ThaumicTinkerer.registry.getFirstBlockFromClass(BlockFireWater.class)),
-                new BlockTuple(Blocks.fire));
-        result.put(
-                new BlockTuple(ThaumicTinkerer.registry.getFirstBlockFromClass(BlockFireEarth.class)),
-                new BlockTuple(Blocks.fire));
-        result.put(
-                new BlockTuple(ThaumicTinkerer.registry.getFirstBlockFromClass(BlockFireIgnis.class)),
-                new BlockTuple(Blocks.fire));
-        result.put(
-                new BlockTuple(ThaumicTinkerer.registry.getFirstBlockFromClass(BlockFireOrder.class)),
-                new BlockTuple(Blocks.fire));
-
-        return result;
+    private static void initBlockTransformation() {
+        blockTransformation = new HashMap<>();
+        blockTransformation.put(ThaumicTinkerer.registry.getFirstBlockFromClass(BlockFireAir.class), Blocks.fire);
+        blockTransformation.put(ThaumicTinkerer.registry.getFirstBlockFromClass(BlockFireWater.class), Blocks.fire);
+        blockTransformation.put(ThaumicTinkerer.registry.getFirstBlockFromClass(BlockFireEarth.class), Blocks.fire);
+        blockTransformation.put(ThaumicTinkerer.registry.getFirstBlockFromClass(BlockFireIgnis.class), Blocks.fire);
+        blockTransformation.put(ThaumicTinkerer.registry.getFirstBlockFromClass(BlockFireOrder.class), Blocks.fire);
     }
 
     @Override
-    public HashMap<thaumic.tinkerer.common.core.helper.BlockTuple, thaumic.tinkerer.common.core.helper.BlockTuple> getBlockTransformation(
-            World w, int x, int y, int z) {
+    public HashMap<Block, Block> getBlockTransformation() {
+        if (blockTransformation == null) {
+            initBlockTransformation();
+        }
+
+        return blockTransformation;
+    }
+
+    @Override
+    public HashMap<Block, Block> getBlockTransformation(IBlockAccess w, int x, int y, int z) {
         return getBlockTransformation();
     }
 }

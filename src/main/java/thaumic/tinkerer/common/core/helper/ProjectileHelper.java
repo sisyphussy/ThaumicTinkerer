@@ -7,13 +7,13 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.entity.projectile.EntityThrowable;
 
-import thaumcraft.common.entities.projectile.EntityFrostShard;
-
 import com.google.common.base.Function;
+
+import thaumcraft.common.entities.projectile.EntityFrostShard;
 
 public final class ProjectileHelper {
 
-    private static Map<Class<? extends Entity>, Function<Entity, Entity>> ownerGetters = new IdentityHashMap<Class<? extends Entity>, Function<Entity, Entity>>();
+    private static Map<Class<? extends Entity>, Function<Entity, Entity>> ownerGetters = new IdentityHashMap<>();
 
     public static Entity getOwner(Entity projectile) {
         Function<Entity, Entity> ownerGetterForClass = ownerGetters.get(projectile.getClass());
