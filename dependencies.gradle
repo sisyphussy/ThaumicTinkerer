@@ -2,12 +2,12 @@
 
 dependencies {
     api('com.github.GTNewHorizons:Baubles:1.0.1.16:dev')
-    api('com.github.GTNewHorizons:Applied-Energistics-2-Unofficial:rv3-beta-260-GTNH:api')
+    api('com.github.GTNewHorizons:Applied-Energistics-2-Unofficial:rv3-beta-261-GTNH:api')
 
     api('thaumcraft:Thaumcraft:1.7.10-4.2.3.5:dev')
 
     compileOnly('com.github.GTNewHorizons:Botania:1.10.0-GTNH:dev') {transitive=false}
-    compileOnly('com.github.GTNewHorizons:EnderCore:0.2.17:dev') {transitive=false}
+    compileOnly('com.github.GTNewHorizons:EnderCore:0.2.18:dev') {transitive=false}
     compileOnly('com.github.GTNewHorizons:EnderIO:2.5.2:dev') {transitive=false}
     compileOnly('com.github.GTNewHorizons:EnderStorage:1.4.12:dev') {transitive=false}
     compileOnly('com.github.GTNewHorizons:waila:1.6.0:api') {transitive=false}
