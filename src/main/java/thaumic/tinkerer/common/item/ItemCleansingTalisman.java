@@ -12,7 +12,10 @@
 package thaumic.tinkerer.common.item;
 
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.UUID;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.EntityLivingBase;
@@ -25,8 +28,6 @@ import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
-
-import org.apache.commons.lang3.ArrayUtils;
 
 import baubles.api.BaubleType;
 import baubles.api.BaublesApi;
@@ -59,6 +60,11 @@ public class ItemCleansingTalisman extends ItemBase implements IBauble {
     private static final String TAG_ENABLED = "enabled";
 
     private IIcon enabledIcon;
+
+    private static final int EFFECT_BURNING = -1;
+    // 0 = no effect, otherwise either EFFECT_BURNING or the ID of the effect removed.
+    private HashMap<UUID, Integer> mLastEffectRemoved = new HashMap<>();
+    private final HashMap<UUID, Collection<Integer>> mPermanentEffects = new HashMap<>();
 
     public ItemCleansingTalisman() {
         setMaxStackSize(1);
@@ -143,6 +149,12 @@ public class ItemCleansingTalisman extends ItemBase implements IBauble {
     }
 
     @Override
+    public int getItemEnchantability() {
+        // Equivalent to iron.
+        return 10;
+    }
+
+    @Override
     public BaubleType getBaubleType(ItemStack itemstack) {
         return BaubleType.AMULET;
     }
@@ -153,15 +165,48 @@ public class ItemCleansingTalisman extends ItemBase implements IBauble {
         if (isEnabled(par1ItemStack) && !par2World.isRemote) {
             if (player.ticksExisted % 20 == 0) {
                 if (player instanceof EntityPlayer) {
-                    boolean removed = false;
-                    int damage = 1;
 
-                    Collection<PotionEffect> potions = player.getActivePotionEffects();
+                    int lastEffectRemoved;
+                    Collection<Integer> permanentEffects;
+
+                    UUID uuid = player.getUniqueID();
+                    if (mPermanentEffects.containsKey(uuid)) {
+                        lastEffectRemoved = mLastEffectRemoved.get(uuid);
+                        permanentEffects = mPermanentEffects.get(uuid);
+                    } else {
+                        lastEffectRemoved = 0;
+                        permanentEffects = new HashSet<>();
+                        mLastEffectRemoved.put(uuid, lastEffectRemoved);
+                        mPermanentEffects.put(uuid, permanentEffects);
+                    }
+
+                    // All effects we try to remove in this operation, including permanent effects.
+                    Collection<Integer> effectsToRemove = new HashSet<>();
+                    // One new effect we remove this operation, with a durability cost.
+                    int effectRemoved = 0;
 
                     if (player.isBurning()) {
-                        player.extinguish();
-                        removed = true;
-                    } else for (PotionEffect potion : potions) {
+                        if (permanentEffects.contains(EFFECT_BURNING)) {
+                            // Remove permanent effects at no cost.
+                            effectsToRemove.add(EFFECT_BURNING);
+                        } else if (lastEffectRemoved == EFFECT_BURNING) {
+                            // We removed burning last time, player is on fire permanently.
+                            permanentEffects.add(EFFECT_BURNING);
+                            effectsToRemove.add(EFFECT_BURNING);
+                        } else if (effectRemoved == 0) {
+                            // Actually remove burning.
+                            effectsToRemove.add(EFFECT_BURNING);
+                            effectRemoved = EFFECT_BURNING;
+                        }
+                    }
+
+                    Collection<PotionEffect> potions = player.getActivePotionEffects();
+                    for (PotionEffect potion : potions) {
+                        // Skip effects without a duration; e.g., dolly, TiC cleaver, etc.
+                        if (potion.duration < 20) {
+                            continue;
+                        }
+
                         int id = potion.getPotionID();
                         boolean badEffect;
                         badEffect = ReflectionHelper.getPrivateValue(
@@ -171,28 +216,57 @@ public class ItemCleansingTalisman extends ItemBase implements IBauble {
                         if (Potion.potionTypes[id] instanceof PotionWarpWard) {
                             badEffect = false;
                         }
+
                         if (badEffect) {
-                            player.removePotionEffect(id);
-                            removed = true;
-                            int[] warpPotionIDs = new int[] { Config.potionBlurredID, Config.potionDeathGazeID,
-                                    Config.potionInfVisExhaustID, Config.potionSunScornedID, Config.potionUnHungerID };
-                            if (ArrayUtils.contains(warpPotionIDs, potion.getPotionID())) {
-                                damage = 10;
+                            if (permanentEffects.contains(id)) {
+                                // Remove permanent effects at no cost.
+                                effectsToRemove.add(id);
+                            } else if (lastEffectRemoved == id) {
+                                // We removed this effect last time, player is affected by this permanently.
+                                effectsToRemove.add(id);
+                                permanentEffects.add(id);
+                            } else if (effectRemoved == 0) {
+                                // Actually remove the effect.
+                                effectsToRemove.add(id);
+                                effectRemoved = id;
                             }
-                            break;
                         }
                     }
 
-                    if (removed) {
+                    for (int effectID : effectsToRemove) {
+                        if (effectID == EFFECT_BURNING) {
+                            player.extinguish();
+                        } else {
+                            player.removePotionEffect(effectID);
+                        }
+                    }
+
+                    // True if some permanent effects are no longer affecting the player.
+                    boolean permanentRemoved = permanentEffects.retainAll(effectsToRemove);
+
+                    if (effectRemoved != 0) {
+                        int damage = 1;
+
+                        if (effectRemoved == Config.potionBlurredID || effectRemoved == Config.potionDeathGazeID
+                                || effectRemoved == Config.potionInfVisExhaustID
+                                || effectRemoved == Config.potionSunScornedID
+                                || effectRemoved == Config.potionUnHungerID) {
+                            damage = 10;
+                        }
 
                         par1ItemStack.damageItem(damage, player);
-                        if (par1ItemStack.getItemDamage() <= 0) {
-                            BaublesApi.getBaubles((EntityPlayer) player).setInventorySlotContents(0, null); // Slot 0 =
-                                                                                                            // Talisman
-                                                                                                            // Slot
+                        if (par1ItemStack.stackSize <= 0) {
+                            // Slot 0 = talisman slot.
+                            BaublesApi.getBaubles((EntityPlayer) player).setInventorySlotContents(0, null);
                         }
+                    }
+
+                    if (effectRemoved != 0 || permanentRemoved) {
                         par2World.playSoundAtEntity(player, "thaumcraft:wand", 0.3F, 0.1F);
                     }
+
+                    lastEffectRemoved = effectRemoved;
+                    mLastEffectRemoved.put(uuid, lastEffectRemoved);
                 }
             }
         }
