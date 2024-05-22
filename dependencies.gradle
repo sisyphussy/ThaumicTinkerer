@@ -2,16 +2,16 @@
 
 dependencies {
     api('com.github.GTNewHorizons:Baubles:1.0.4:dev')
-    api('com.github.GTNewHorizons:Applied-Energistics-2-Unofficial:rv3-beta-349-GTNH:api')
+    api('com.github.GTNewHorizons:Applied-Energistics-2-Unofficial:rv3-beta-402-GTNH:api')
 
     api('thaumcraft:Thaumcraft:1.7.10-4.2.3.5:dev')
 
-    compileOnly('com.github.GTNewHorizons:Botania:1.10.12-GTNH:dev') {transitive=false}
+    compileOnly('com.github.GTNewHorizons:Botania:1.11.1-GTNH:dev') {transitive=false}
     compileOnly('com.github.GTNewHorizons:EnderCore:0.4.6:dev') {transitive=false}
-    compileOnly('com.github.GTNewHorizons:EnderIO:2.7.3:dev') {transitive=false}
-    compileOnly('com.github.GTNewHorizons:EnderStorage:1.5.0:dev') {transitive=false}
-    compileOnly('com.github.GTNewHorizons:waila:1.7.3:api') {transitive=false}
-    compileOnly('com.github.GTNewHorizons:TinkersConstruct:1.11.15-GTNH:dev') {transitive=false}
+    compileOnly('com.github.GTNewHorizons:EnderIO:2.8.0:dev') {transitive=false}
+    compileOnly('com.github.GTNewHorizons:EnderStorage:1.6.0:dev') {transitive=false}
+    compileOnly('com.github.GTNewHorizons:waila:1.8.0:api') {transitive=false}
+    compileOnly('com.github.GTNewHorizons:TinkersConstruct:1.12.1-GTNH:dev') {transitive=false}
     compileOnly('com.github.GTNewHorizons:ForgeMultipart:1.4.8:dev') {transitive=false}
     compileOnly('com.github.GTNewHorizons:CodeChickenLib:1.2.1:dev') {transitive=false}
     compileOnly('com.github.GTNewHorizons:OpenComputers:1.10.11-GTNH:api') {transitive=false}
