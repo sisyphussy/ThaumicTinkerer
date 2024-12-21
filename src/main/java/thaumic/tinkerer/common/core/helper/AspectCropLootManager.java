@@ -208,7 +208,13 @@ public class AspectCropLootManager {
 
         addAspectLoot(Aspect.ENERGY, new ItemStack(ConfigItems.itemResource, 12));
 
-        addAspectLoot(Aspect.MAGIC, "materialAspectShard");
+        addAspectLoot(Aspect.MAGIC, new ItemStack(ConfigItems.itemShard, 1, 0));
+        addAspectLoot(Aspect.MAGIC, new ItemStack(ConfigItems.itemShard, 1, 1));
+        addAspectLoot(Aspect.MAGIC, new ItemStack(ConfigItems.itemShard, 1, 2));
+        addAspectLoot(Aspect.MAGIC, new ItemStack(ConfigItems.itemShard, 1, 3));
+        addAspectLoot(Aspect.MAGIC, new ItemStack(ConfigItems.itemShard, 1, 4));
+        addAspectLoot(Aspect.MAGIC, new ItemStack(ConfigItems.itemShard, 1, 5));
+        addAspectLoot(Aspect.MAGIC, new ItemStack(ConfigItems.itemShard, 1, 6));
 
         addAspectLoot(Aspect.HEAL, new ItemStack(Items.golden_apple));
 
