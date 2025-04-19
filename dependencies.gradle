@@ -3,7 +3,7 @@
 dependencies {
     api('com.github.GTNewHorizons:Baubles-Expanded:2.1.6-GTNH:dev')
     api('thaumcraft:Thaumcraft:1.7.10-4.2.3.5:dev')
-    api('com.github.GTNewHorizons:Applied-Energistics-2-Unofficial:rv3-beta-580-GTNH:api')
+    api('com.github.GTNewHorizons:Applied-Energistics-2-Unofficial:rv3-beta-584-GTNH:api')
 
     compileOnly('com.github.GTNewHorizons:Botania:1.12.6-GTNH:dev') {transitive=false}
     compileOnly('com.github.GTNewHorizons:EnderCore:0.4.6:dev') {transitive=false}
@@ -15,9 +15,11 @@ dependencies {
     compileOnly('com.github.GTNewHorizons:CodeChickenCore:1.4.1:dev') {transitive=false}
     compileOnly('com.github.GTNewHorizons:OpenComputers:1.11.13-GTNH:api') {transitive=false}
     compileOnly('net.industrial-craft:industrialcraft-2:2.2.828-experimental:api') {transitive=false}
-    compileOnly("com.github.GTNewHorizons:GT5-Unofficial:5.09.51.227:dev") {transitive=false}
+    compileOnly("com.github.GTNewHorizons:GT5-Unofficial:5.09.51.240:dev") {transitive=false}
     compileOnly('curse.maven:computercraft-67504:2269339')
     compileOnly('curse.maven:cofh-core-69162:2388751')
 
-    runtimeOnly('com.github.GTNewHorizons:TCNEIAdditions:1.4.8:dev'){exclude module: 'Baubles'}
+    runtimeOnly('com.github.GTNewHorizons:TCNEIAdditions:1.4.8:dev') {
+        exclude module: 'Baubles'
+    }
 }
