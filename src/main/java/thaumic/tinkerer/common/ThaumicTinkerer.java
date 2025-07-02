@@ -56,6 +56,9 @@ public class ThaumicTinkerer {
     @SidedProxy(clientSide = LibMisc.CLIENT_PROXY, serverSide = LibMisc.COMMON_PROXY)
     public static TTCommonProxy proxy;
 
+    public static boolean isBootsActive = false;
+    public static final String BOOTS = "thaumicboots";
+
     public static CommonProxy tcProxy;
     public static SimpleNetworkWrapper netHandler = NetworkRegistry.INSTANCE.newSimpleChannel(LibMisc.MOD_ID + "|B");
 
@@ -73,6 +76,9 @@ public class ThaumicTinkerer {
                     "Waila",
                     "register",
                     "thaumic.tinkerer.common.compat.TTinkererProvider.callbackRegister");
+        }
+        if (Loader.isModLoaded(BOOTS)) {
+            isBootsActive = true;
         }
     }
 
