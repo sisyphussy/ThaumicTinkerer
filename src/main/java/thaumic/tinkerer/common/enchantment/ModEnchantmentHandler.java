@@ -178,7 +178,7 @@ public class ModEnchantmentHandler {
 
     @SubscribeEvent(priority = EventPriority.LOW)
     public void onFall(LivingFallEvent event) {
-        if (event.entityLiving instanceof EntityPlayer) {
+        if (event.entityLiving instanceof EntityPlayer && event.distance > 3) {
             ItemStack boots = ((EntityPlayer) event.entityLiving).getCurrentArmor(0);
             int shockwave = EnchantmentHelper.getEnchantmentLevel(LibEnchantIDs.shockwave, boots);
             if (shockwave > 0) {
@@ -191,7 +191,7 @@ public class ModEnchantmentHandler {
                                 event.entity.posX + 10,
                                 event.entity.posY + 10,
                                 event.entity.posZ + 10))) {
-                    if (target != event.entity && event.distance > 3) {
+                    if (target != event.entity) {
                         target.attackEntityFrom(DamageSource.fall, .1F * shockwave * event.distance);
                     }
                 }

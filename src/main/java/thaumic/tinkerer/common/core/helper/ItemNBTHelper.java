@@ -17,32 +17,10 @@ import net.minecraft.nbt.NBTTagCompound;
 public final class ItemNBTHelper {
 
     /**
-     * Checks if an ItemStack has a Tag Compound *
-     */
-    public static boolean detectNBT(ItemStack stack) {
-        return stack.hasTagCompound();
-    }
-
-    /**
-     * Tries to initialize an NBT Tag Compound in an ItemStack, this will not do anything if the stack already has a tag
-     * compound *
-     */
-    public static void initNBT(ItemStack stack) {
-        if (!detectNBT(stack)) injectNBT(stack, new NBTTagCompound());
-    }
-
-    /**
-     * Injects an NBT Tag Compound to an ItemStack, no checks are made previously *
-     */
-    public static void injectNBT(ItemStack stack, NBTTagCompound nbt) {
-        stack.setTagCompound(nbt);
-    }
-
-    /**
      * Gets the NBTTagCompound in an ItemStack. Tries to init it previously in case there isn't one present *
      */
     public static NBTTagCompound getNBT(ItemStack stack) {
-        initNBT(stack);
+        if (!stack.hasTagCompound()) stack.setTagCompound(new NBTTagCompound());
         return stack.getTagCompound();
     }
 
@@ -77,8 +55,7 @@ public final class ItemNBTHelper {
     }
 
     public static void setCompound(ItemStack stack, String tag, NBTTagCompound cmp) {
-        if (!tag.equalsIgnoreCase("ench")) // not override the enchantments
-            getNBT(stack).setTag(tag, cmp);
+        getNBT(stack).setTag(tag, cmp);
     }
 
     public static void setString(ItemStack stack, String tag, String s) {
@@ -92,42 +69,52 @@ public final class ItemNBTHelper {
     }
 
     public static boolean getBoolean(ItemStack stack, String tag, boolean defaultExpected) {
-        return verifyExistance(stack, tag) ? getNBT(stack).getBoolean(tag) : defaultExpected;
+        NBTTagCompound nbt = getNBT(stack);
+        return nbt.hasKey(tag) ? nbt.getBoolean(tag) : defaultExpected;
     }
 
     public static byte getByte(ItemStack stack, String tag, byte defaultExpected) {
-        return verifyExistance(stack, tag) ? getNBT(stack).getByte(tag) : defaultExpected;
+        NBTTagCompound nbt = getNBT(stack);
+        return nbt.hasKey(tag) ? nbt.getByte(tag) : defaultExpected;
     }
 
     public static short getShort(ItemStack stack, String tag, short defaultExpected) {
-        return verifyExistance(stack, tag) ? getNBT(stack).getShort(tag) : defaultExpected;
+        NBTTagCompound nbt = getNBT(stack);
+        return nbt.hasKey(tag) ? nbt.getShort(tag) : defaultExpected;
     }
 
     public static int getInt(ItemStack stack, String tag, int defaultExpected) {
-        return verifyExistance(stack, tag) ? getNBT(stack).getInteger(tag) : defaultExpected;
+        NBTTagCompound nbt = getNBT(stack);
+        return nbt.hasKey(tag) ? nbt.getInteger(tag) : defaultExpected;
     }
 
     public static long getLong(ItemStack stack, String tag, long defaultExpected) {
-        return verifyExistance(stack, tag) ? getNBT(stack).getLong(tag) : defaultExpected;
+        NBTTagCompound nbt = getNBT(stack);
+        return nbt.hasKey(tag) ? nbt.getLong(tag) : defaultExpected;
     }
 
     public static float getFloat(ItemStack stack, String tag, float defaultExpected) {
-        return verifyExistance(stack, tag) ? getNBT(stack).getFloat(tag) : defaultExpected;
+        NBTTagCompound nbt = getNBT(stack);
+        return nbt.hasKey(tag) ? nbt.getFloat(tag) : defaultExpected;
     }
 
     public static double getDouble(ItemStack stack, String tag, double defaultExpected) {
-        return verifyExistance(stack, tag) ? getNBT(stack).getDouble(tag) : defaultExpected;
+        NBTTagCompound nbt = getNBT(stack);
+        return nbt.hasKey(tag) ? nbt.getDouble(tag) : defaultExpected;
     }
 
-    /**
-     * If nullifyOnFail is true it'll return null if it doesn't find any compounds, otherwise it'll return a new one. *
-     */
-    public static NBTTagCompound getCompound(ItemStack stack, String tag, boolean nullifyOnFail) {
-        return verifyExistance(stack, tag) ? getNBT(stack).getCompoundTag(tag)
-                : nullifyOnFail ? null : new NBTTagCompound();
+    public static NBTTagCompound getCompound(ItemStack stack, String tag) {
+        NBTTagCompound nbt = getNBT(stack);
+        return nbt.hasKey(tag) ? nbt.getCompoundTag(tag) : new NBTTagCompound();
+    }
+
+    public static NBTTagCompound getCompoundOrNull(ItemStack stack, String tag) {
+        NBTTagCompound nbt = getNBT(stack);
+        return nbt.hasKey(tag) ? nbt.getCompoundTag(tag) : null;
     }
 
     public static String getString(ItemStack stack, String tag, String defaultExpected) {
-        return verifyExistance(stack, tag) ? getNBT(stack).getString(tag) : defaultExpected;
+        NBTTagCompound nbt = getNBT(stack);
+        return nbt.hasKey(tag) ? nbt.getString(tag) : defaultExpected;
     }
 }

@@ -36,7 +36,7 @@ public class ReflectionHelper {
 
     public static Method getMethod(Class<?> klazz, String[] methodNames, Object... args) {
         if (klazz == null) return null;
-        Class<?> argTypes[] = new Class<?>[args.length];
+        Class<?>[] argTypes = new Class<?>[args.length];
         for (int i = 0; i < args.length; i++) {
             final Object arg = args[i];
             argTypes[i] = arg.getClass();

@@ -16,8 +16,8 @@ public enum EnumGolemCores {
     CoreFishing((byte) 11, "item.ItemGolemCore.11.name"),
     CoreBlank((byte) 100, "item.ItemGolemCore.100.name"),;
 
-    private String name;
-    private byte coreByte;
+    private final String name;
+    private final byte coreByte;
 
     EnumGolemCores(byte ch, String name) {
         coreByte = ch;

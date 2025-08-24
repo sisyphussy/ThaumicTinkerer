@@ -22,7 +22,7 @@ public class ItemWardSlab extends ItemSlab implements ITTinkererItem {
         super(
                 par1,
                 (BlockSlab) ThaumicTinkerer.registry.getFirstBlockFromClass(BlockWardSlab.class),
-                (BlockSlab) ThaumicTinkerer.registry.getBlockFromClass(BlockWardSlab.class).get(1),
+                (BlockSlab) ThaumicTinkerer.registry.getBlockFromClass(BlockWardSlab.class, 1),
                 false);
     }
 

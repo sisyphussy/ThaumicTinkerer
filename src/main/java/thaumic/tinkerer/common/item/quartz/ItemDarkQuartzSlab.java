@@ -30,7 +30,7 @@ public class ItemDarkQuartzSlab extends ItemSlab implements ITTinkererItem {
         super(
                 par1,
                 (BlockSlab) ThaumicTinkerer.registry.getFirstBlockFromClass(BlockDarkQuartzSlab.class),
-                (BlockSlab) ThaumicTinkerer.registry.getBlockFromClass(BlockDarkQuartzSlab.class).get(1),
+                (BlockSlab) ThaumicTinkerer.registry.getBlockFromClass(BlockDarkQuartzSlab.class, 1),
                 false);
     }
 

@@ -58,10 +58,8 @@ public class TinkersConstructCompat {
             NBTTagCompound InfiniTool = ItemNBTHelper.getNBT(stack).getCompoundTag(TAG_INFINITOOL);
             InfiniTool.setBoolean(TAG_BROKEN, false);
             int damage = InfiniTool.getInteger(TAG_DAMAGE);
-            int itemsUsed = 0;
             int increase = calculateIncrease(stack, amount);
             int repair = InfiniTool.getInteger(TAG_REPAIRCOUNT);
-            repair += itemsUsed;
             InfiniTool.setInteger(TAG_REPAIRCOUNT, repair);
 
             damage -= increase;
@@ -81,8 +79,7 @@ public class TinkersConstructCompat {
 
         int modifiers = tags.getInteger(TAG_MODIFIERS);
         float mods = 1.0f;
-        if (modifiers == 2) mods = 1.0f;
-        else if (modifiers == 1) mods = 0.75f;
+        if (modifiers == 1) mods = 0.75f;
         else if (modifiers == 0) mods = 0.5f;
 
         increase *= mods;

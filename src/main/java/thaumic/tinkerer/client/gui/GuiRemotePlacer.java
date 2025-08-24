@@ -10,7 +10,6 @@ import net.minecraft.util.ResourceLocation;
 
 import org.lwjgl.opengl.GL11;
 
-import thaumcraft.api.aspects.Aspect;
 import thaumic.tinkerer.client.gui.button.GuiButtonRP;
 import thaumic.tinkerer.client.gui.button.GuiButtonRPRadio;
 import thaumic.tinkerer.client.gui.button.IRadioButton;
@@ -31,7 +30,6 @@ public class GuiRemotePlacer extends GuiContainer {
     List<IRadioButton> radioButtons = new ArrayList<>();
     List<GuiButtonRP> buttonListRP = new ArrayList<>();
     TileRPlacer placer;
-    Aspect aspectHovered = null;
 
     public GuiRemotePlacer(TileRPlacer placer, InventoryPlayer inv) {
         super(new ContainerRemotePlacer(placer, inv));

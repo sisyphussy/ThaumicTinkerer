@@ -36,15 +36,19 @@ public final class ClientHelper {
     }
 
     public static void renderTooltip(int x, int y, List<String> tooltipData) {
-        int color = 0x505000ff;
-        int color2 = 0xf0100010;
-
-        GL11.glDisable(GL12.GL_RESCALE_NORMAL);
-        net.minecraft.client.renderer.RenderHelper.disableStandardItemLighting();
-        GL11.glDisable(GL11.GL_LIGHTING);
-        GL11.glDisable(GL11.GL_DEPTH_TEST);
-
         if (!tooltipData.isEmpty()) {
+            int color = 0x505000ff;
+            int color2 = 0xf0100010;
+
+            GL11.glDisable(GL12.GL_RESCALE_NORMAL);
+            net.minecraft.client.renderer.RenderHelper.disableStandardItemLighting();
+            GL11.glDisable(GL11.GL_DEPTH_TEST);
+            GL11.glDisable(GL11.GL_TEXTURE_2D);
+            GL11.glEnable(GL11.GL_BLEND);
+            GL11.glDisable(GL11.GL_ALPHA_TEST);
+            GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+            GL11.glShadeModel(GL11.GL_SMOOTH);
+
             int var5 = 0;
             int var6;
             int var7;
@@ -74,10 +78,15 @@ public final class ClientHelper {
                 if (var13 == 0) var7 += 2;
                 var7 += 10;
             }
+
+            GL11.glShadeModel(GL11.GL_FLAT);
+            GL11.glDisable(GL11.GL_BLEND);
+            GL11.glEnable(GL11.GL_ALPHA_TEST);
+            GL11.glEnable(GL11.GL_TEXTURE_2D);
         }
     }
 
-    public static void drawGradientRect(int par1, int par2, float z, int par3, int par4, int par5, int par6) {
+    private static void drawGradientRect(int par1, int par2, float z, int par3, int par4, int par5, int par6) {
         float var7 = (par5 >> 24 & 255) / 255.0F;
         float var8 = (par5 >> 16 & 255) / 255.0F;
         float var9 = (par5 >> 8 & 255) / 255.0F;
@@ -86,11 +95,6 @@ public final class ClientHelper {
         float var12 = (par6 >> 16 & 255) / 255.0F;
         float var13 = (par6 >> 8 & 255) / 255.0F;
         float var14 = (par6 & 255) / 255.0F;
-        GL11.glDisable(GL11.GL_TEXTURE_2D);
-        GL11.glEnable(GL11.GL_BLEND);
-        GL11.glDisable(GL11.GL_ALPHA_TEST);
-        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-        GL11.glShadeModel(GL11.GL_SMOOTH);
         Tessellator var15 = Tessellator.instance;
         var15.startDrawingQuads();
         var15.setColorRGBA_F(var8, var9, var10, var7);
@@ -100,9 +104,5 @@ public final class ClientHelper {
         var15.addVertex(par1, par4, z);
         var15.addVertex(par3, par4, z);
         var15.draw();
-        GL11.glShadeModel(GL11.GL_FLAT);
-        GL11.glDisable(GL11.GL_BLEND);
-        GL11.glEnable(GL11.GL_ALPHA_TEST);
-        GL11.glEnable(GL11.GL_TEXTURE_2D);
     }
 }

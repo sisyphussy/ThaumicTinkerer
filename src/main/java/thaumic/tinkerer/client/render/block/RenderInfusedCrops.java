@@ -38,9 +38,10 @@ public class RenderInfusedCrops implements ISimpleBlockRenderingHandler {
             tess.setColorRGBA_I(aspect.getColor(), 255);
         }
 
-        renderer.setOverrideBlockTexture(block.getIcon(world, x, y, z, world.getBlockMetadata(x, y, z)));
+        final int metadata = world.getBlockMetadata(x, y, z);
+        renderer.setOverrideBlockTexture(block.getIcon(world, x, y, z, metadata));
         tess.setBrightness(block.getMixedBrightnessForBlock(world, x, y, z));
-        renderer.renderBlockCropsImpl(block, world.getBlockMetadata(x, y, z), x, y - 0.0625F, z);
+        renderer.renderBlockCropsImpl(block, metadata, x, y - 0.0625F, z);
         renderer.clearOverrideBlockTexture();
         // tess.setColorOpaque_I(0xFFFFFF);
 

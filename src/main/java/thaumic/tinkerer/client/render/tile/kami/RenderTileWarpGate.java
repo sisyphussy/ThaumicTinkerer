@@ -28,8 +28,7 @@ public class RenderTileWarpGate extends TileEntitySpecialRenderer {
         GL11.glColor4f(1F, 1F, 1F, 1F);
         GL11.glTranslated(x + 0.5, y + 2.5, z + 0.5);
         GL11.glRotatef(180F, 1F, 0F, 1F);
-        int repeat = 5;
-        cubes.renderSpinningCubes(12, repeat, repeat);
+        cubes.renderSpinningCubes(12, 5);
         GL11.glPopMatrix();
     }
 }

@@ -50,9 +50,7 @@ public class InfusedSeedsPlanter extends PlantableFarmer implements ICompat {
 
     @Override
     public boolean prepareBlock(TileFarmStation farm, BlockCoord bc, Block block, int meta) {
-
-        boolean ready = super.prepareBlock(farm, bc, block, meta);
-        return ready;
+        return super.prepareBlock(farm, bc, block, meta);
     }
 
     @Override

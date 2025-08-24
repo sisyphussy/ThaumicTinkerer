@@ -69,10 +69,9 @@ public class RenderTileEnchanter extends TileEntitySpecialRenderer {
                             icon.getIconWidth(),
                             icon.getIconHeight(),
                             1F / 16F);
-                    GL11.glColor3f(1F, 1F, 1F);
                 }
-                renderPass++;
-            } while (renderPass < item.getItem().getRenderPasses(item.getItemDamage()));
+            } while (++renderPass < item.getItem().getRenderPasses(item.getItemDamage()));
+            GL11.glColor3f(1F, 1F, 1F);
             GL11.glPopMatrix();
         }
 

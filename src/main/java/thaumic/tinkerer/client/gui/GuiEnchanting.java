@@ -54,8 +54,8 @@ public class GuiEnchanting extends GuiContainer {
     public GuiEnchanting(TileEnchanter enchanter, InventoryPlayer inv) {
         super(new ContainerEnchanter(enchanter, inv));
         this.enchanter = enchanter;
-        lastTickStack = enchanter.getStackInSlot(0);
         currentStack = enchanter.getStackInSlot(0);
+        lastTickStack = currentStack;
         lastTickEnchants = new ArrayList<>(enchanter.enchantments);
         lastTickLevels = new ArrayList<>(enchanter.levels);
     }

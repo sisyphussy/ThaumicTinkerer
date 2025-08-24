@@ -35,42 +35,37 @@ public final class ToolModeHUDHandler {
     public static void setTooltip(String tooltip) {
         if (!tooltip.equals(currentTooltip)) {
             currentTooltip = tooltip;
-            tooltipDisplayTicks = 400;
-        }
-    }
 
-    @SideOnly(Side.CLIENT)
-    public static void clientTick() {
-        if (tooltipDisplayTicks > 0) --tooltipDisplayTicks;
+            tooltipDisplayTicks = ClientTickHandler.elapsedTicks + 400;
+        }
     }
 
     @SubscribeEvent
     @SideOnly(Side.CLIENT)
     public void drawDislocationFocusHUD(RenderGameOverlayEvent.Post event) {
-        if (event.type == ElementType.ALL && tooltipDisplayTicks > 0
+        if (event.type == ElementType.ALL && tooltipDisplayTicks > ClientTickHandler.elapsedTicks
                 && !MathHelper.stringNullOrLengthZero(currentTooltip)) {
             Minecraft mc = Minecraft.getMinecraft();
-            ScaledResolution var5 = new ScaledResolution(mc, mc.displayWidth, mc.displayHeight);
-            int var6 = var5.getScaledWidth();
-            int var7 = var5.getScaledHeight();
-            FontRenderer var8 = mc.fontRenderer;
+            ScaledResolution resolution = new ScaledResolution(mc, mc.displayWidth, mc.displayHeight);
+            int width = resolution.getScaledWidth();
+            int height = resolution.getScaledHeight();
+            FontRenderer fontRenderer = mc.fontRenderer;
 
-            int tooltipStartX = (var6 - var8.getStringWidth(currentTooltip)) / 2;
-            int tooltipStartY = var7 - 72;
+            int tooltipStartX = (width - fontRenderer.getStringWidth(currentTooltip)) / 2;
+            int tooltipStartY = height - 72;
 
             int opacity = (int) (tooltipDisplayTicks * 256.0F / 10.0F);
 
             if (opacity > 160) opacity = 160;
 
             if (opacity > 0) {
-                GL11.glPushMatrix();
                 GL11.glEnable(GL11.GL_BLEND);
                 GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
                 int color = Color.getHSBColor((float) Math.cos(ClientTickHandler.elapsedTicks / 250D), 0.6F, 1F)
                         .getRGB();
-                var8.drawStringWithShadow(currentTooltip, tooltipStartX, tooltipStartY, color + (opacity << 24));
+                fontRenderer
+                        .drawStringWithShadow(currentTooltip, tooltipStartX, tooltipStartY, color | (opacity << 24));
                 GL11.glDisable(GL11.GL_BLEND);
-                GL11.glPopMatrix();
             }
         }
     }

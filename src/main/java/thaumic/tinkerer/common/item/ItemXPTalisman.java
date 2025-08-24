@@ -56,10 +56,6 @@ public class ItemXPTalisman extends ItemBase implements IBauble {
         setMaxStackSize(1);
     }
 
-    public static boolean hasCmp(ItemStack stack) {
-        return ItemNBTHelper.detectNBT(stack);
-    }
-
     public static int getXP(ItemStack stack) {
         return ItemNBTHelper.getInt(stack, TAG_XP, 0);
     }

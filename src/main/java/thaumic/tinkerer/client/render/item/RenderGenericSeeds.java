@@ -3,7 +3,6 @@ package thaumic.tinkerer.client.render.item;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ItemRenderer;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.entity.RenderItem;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
@@ -19,24 +18,17 @@ import thaumic.tinkerer.common.item.ItemInfusedSeeds;
  */
 public class RenderGenericSeeds implements IItemRenderer {
 
-    private static RenderItem renderItem = new RenderItem();
-
     @Override
     public boolean handleRenderType(ItemStack item, ItemRenderType type) {
         if (type == ItemRenderType.INVENTORY) return true;
         if (type == ItemRenderType.EQUIPPED) return true;
         if (type == ItemRenderType.ENTITY) return true;
-        if (type == ItemRenderType.EQUIPPED_FIRST_PERSON) {
-            return true;
-        }
-        return false;
+        return type == ItemRenderType.EQUIPPED_FIRST_PERSON;
     }
 
     @Override
     public boolean shouldUseRenderHelper(ItemRenderType type, ItemStack item, ItemRendererHelper helper) {
-        if (helper == ItemRendererHelper.ENTITY_BOBBING) return true;
-        if (helper == ItemRendererHelper.ENTITY_ROTATION) return true;
-        return false;
+        return helper == ItemRendererHelper.ENTITY_BOBBING || helper == ItemRendererHelper.ENTITY_ROTATION;
     }
 
     @Override
@@ -92,11 +84,9 @@ public class RenderGenericSeeds implements IItemRenderer {
     }
 
     private void renderItemAsEntity(ItemStack itemstack, Aspect aspect, IIcon icon) {
-        GL11.glPushMatrix();
         setColorForAspect(aspect);
         GL11.glColor3f(1.0F, 1.0F, 1.0F);
         drawTextureIn3D(icon);
-        GL11.glPopMatrix();
     }
 
     private void drawTextureIn3D(IIcon texture) {

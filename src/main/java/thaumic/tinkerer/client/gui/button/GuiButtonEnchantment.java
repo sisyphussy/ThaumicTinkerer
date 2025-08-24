@@ -76,13 +76,12 @@ public class GuiButtonEnchantment extends GuiButton {
 
     public void drawTexturedModalRect16(int par1, int par2, int par3, int par4, int par5, int par6) {
         float f = 1F / 16F;
-        float f1 = 1F / 16F;
         Tessellator tessellator = Tessellator.instance;
         tessellator.startDrawingQuads();
-        tessellator.addVertexWithUV(par1, par2 + par6, zLevel, (par3) * f, (par4 + par6) * f1);
-        tessellator.addVertexWithUV(par1 + par5, par2 + par6, zLevel, (par3 + par5) * f, (par4 + par6) * f1);
-        tessellator.addVertexWithUV(par1 + par5, par2, zLevel, (par3 + par5) * f, (par4) * f1);
-        tessellator.addVertexWithUV(par1, par2, zLevel, (par3) * f, (par4) * f1);
+        tessellator.addVertexWithUV(par1, par2 + par6, zLevel, (par3) * f, (par4 + par6) * f);
+        tessellator.addVertexWithUV(par1 + par5, par2 + par6, zLevel, (par3 + par5) * f, (par4 + par6) * f);
+        tessellator.addVertexWithUV(par1 + par5, par2, zLevel, (par3 + par5) * f, (par4) * f);
+        tessellator.addVertexWithUV(par1, par2, zLevel, (par3) * f, (par4) * f);
         tessellator.draw();
     }
 }

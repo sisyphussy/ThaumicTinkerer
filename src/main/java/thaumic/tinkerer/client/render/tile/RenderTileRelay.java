@@ -32,9 +32,8 @@ public class RenderTileRelay extends TileEntitySpecialRenderer {
         GL11.glPushMatrix();
         GL11.glEnable(GL12.GL_RESCALE_NORMAL);
         GL11.glColor4f(1F, 1F, 1F, 1F);
-        GL11.glTranslatef((float) x, (float) y, (float) z);
+        GL11.glTranslatef((float) x + 0.5f, (float) y + 1.5f, (float) z + 0.5f);
         ClientHelper.minecraft().renderEngine.bindTexture(texture);
-        GL11.glTranslatef(0.5F, 1.5F, 0.5F);
         GL11.glScalef(1F, -1F, -1F);
         model.render();
         GL11.glEnable(GL12.GL_RESCALE_NORMAL);

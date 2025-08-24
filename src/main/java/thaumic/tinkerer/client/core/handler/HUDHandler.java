@@ -44,10 +44,9 @@ public final class HUDHandler {
             ItemStack item = ClientHelper.clientPlayer().getCurrentEquippedItem();
             if (item != null && item.getItem() instanceof ItemWandCasting) {
                 ItemWandCasting wand = (ItemWandCasting) item.getItem();
-                wand.getFocusItem(item);
                 ItemFocusBasic focus = wand.getFocus(item);
 
-                if (focus != null && focus instanceof ItemFocusDislocation) {
+                if (focus instanceof ItemFocusDislocation) {
                     ItemStack pickedBlock = ((ItemFocusDislocation) focus).getPickedBlock(item);
                     if (pickedBlock != null) {
                         Gui.drawRect(xpos - 1, ypos - 1, xpos + 18, ypos + 18, 0x66000000);
@@ -69,14 +68,9 @@ public final class HUDHandler {
                             Gui.drawRect(xpos + 18, ypos + 9, xpos + 18 + strLength + 4, ypos + 18, 0x66000000);
                             font.drawStringWithShadow(content, xpos + 20, ypos + 9, 0xFFAA00);
                         }
-
-                        if (new ItemStack(((ItemBlock) pickedBlock.getItem()).field_150939_a).getItem() != null)
-                            renderItem.renderItemIntoGUI(
-                                    font,
-                                    ClientHelper.minecraft().renderEngine,
-                                    new ItemStack(((ItemBlock) pickedBlock.getItem()).field_150939_a),
-                                    xpos,
-                                    ypos);
+                        ItemStack stack = new ItemStack(((ItemBlock) pickedBlock.getItem()).field_150939_a);
+                        if (stack.getItem() != null) renderItem
+                                .renderItemIntoGUI(font, ClientHelper.minecraft().renderEngine, stack, xpos, ypos);
                         else {
                             if (((ItemBlock) pickedBlock.getItem()).field_150939_a == Blocks.reeds)
                                 renderItem.renderItemIntoGUI(

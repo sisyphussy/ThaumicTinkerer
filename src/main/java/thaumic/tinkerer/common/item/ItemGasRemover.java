@@ -76,9 +76,9 @@ public class ItemGasRemover extends ItemBase {
                 'D',
                 new ItemStack(ThaumicTinkerer.registry.getFirstItemFromClass(ItemDarkQuartz.class)),
                 'T',
-                new ItemStack(ThaumicTinkerer.registry.getItemFromClass(ItemGas.class).get(0)),
+                new ItemStack(ThaumicTinkerer.registry.getItemFromClass(ItemGas.class, 0)),
                 'G',
-                new ItemStack(ThaumicTinkerer.registry.getItemFromClass(ItemGas.class).get(1)),
+                new ItemStack(ThaumicTinkerer.registry.getItemFromClass(ItemGas.class, 1)),
                 'Q',
                 new ItemStack(Items.quartz));
     }

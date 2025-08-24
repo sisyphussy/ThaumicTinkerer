@@ -70,17 +70,15 @@ public class GuiAspectAnalyzer extends GuiContainer {
             if (list != null && (list.contains("@" + h) || list.contains("#" + h))) {
                 AspectList tags = ThaumcraftCraftingManager.getObjectTags(stack);
                 tags = ThaumcraftCraftingManager.getBonusTags(stack, tags);
-                if (tags != null) {
-                    int i = 0;
-                    for (Aspect aspect : tags.getAspectsSortedAmount()) {
-                        int x = this.x + 20 + i * 18;
-                        int y = this.y + 58;
-                        UtilsFX.drawTag(x, y, aspect, tags.getAmount(aspect), 0, zLevel);
+                int i = 0;
+                for (Aspect aspect : tags.getAspectsSortedAmount()) {
+                    int x = this.x + 20 + i * 18;
+                    int y = this.y + 58;
+                    UtilsFX.drawTag(x, y, aspect, tags.getAmount(aspect), 0, zLevel);
 
-                        if (mx > x && mx < x + 16 && my > y && my < y + 16) aspectHovered = aspect;
+                    if (mx > x && mx < x + 16 && my > y && my < y + 16) aspectHovered = aspect;
 
-                        i++;
-                    }
+                    i++;
                 }
             }
         }

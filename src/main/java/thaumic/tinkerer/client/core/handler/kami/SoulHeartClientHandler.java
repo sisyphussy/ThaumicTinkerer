@@ -16,7 +16,6 @@ import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 
@@ -29,7 +28,6 @@ import thaumic.tinkerer.common.core.handler.ConfigHandler;
 
 public final class SoulHeartClientHandler {
 
-    private static final ResourceLocation iconsResource = new ResourceLocation("textures/gui/icons.png");
     private static final ResourceLocation heartsResource = new ResourceLocation(LibResources.GUI_SOUL_HEARTS);
 
     @SideOnly(Side.CLIENT)
@@ -38,7 +36,7 @@ public final class SoulHeartClientHandler {
     @SideOnly(Side.CLIENT)
     private static void renderHeart(int x, int y, boolean full) {
         Tessellator tess = Tessellator.instance;
-        float size = 1 / 16F;
+        final float size = 1 / 16F;
 
         float startX = full ? 0 : 9 * size;
         float endX = full ? 9 * size : 1;
@@ -68,24 +66,23 @@ public final class SoulHeartClientHandler {
 
     @SubscribeEvent(priority = EventPriority.HIGHEST)
     public void onDrawScreenPre(RenderGameOverlayEvent.Pre event) {
-        Minecraft mc = Minecraft.getMinecraft();
         if (event.type == RenderGameOverlayEvent.ElementType.HEALTH) {
-            renderHUD(event.resolution, mc.thePlayer, null);
+            renderHUD(event.resolution, Minecraft.getMinecraft());
         }
     }
 
     @SideOnly(Side.CLIENT)
-    public static void renderHUD(ScaledResolution resolution, EntityPlayer player, ItemStack stack) {
-
-        Minecraft mc = Minecraft.getMinecraft();
+    private static void renderHUD(ScaledResolution resolution, Minecraft mc) {
+        EntityPlayer player = mc.thePlayer;
         mc.renderEngine.bindTexture(heartsResource);
         int x = resolution.getScaledWidth() / 2 + 10;
-        int y = resolution.getScaledHeight() - ConfigHandler.soulHeartHeight;
+        int y;
         if (player.getAir() < 300) {
             y = resolution.getScaledHeight() - (ConfigHandler.soulHeartHeight + 10);
+        } else {
+            y = resolution.getScaledHeight() - ConfigHandler.soulHeartHeight;
         }
 
-        mc.renderEngine.bindTexture(heartsResource);
         int it = 0;
         for (int i = 0; i < clientPlayerHP; i++) {
             boolean half = i == clientPlayerHP - 1 && clientPlayerHP % 2 != 0;

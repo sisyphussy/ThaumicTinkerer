@@ -16,7 +16,6 @@ public class EnchantmentFinalStrike extends EnchantmentMod {
         return par1Enchantment.effectId == Enchantment.unbreaking.effectId
                 || par1Enchantment.effectId == ThaumcraftApi.enchantRepair
                 || par1Enchantment.effectId == Enchantment.sharpness.effectId
-                || par1Enchantment.effectId == Enchantment.smite.effectId
                 || par1Enchantment.effectId == Enchantment.smite.effectId;
     }
 }

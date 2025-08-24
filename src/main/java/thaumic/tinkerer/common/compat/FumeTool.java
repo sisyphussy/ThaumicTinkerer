@@ -74,7 +74,7 @@ public class FumeTool implements ITurtleUpgrade {
             for (int x = xs - 3; x < xs + 3; x++)
                 for (int y = ys - 3; y < ys + 3; y++) for (int z = zs - 3; z < zs + 3; z++) {
                     Block block = turtle.getWorld().getBlock(x, y, z);
-                    if (block != null && block instanceof BlockGas) {
+                    if (block instanceof BlockGas) {
                         BlockGas gas = (BlockGas) block;
                         gas.placeParticle(turtle.getWorld(), x, y, z);
                         turtle.getWorld().setBlock(x, y, z, Blocks.air, 0, 1 | 2);

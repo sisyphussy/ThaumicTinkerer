@@ -29,6 +29,7 @@ public class RenderTileFunnel extends TileEntitySpecialRenderer {
 
     BlockJarRenderer jarRenderer = new BlockJarRenderer();
     ItemJarFilledRenderer jarRenderer1 = new ItemJarFilledRenderer();
+    RenderBlocks renderBlocks = new RenderBlocks();
 
     @Override
     public void renderTileEntityAt(TileEntity tileentity, double d0, double d1, double d2, float f) {
@@ -39,7 +40,7 @@ public class RenderTileFunnel extends TileEntitySpecialRenderer {
             GL11.glTranslated(d0 + 0.5, d1 + 0.365, d2 + 0.5);
             if (Block.getBlockFromItem(stack.getItem()) == ConfigBlocks.blockJar) {
                 GL11.glTranslatef(0F, 0.25F, 0F);
-                jarRenderer.renderInventoryBlock(ConfigBlocks.blockJar, stack.getItemDamage(), 0, new RenderBlocks());
+                jarRenderer.renderInventoryBlock(ConfigBlocks.blockJar, stack.getItemDamage(), 0, renderBlocks);
             } else {
                 jarRenderer1.renderItem(IItemRenderer.ItemRenderType.ENTITY, stack, (Object[]) null);
             }

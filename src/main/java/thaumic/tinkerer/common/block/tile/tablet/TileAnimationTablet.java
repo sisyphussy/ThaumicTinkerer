@@ -61,9 +61,6 @@ public class TileAnimationTablet extends TileEntity implements IInventory, IMova
 
     private static final String TAG_LEFT_CLICK = "leftClick";
     private static final String TAG_REDSTONE = "redstone";
-    private static final String TAG_PROGRESS = "progress";
-    private static final String TAG_MOD = "mod";
-    private static final String TAG_OWNER = "owner";
 
     private static final int[][] LOC_INCREASES = new int[][] { { 0, -1 }, { 0, +1 }, { -1, 0 }, { +1, 0 } };
 
@@ -72,10 +69,10 @@ public class TileAnimationTablet extends TileEntity implements IInventory, IMova
 
     private static final int SWING_SPEED = 3;
     private static final int MAX_DEGREE = 45;
-    public double ticksExisted = 0;
     public boolean leftClick = true;
     public boolean redstone = false;
-    public int swingProgress = 0;
+    private int prevSwingProgress;
+    private int swingProgress = 0;
     List<Entity> detectedEntities = new ArrayList<>();
     ItemStack[] inventorySlots = new ItemStack[1];
     // public String Owner;
@@ -86,24 +83,38 @@ public class TileAnimationTablet extends TileEntity implements IInventory, IMova
     private int curblockDamage = 0;
     private int durabilityRemainingOnBlock;
 
+    public float getRenderSwingProgress(float partialTicks) {
+        return prevSwingProgress + (swingProgress - prevSwingProgress) * partialTicks;
+    }
+
+    public final int getTicksExisted() {
+        return player.ticksExisted;
+    }
+
+    public final boolean isIdle() {
+        return swingMod == 0;
+    }
+
     @Override
     public void updateEntity() {
-        // player = new TabletFakePlayer(this);//,Owner);
         player.onUpdate();
         player.inventory.clearInventory(null, -1);
-        ticksExisted++;
 
         ItemStack stack = getStackInSlot(0);
 
+        prevSwingProgress = swingProgress;
         if (stack != null) {
-            if (swingProgress >= MAX_DEGREE) swingHit();
-
-            swingMod = swingProgress <= 0 ? 0 : swingProgress >= MAX_DEGREE ? -SWING_SPEED : swingMod;
             swingProgress += swingMod;
-            if (swingProgress < 0) swingProgress = 0;
+            if (swingProgress >= MAX_DEGREE) {
+                swingHit();
+                swingMod = -SWING_SPEED;
+            }
+
+            if (swingProgress <= 0 && swingMod < 0) {
+                stopSwinging();
+            }
         } else {
-            swingMod = 0;
-            swingProgress = 0;
+            stopSwinging();
 
             if (isBreaking) stopBreaking();
         }
@@ -113,7 +124,7 @@ public class TileAnimationTablet extends TileEntity implements IInventory, IMova
 
         if (detect && isBreaking) continueBreaking();
 
-        if ((!redstone || isBreaking) && detect && swingProgress == 0) {
+        if ((!redstone || isBreaking) && detect && isIdle()) {
             initiateSwing();
             worldObj.addBlockEvent(
                     xCoord,
@@ -126,8 +137,14 @@ public class TileAnimationTablet extends TileEntity implements IInventory, IMova
     }
 
     public void initiateSwing() {
-        swingMod = SWING_SPEED;
-        swingProgress = 1;
+        if (isIdle()) {
+            swingMod = SWING_SPEED;
+        }
+    }
+
+    public void stopSwinging() {
+        swingProgress = 0;
+        swingMod = 0;
     }
 
     public void swingHit() {
@@ -201,7 +218,7 @@ public class TileAnimationTablet extends TileEntity implements IInventory, IMova
 
             } catch (Throwable e) {
                 e.printStackTrace();
-                List list = worldObj.getEntitiesWithinAABB(
+                List<EntityPlayer> list = worldObj.getEntitiesWithinAABB(
                         EntityPlayer.class,
                         AxisAlignedBB.getBoundingBox(
                                 xCoord - 8,
@@ -210,12 +227,12 @@ public class TileAnimationTablet extends TileEntity implements IInventory, IMova
                                 xCoord + 8,
                                 yCoord + 8,
                                 zCoord + 8));
-                for (Object player : list) {
-                    ((EntityPlayer) player).addChatComponentMessage(
+                for (EntityPlayer player : list) {
+                    player.addChatComponentMessage(
                             new ChatComponentText(
                                     EnumChatFormatting.RED
                                             + "Something went wrong with a Tool Dynamism Tablet! Check your FML log."));
-                    ((EntityPlayer) player).addChatComponentMessage(
+                    player.addChatComponentMessage(
                             new ChatComponentText(
                                     EnumChatFormatting.RED + "" + EnumChatFormatting.ITALIC + e.getMessage()));
                 }
@@ -406,8 +423,6 @@ public class TileAnimationTablet extends TileEntity implements IInventory, IMova
     public void readFromNBT(NBTTagCompound par1NBTTagCompound) {
         super.readFromNBT(par1NBTTagCompound);
 
-        swingProgress = par1NBTTagCompound.getInteger(TAG_PROGRESS);
-
         readCustomNBT(par1NBTTagCompound);
     }
 
@@ -415,8 +430,6 @@ public class TileAnimationTablet extends TileEntity implements IInventory, IMova
     public void writeToNBT(NBTTagCompound par1NBTTagCompound) {
         super.writeToNBT(par1NBTTagCompound);
 
-        par1NBTTagCompound.setInteger(TAG_PROGRESS, swingProgress);
-        par1NBTTagCompound.setInteger(TAG_MOD, swingMod);
         // par1NBTTagCompound.setString(TAG_OWNER,Owner);
         writeCustomNBT(par1NBTTagCompound);
     }
@@ -467,18 +480,14 @@ public class TileAnimationTablet extends TileEntity implements IInventory, IMova
                 stackAt = inventorySlots[par1];
                 inventorySlots[par1] = null;
 
-                if (!worldObj.isRemote) worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-
-                return stackAt;
             } else {
                 stackAt = inventorySlots[par1].splitStack(par2);
 
                 if (inventorySlots[par1].stackSize == 0) inventorySlots[par1] = null;
 
-                if (!worldObj.isRemote) worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-
-                return stackAt;
             }
+            if (!worldObj.isRemote) worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+            return stackAt;
         }
 
         return null;

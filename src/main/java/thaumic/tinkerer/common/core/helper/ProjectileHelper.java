@@ -13,7 +13,7 @@ import thaumcraft.common.entities.projectile.EntityFrostShard;
 
 public final class ProjectileHelper {
 
-    private static Map<Class<? extends Entity>, Function<Entity, Entity>> ownerGetters = new IdentityHashMap<>();
+    private static final Map<Class<? extends Entity>, Function<Entity, Entity>> ownerGetters = new IdentityHashMap<>();
 
     public static Entity getOwner(Entity projectile) {
         Function<Entity, Entity> ownerGetterForClass = ownerGetters.get(projectile.getClass());
@@ -57,8 +57,7 @@ public final class ProjectileHelper {
 
         @Override
         public Entity apply(Entity e) {
-            Entity owner = ((EntityFrostShard) e).getThrower();
-            return owner;
+            return ((EntityFrostShard) e).getThrower();
         }
     }
 

@@ -15,6 +15,7 @@ import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.lwjgl.opengl.GL11;
@@ -42,18 +43,18 @@ public class RenderTileMagnet extends TileEntitySpecialRenderer {
         GL11.glEnable(GL12.GL_RESCALE_NORMAL);
         GL11.glColor4f(1F, 1F, 1F, 1F);
         GL11.glTranslatef((float) x, (float) y, (float) z);
-        boolean blue = tileentity.getWorldObj() == null || (tileentity.getBlockMetadata() & 1) == 0;
-        boolean mob = tileentity.getWorldObj() == null ? RenderTileMagnet.mob
-                : (tileentity.getBlockMetadata() & 2) == 2;
+        World world = tileentity.getWorldObj();
+        boolean blue = world == null || (tileentity.getBlockMetadata() & 1) == 0;
+        boolean mob = world == null ? RenderTileMagnet.mob : (tileentity.getBlockMetadata() & 2) == 2;
 
         ClientHelper.minecraft().renderEngine
                 .bindTexture(mob ? blue ? blueMob : redMob : blue ? RenderTileMagnet.blue : red);
 
         int redstone = 0;
-        if (tileentity.getWorldObj() != null) {
+        if (world != null) {
             for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) redstone = Math.max(
                     redstone,
-                    tileentity.getWorldObj().getIndirectPowerLevelTo(
+                    world.getIndirectPowerLevelTo(
                             tileentity.xCoord + dir.offsetX,
                             tileentity.yCoord + dir.offsetY,
                             tileentity.zCoord + dir.offsetZ,

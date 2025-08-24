@@ -15,7 +15,7 @@ import thaumic.tinkerer.common.core.handler.ConfigHandler;
 
 public class WorldProviderBedrock extends WorldProvider {
 
-    private float[] colorsSunriseSunset = new float[4];
+    private final float[] colorsSunriseSunset = new float[4];
 
     @Override
     public void registerWorldChunkManager() {
@@ -148,23 +148,18 @@ public class WorldProviderBedrock extends WorldProvider {
         return f1;
     }
 
+    private final Vec3 fogColor = Vec3.createVectorHelper(0, 0, 0);
+
     @Override
     @SideOnly(Side.CLIENT)
     public Vec3 getFogColor(float par1, float par2) {
         int i = 10518688;
-        float f2 = MathHelper.cos(par1 * 3.141593F * 2.0F) * 2.0F + 0.5F;
-        if (f2 < 0.0F) {
-            f2 = 0.0F;
-        }
-        if (f2 > 1.0F) {
-            f2 = 1.0F;
-        }
         float f3 = (i >> 16 & 0xFF) / 255.0F;
         float f4 = (i >> 8 & 0xFF) / 255.0F;
         float f5 = (i & 0xFF) / 255.0F;
-        f3 *= (f2 * 0.0F + 0.15F);
-        f4 *= (f2 * 0.0F + 0.15F);
-        f5 *= (f2 * 0.0F + 0.15F);
-        return Vec3.createVectorHelper(f3, f4, f5);
+        fogColor.xCoord = f3 * 0.15;
+        fogColor.yCoord = f4 * 0.15;
+        fogColor.zCoord = f5 * 0.15;
+        return fogColor;
     }
 }

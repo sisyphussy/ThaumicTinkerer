@@ -1,7 +1,7 @@
 package thaumic.tinkerer.common.dim;
 
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.List;
 import java.util.Random;
 
 import net.minecraft.init.Blocks;
@@ -63,8 +63,11 @@ public enum EnumOreFrequency {
     // PLATINUM("orePlatinum", 33),
     // MITHRIL("oreMithril", 44);
 
-    public int freq;
-    public String name;
+    public final int freq;
+    public final String name;
+
+    private static int sum;
+    private static ArrayList<EnumOreFrequency> validOres;
 
     EnumOreFrequency(String name, int freq) {
         this.name = name;
@@ -72,23 +75,26 @@ public enum EnumOreFrequency {
     }
 
     public static int getSum() {
-        int total = 0;
-        for (EnumOreFrequency e : EnumOreFrequency.values()) {
-            if (e.isValid()) {
-                total += e.freq;
+        if (sum == 0) {
+            for (EnumOreFrequency e : EnumOreFrequency.values()) {
+                if (e.isValid()) {
+                    sum += e.freq;
+                }
             }
         }
-        return total;
+        return sum;
     }
 
     public static ArrayList<EnumOreFrequency> getValidOres() {
-        ArrayList<EnumOreFrequency> result = new ArrayList<>();
-        for (EnumOreFrequency e : EnumOreFrequency.values()) {
-            if (e.isValid()) {
-                result.add(e);
+        if (validOres == null) {
+            validOres = new ArrayList<>();
+            for (EnumOreFrequency e : EnumOreFrequency.values()) {
+                if (e.isValid()) {
+                    validOres.add(e);
+                }
             }
         }
-        return result;
+        return validOres;
     }
 
     public static ItemStack getRandomOre(Random rand) {
@@ -104,7 +110,12 @@ public enum EnumOreFrequency {
     }
 
     public boolean isValid() {
-        return !Arrays.asList(OreClusterGenerator.blacklist).contains(name) && !OreDictionary.getOres(name).isEmpty()
-                && OreDictionary.getOres(name).get(0).getItem() instanceof ItemBlock;
+        for (String s : OreClusterGenerator.blacklist) {
+            if (s.equals(name)) {
+                return false;
+            }
+        }
+        List<ItemStack> ores = OreDictionary.getOres(name);
+        return !ores.isEmpty() && ores.get(0).getItem() instanceof ItemBlock;
     }
 }

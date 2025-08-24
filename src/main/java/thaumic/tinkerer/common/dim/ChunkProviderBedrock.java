@@ -20,9 +20,9 @@ public class ChunkProviderBedrock implements IChunkProvider {
     private final byte[] cachedBlockIDs = new byte[256];
     private final byte[] cachedBlockMetadata = new byte[256];
     // Basic on ChunkProviderFlat code
-    private World worldObj;
-    private Random random;
-    private OreClusterGenerator generator;
+    private final World worldObj;
+    private final Random random;
+    private final OreClusterGenerator generator;
 
     public ChunkProviderBedrock(World par1World, long par2, boolean par4) {
         this.worldObj = par1World;
