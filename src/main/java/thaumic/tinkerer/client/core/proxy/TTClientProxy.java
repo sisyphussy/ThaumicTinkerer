@@ -26,7 +26,6 @@ import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import cpw.mods.fml.relauncher.Side;
 import thaumcraft.client.fx.ParticleEngine;
 import thaumic.tinkerer.client.core.handler.ClientTickHandler;
 import thaumic.tinkerer.client.core.handler.GemArmorKeyHandler;
@@ -153,9 +152,9 @@ public class TTClientProxy extends TTCommonProxy {
     public void shadowSparkle(World world, float x, float y, float z, int size) {
         ItemFocusShadowbeam.Particle fx = new ItemFocusShadowbeam.Particle(
                 world,
-                (double) x,
-                (double) y,
-                (double) z,
+                x,
+                y,
+                z,
                 size,
                 0.001f,
                 0.001f,
@@ -186,9 +185,7 @@ public class TTClientProxy extends TTCommonProxy {
     @Override
     public void setArmor(EntityPlayer player, boolean status) {
         super.setArmor(player, status);
-        if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT) {
-            KamiArmorClientHandler.ArmorEnabled = status;
-        }
+        KamiArmorClientHandler.ArmorEnabled = status;
     }
 
     @Override

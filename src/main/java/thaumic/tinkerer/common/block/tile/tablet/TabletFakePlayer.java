@@ -47,6 +47,7 @@ public class TabletFakePlayer extends FakeThaumcraftPlayer {
 
     @Override
     public void onUpdate() {
+        ticksExisted++;
         capabilities.isCreativeMode = false;
 
         posX = tablet.xCoord + 0.5;

@@ -87,7 +87,7 @@ public class ItemSkyPearl extends ItemKamiBase {
     }
 
     public static boolean isAttuned(ItemStack stack) {
-        return ItemNBTHelper.detectNBT(stack) && ItemNBTHelper.getInt(stack, TAG_Y, -1) != -1;
+        return ItemNBTHelper.getInt(stack, TAG_Y, -1) != -1;
     }
 
     public static int getX(ItemStack stack) {

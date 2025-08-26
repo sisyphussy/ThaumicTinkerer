@@ -219,7 +219,7 @@ public class ItemFocusDislocation extends ItemModFocus {
         } else {
             focus = stack;
         }
-        return ItemNBTHelper.getCompound(focus, TAG_TILE_CMP, true);
+        return ItemNBTHelper.getCompoundOrNull(focus, TAG_TILE_CMP);
     }
 
     private void storePickedBlock(ItemStack stack, Block block, short meta, TileEntity tile) {

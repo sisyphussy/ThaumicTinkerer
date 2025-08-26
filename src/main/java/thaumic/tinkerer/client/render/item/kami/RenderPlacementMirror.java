@@ -1,9 +1,7 @@
 package thaumic.tinkerer.client.render.item.kami;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ItemRenderer;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.entity.RenderItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraftforge.client.IItemRenderer;
@@ -14,9 +12,6 @@ import thaumic.tinkerer.common.ThaumicTinkerer;
 import thaumic.tinkerer.common.item.kami.ItemPlacementMirror;
 
 public class RenderPlacementMirror implements IItemRenderer {
-
-    RenderItem render = new RenderItem();
-    ItemRenderer renderer = new ItemRenderer(Minecraft.getMinecraft());
 
     @Override
     public boolean handleRenderType(ItemStack item, ItemRenderType type) {
@@ -69,6 +64,7 @@ public class RenderPlacementMirror implements IItemRenderer {
                 break;
             }
             case INVENTORY: {
+                GL11.glEnable(GL11.GL_ALPHA_TEST);
                 GL11.glPushMatrix();
                 GL11.glRotatef(45f, 0f, 1f, 0f);
                 GL11.glScalef(1.5f, 1.8f, 1.8f);
@@ -77,6 +73,7 @@ public class RenderPlacementMirror implements IItemRenderer {
 
                 renderItem(ItemRenderType.EQUIPPED, item, data);
                 GL11.glPopMatrix();
+                GL11.glDisable(GL11.GL_ALPHA_TEST);
                 break;
             }
             default:

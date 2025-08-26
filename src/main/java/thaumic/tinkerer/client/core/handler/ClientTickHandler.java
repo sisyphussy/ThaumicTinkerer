@@ -18,7 +18,6 @@ import cpw.mods.fml.common.gameevent.TickEvent;
 import cpw.mods.fml.relauncher.ReflectionHelper;
 import thaumcraft.api.research.ResearchItem;
 import thaumcraft.client.gui.GuiResearchRecipe;
-import thaumic.tinkerer.client.core.handler.kami.ToolModeHUDHandler;
 import thaumic.tinkerer.client.core.helper.ClientHelper;
 import thaumic.tinkerer.client.gui.GuiResearchPeripheral;
 import thaumic.tinkerer.common.lib.LibResearch;
@@ -31,16 +30,13 @@ public class ClientTickHandler {
     public void tickEnd(TickEvent event) {
         if (event.phase == TickEvent.Phase.END) {
             Minecraft mc = ClientHelper.minecraft();
-            if (mc.currentScreen != null && mc.currentScreen instanceof GuiResearchRecipe
-                    && !(mc.currentScreen instanceof GuiResearchPeripheral)) {
+            if (mc.currentScreen instanceof GuiResearchRecipe && !(mc.currentScreen instanceof GuiResearchPeripheral)) {
                 ResearchItem research = ReflectionHelper
                         .getPrivateValue(GuiResearchRecipe.class, (GuiResearchRecipe) mc.currentScreen, 9);
                 if (research.key.equals(LibResearch.KEY_PERIPHERALS)
                         || research.key.equals(LibResearch.KEY_GOLEMCONNECTOR))
                     mc.displayGuiScreen(new GuiResearchPeripheral(research));
             }
-
-            ToolModeHUDHandler.clientTick();
 
             ++elapsedTicks;
         }

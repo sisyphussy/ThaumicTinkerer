@@ -98,8 +98,6 @@ public class BlockAnimationTablet extends BlockModContainer {
         TileAnimationTablet tablet = (TileAnimationTablet) par1World.getTileEntity(par2, par3, par4);
 
         if (tablet != null) {
-            if (tablet.getIsBreaking()) {}
-
             for (int j1 = 0; j1 < tablet.getSizeInventory(); ++j1) {
                 ItemStack itemstack = tablet.getStackInSlot(j1);
 
@@ -162,18 +160,12 @@ public class BlockAnimationTablet extends BlockModContainer {
     @Override
     public void updateTick(World par1World, int par2, int par3, int par4, Random par5Random) {
         TileEntity tile = par1World.getTileEntity(par2, par3, par4);
-        if (tile != null && tile instanceof TileAnimationTablet) {
+        if (tile instanceof TileAnimationTablet) {
             TileAnimationTablet tablet = (TileAnimationTablet) tile;
-            if (tablet.redstone && tablet.swingProgress == 0) {
+            if (tablet.redstone && tablet.isIdle()) {
                 tablet.findEntities(tablet.getTargetLoc());
                 tablet.initiateSwing();
-                par1World.addBlockEvent(
-                        par2,
-                        par3,
-                        par4,
-                        ThaumicTinkerer.registry.getFirstBlockFromClass(BlockAnimationTablet.class),
-                        0,
-                        0);
+                par1World.addBlockEvent(par2, par3, par4, this, 0, 0);
             }
         }
     }
@@ -189,7 +181,7 @@ public class BlockAnimationTablet extends BlockModContainer {
                         && par5EntityPlayer.getCurrentEquippedItem().getItem() instanceof ItemWandCasting) {
                     int meta = par1World.getBlockMetadata(par2, par3, par4);
                     boolean activated = (meta & 8) != 0;
-                    if (!activated && !tablet.getIsBreaking() && tablet.swingProgress == 0) {
+                    if (!activated && !tablet.getIsBreaking() && tablet.isIdle()) {
                         par1World.setBlockMetadataWithNotify(par2, par3, par4, meta == 5 ? 2 : meta + 1, 1 | 2);
                         par1World.playSoundEffect(par2, par3, par4, "thaumcraft:tool", 0.6F, 1F);
                     } else par5EntityPlayer
