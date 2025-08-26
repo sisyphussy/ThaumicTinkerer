@@ -165,7 +165,6 @@ public class BlockAnimationTablet extends BlockModContainer {
             if (tablet.redstone && tablet.isIdle()) {
                 tablet.findEntities(tablet.getTargetLoc());
                 tablet.initiateSwing();
-                par1World.addBlockEvent(par2, par3, par4, this, 0, 0);
             }
         }
     }

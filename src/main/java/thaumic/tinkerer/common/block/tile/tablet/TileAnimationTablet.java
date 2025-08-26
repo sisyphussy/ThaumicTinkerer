@@ -61,6 +61,9 @@ public class TileAnimationTablet extends TileEntity implements IInventory, IMova
 
     private static final String TAG_LEFT_CLICK = "leftClick";
     private static final String TAG_REDSTONE = "redstone";
+    private static final String TAG_PROGRESS = "progress";
+    private static final String TAG_MOD = "mod";
+    private static final String TAG_IS_BREAKING = "isBreaking";
 
     private static final int[][] LOC_INCREASES = new int[][] { { 0, -1 }, { 0, +1 }, { -1, 0 }, { +1, 0 } };
 
@@ -126,20 +129,17 @@ public class TileAnimationTablet extends TileEntity implements IInventory, IMova
 
         if ((!redstone || isBreaking) && detect && isIdle()) {
             initiateSwing();
-            worldObj.addBlockEvent(
-                    xCoord,
-                    yCoord,
-                    zCoord,
-                    ThaumicTinkerer.registry.getFirstBlockFromClass(BlockAnimationTablet.class),
-                    0,
-                    0);
         }
     }
 
     public void initiateSwing() {
-        if (isIdle()) {
-            swingMod = SWING_SPEED;
-        }
+        worldObj.addBlockEvent(
+                xCoord,
+                yCoord,
+                zCoord,
+                ThaumicTinkerer.registry.getFirstBlockFromClass(BlockAnimationTablet.class),
+                0,
+                0);
     }
 
     public void stopSwinging() {
@@ -412,7 +412,9 @@ public class TileAnimationTablet extends TileEntity implements IInventory, IMova
     @Override
     public boolean receiveClientEvent(int par1, int par2) {
         if (par1 == 0) {
-            initiateSwing();
+            swingMod = SWING_SPEED;
+            swingProgress = 0;
+            if (isBreaking) stopBreaking();
             return true;
         }
 
@@ -587,17 +589,10 @@ public class TileAnimationTablet extends TileEntity implements IInventory, IMova
     }
 
     private Object[] triggerImplementation() {
-        if (swingProgress != 0) return new Object[] { false };
+        if (!isIdle()) return new Object[] { false };
 
         findEntities(getTargetLoc());
         initiateSwing();
-        worldObj.addBlockEvent(
-                xCoord,
-                yCoord,
-                zCoord,
-                ThaumicTinkerer.registry.getFirstBlockFromClass(BlockAnimationTablet.class),
-                0,
-                0);
 
         return new Object[] { true };
     }
