@@ -54,7 +54,7 @@ public final class ToolModeHUDHandler {
             int tooltipStartX = (width - fontRenderer.getStringWidth(currentTooltip)) / 2;
             int tooltipStartY = height - 72;
 
-            int opacity = (int) (tooltipDisplayTicks * 256.0F / 10.0F);
+            int opacity = (int) ((tooltipDisplayTicks - ClientTickHandler.elapsedTicks) * 256.0F / 10.0F);
 
             if (opacity > 160) opacity = 160;
 
