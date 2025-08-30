@@ -22,7 +22,7 @@ public class ItemTravelSlab extends ItemSlab implements ITTinkererItem {
         super(
                 par1,
                 (BlockSlab) ThaumicTinkerer.registry.getFirstBlockFromClass(BlockTravelSlab.class),
-                (BlockSlab) ThaumicTinkerer.registry.getBlockFromClass(BlockTravelSlab.class).get(1),
+                (BlockSlab) ThaumicTinkerer.registry.getBlockFromClass(BlockTravelSlab.class, 1),
                 false);
     }
 
