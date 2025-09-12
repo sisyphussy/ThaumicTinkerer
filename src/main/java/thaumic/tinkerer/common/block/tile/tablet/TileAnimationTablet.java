@@ -11,16 +11,12 @@
  */
 package thaumic.tinkerer.common.block.tile.tablet;
 
-import java.util.ArrayList;
+import java.lang.reflect.Field;
 import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -28,20 +24,25 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
+import net.minecraft.server.management.ItemInWorldManager;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.Vec3;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.event.ForgeEventFactory;
+import net.minecraftforge.event.entity.player.PlayerDestroyItemEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
-import net.minecraftforge.event.entity.player.PlayerInteractEvent.Action;
 
 import appeng.api.movable.IMovableTile;
 import cpw.mods.fml.common.Optional;
-import cpw.mods.fml.common.eventhandler.Event;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import dan200.computercraft.api.lua.ILuaContext;
 import dan200.computercraft.api.lua.LuaException;
 import dan200.computercraft.api.peripheral.IComputerAccess;
@@ -51,8 +52,8 @@ import li.cil.oc.api.machine.Callback;
 import li.cil.oc.api.machine.Context;
 import li.cil.oc.api.network.SimpleComponent;
 import thaumic.tinkerer.common.ThaumicTinkerer;
-import thaumic.tinkerer.common.block.BlockAnimationTablet;
 import thaumic.tinkerer.common.lib.LibBlockNames;
+import thaumic.tinkerer.common.registry.TTRegistry;
 
 @Optional.InterfaceList({ @Optional.Interface(iface = "li.cil.oc.api.network.SimpleComponent", modid = "OpenComputers"),
         @Optional.Interface(iface = "dan200.computercraft.api.peripheral.IPeripheral", modid = "ComputerCraft"),
@@ -63,329 +64,365 @@ public class TileAnimationTablet extends TileEntity implements IInventory, IMova
     private static final String TAG_REDSTONE = "redstone";
     private static final String TAG_PROGRESS = "progress";
     private static final String TAG_MOD = "mod";
-    private static final String TAG_OWNER = "owner";
 
     private static final int[][] LOC_INCREASES = new int[][] { { 0, -1 }, { 0, +1 }, { -1, 0 }, { +1, 0 } };
 
-    private static final ForgeDirection[] SIDES = new ForgeDirection[] { ForgeDirection.NORTH, ForgeDirection.SOUTH,
-            ForgeDirection.WEST, ForgeDirection.EAST };
-
-    private static final int SWING_SPEED = 3;
-    private static final int MAX_DEGREE = 45;
-    public double ticksExisted = 0;
+    private static final byte SWING_SPEED = 3;
+    private static final byte MAX_DEGREE = 45;
     public boolean leftClick = true;
     public boolean redstone = false;
-    public int swingProgress = 0;
-    List<Entity> detectedEntities = new ArrayList<>();
-    ItemStack[] inventorySlots = new ItemStack[1];
-    // public String Owner;
-    TabletFakePlayer player;
-    private int swingMod = 0;
+    private byte prevSwingProgress;
+    private byte swingProgress;
+    private byte swingMod;
+
+    private MovingObjectPosition hit;
+    public ItemStack heldItem;
+
+    private TabletFakePlayer player;
     private boolean isBreaking = false;
-    private int initialDamage = 0;
-    private int curblockDamage = 0;
-    private int durabilityRemainingOnBlock;
+    private int ticksElapsed;
+
+    // These variables get cached
+    private final Vec3 tempVec = Vec3.createVectorHelper(0, 0, 0);
+    private final ChunkCoordinates targetLoc = new ChunkCoordinates(0, 0, 0);
+
+    // These variables are here to prevent unnecessary heap allocations
+    private final Vec3 positionVec = Vec3.createVectorHelper(0, 0, 0);
+
+    private static Field durabilityRemainingOnBlock;
+
+    public TileAnimationTablet() {
+        if (durabilityRemainingOnBlock == null) {
+            try {
+                Field f;
+                try {
+                    f = ItemInWorldManager.class.getDeclaredField("field_73094_o");
+                } catch (Exception e) {
+                    f = ItemInWorldManager.class.getDeclaredField("durabilityRemainingOnBlock");
+                }
+                f.setAccessible(true);
+                durabilityRemainingOnBlock = f;
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    @SideOnly(Side.CLIENT)
+    public final float getRenderSwingProgress(float partialTicks) {
+        return prevSwingProgress + (swingProgress - prevSwingProgress) * partialTicks;
+    }
+
+    @SideOnly(Side.CLIENT)
+    public final int getTicksExisted() {
+        return ticksElapsed;
+    }
 
     @Override
     public void updateEntity() {
-        // player = new TabletFakePlayer(this);//,Owner);
-        player.onUpdate();
-        player.inventory.clearInventory(null, -1);
-        ticksExisted++;
-
-        ItemStack stack = getStackInSlot(0);
-
-        if (stack != null) {
-            if (swingProgress >= MAX_DEGREE) swingHit();
-
-            swingMod = swingProgress <= 0 ? 0 : swingProgress >= MAX_DEGREE ? -SWING_SPEED : swingMod;
-            swingProgress += swingMod;
-            if (swingProgress < 0) swingProgress = 0;
-        } else {
-            swingMod = 0;
-            swingProgress = 0;
-
-            if (isBreaking) stopBreaking();
+        if (worldObj.isRemote) {
+            ticksElapsed++;
+            prevSwingProgress = swingProgress;
+            ItemStack stack = heldItem;
+            if (stack != null) {
+                swingProgress += swingMod;
+                if (swingProgress >= MAX_DEGREE) {
+                    swingMod = -SWING_SPEED;
+                } else if (swingProgress <= 0) {
+                    stopSwinging();
+                }
+            } else {
+                stopSwinging();
+            }
+            return;
         }
 
-        boolean detect = detect();
-        if (!detect) stopBreaking();
-
-        if (detect && isBreaking) continueBreaking();
-
-        if ((!redstone || isBreaking) && detect && swingProgress == 0) {
-            initiateSwing();
-            worldObj.addBlockEvent(
-                    xCoord,
-                    yCoord,
-                    zCoord,
-                    ThaumicTinkerer.registry.getFirstBlockFromClass(BlockAnimationTablet.class),
-                    0,
-                    0);
+        try {
+            player.onUpdate();
+            calculateHit();
+            ItemStack stack = heldItem;
+            if (stack != null) {
+                swingProgress += swingMod;
+                if (swingProgress >= MAX_DEGREE) {
+                    swingHit(stack);
+                    swingMod = -SWING_SPEED;
+                } else if (swingProgress <= 0) {
+                    stopSwinging();
+                }
+            } else {
+                if (isBreaking) stopBreaking();
+                stopSwinging();
+            }
+            if (isBreaking) {
+                if (hit == null || hit.typeOfHit != MovingObjectPosition.MovingObjectType.BLOCK) {
+                    stopBreaking();
+                    return;
+                }
+                ChunkCoordinates coords = targetLoc;
+                player.theItemInWorldManager.updateBlockRemoving();
+                int durability = (Integer) durabilityRemainingOnBlock.get(player.theItemInWorldManager);
+                if (durability >= 10) {
+                    this.player.theItemInWorldManager.tryHarvestBlock(coords.posX, coords.posY, coords.posZ);
+                }
+            }
+            if (isIdle() && hit != null && (!redstone || isBreaking)) {
+                initiateSwing();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            List<EntityPlayer> list = worldObj.getEntitiesWithinAABB(
+                    EntityPlayer.class,
+                    AxisAlignedBB
+                            .getBoundingBox(xCoord - 8, yCoord - 8, zCoord - 8, xCoord + 8, yCoord + 8, zCoord + 8));
+            for (EntityPlayer player : list) {
+                player.addChatComponentMessage(
+                        new ChatComponentText(
+                                EnumChatFormatting.RED
+                                        + "Something went wrong with a Tool Dynamism Tablet! Check your FML log."));
+                player.addChatComponentMessage(
+                        new ChatComponentText(
+                                EnumChatFormatting.RED.toString() + EnumChatFormatting.ITALIC + e.getMessage()));
+            }
         }
     }
 
     public void initiateSwing() {
-        swingMod = SWING_SPEED;
-        swingProgress = 1;
+        // This calls receiveClientEvent on both sides.
+        worldObj.addBlockEvent(xCoord, yCoord, zCoord, TTRegistry.dynamismTablet, 0, 0);
     }
 
-    public void swingHit() {
-        ChunkCoordinates coords = getTargetLoc();
-        ItemStack stack = getStackInSlot(0);
-        Item item = stack.getItem();
-        Block block = worldObj.getBlock(coords.posX, coords.posY, coords.posZ);
-
-        player.setCurrentItemOrArmor(0, stack);
-
-        boolean done = false;
+    public void swingHit(ItemStack stack) {
+        if (hit == null) return;
+        ChunkCoordinates coords = targetLoc;
 
         if (leftClick) {
-            Entity entity = detectedEntities.isEmpty() ? null
-                    : detectedEntities.get(worldObj.rand.nextInt(detectedEntities.size()));
-            if (entity != null) {
-                player.getAttributeMap().applyAttributeModifiers(stack.getAttributeModifiers()); // Set attack strenght
-                player.attackTargetEntityWithCurrentItem(entity);
-                done = true;
-            } else if (!isBreaking) {
-                if (block != Blocks.air && !block.isAir(worldObj, coords.posX, coords.posY, coords.posZ)
-                        && block.getBlockHardness(worldObj, coords.posX, coords.posY, coords.posZ) >= 0) {
-                    isBreaking = true;
-                    startBreaking(block, worldObj.getBlockMetadata(coords.posX, coords.posY, coords.posZ));
-                    done = true;
+            if (hit.typeOfHit == MovingObjectPosition.MovingObjectType.ENTITY) {
+                player.getAttributeMap().applyAttributeModifiers(stack.getAttributeModifiers()); // Set attack strength
+                player.attackTargetEntityWithCurrentItem(hit.entityHit);
+                updateState();
+            } else if (hit.typeOfHit == MovingObjectPosition.MovingObjectType.BLOCK) {
+                if (!isBreaking) {
+                    Block block = worldObj.getBlock(coords.posX, coords.posY, coords.posZ);
+                    if (!block.isAir(worldObj, coords.posX, coords.posY, coords.posZ)
+                            && block.getBlockHardness(worldObj, coords.posX, coords.posY, coords.posZ) >= 0) {
+                        isBreaking = true;
+                        player.theItemInWorldManager.onBlockClicked(coords.posX, coords.posY, coords.posZ, hit.sideHit);
+                        updateState();
+                    }
                 }
             }
         } else {
-            int side = SIDES[(getBlockMetadata() & 7) - 2].getOpposite().ordinal();
-
-            if (!(block != Blocks.air && !block.isAir(worldObj, coords.posX, coords.posY, coords.posZ))) {
-                coords.posY -= 1;
-                side = ForgeDirection.UP.ordinal();
-                block = worldObj.getBlock(coords.posX, coords.posY, coords.posZ);
+            if (hit.typeOfHit == MovingObjectPosition.MovingObjectType.ENTITY) {
+                if (player.interactWith(hit.entityHit)) {
+                    updateState();
+                }
+                return;
             }
 
-            try {
-                ForgeEventFactory.onPlayerInteract(
-                        player,
-                        Action.RIGHT_CLICK_AIR,
-                        coords.posX,
-                        coords.posY,
-                        coords.posZ,
-                        side,
-                        worldObj);
-                Entity entity = detectedEntities.isEmpty() ? null
-                        : detectedEntities.get(worldObj.rand.nextInt(detectedEntities.size()));
-                done = entity != null && entity instanceof EntityLiving
-                        && (item.itemInteractionForEntity(stack, player, (EntityLivingBase) entity)
-                                || (!(entity instanceof EntityAnimal) || ((EntityAnimal) entity).interact(player)));
+            int side = hit.sideHit;
 
-                if (!done) item.onItemUseFirst(
-                        stack,
-                        player,
-                        worldObj,
-                        coords.posX,
-                        coords.posY,
-                        coords.posZ,
-                        side,
-                        0F,
-                        0F,
-                        0F);
-                if (!done) done = block != null && block
-                        .onBlockActivated(worldObj, coords.posX, coords.posY, coords.posZ, player, side, 0F, 0F, 0F);
-                if (!done) done = item
-                        .onItemUse(stack, player, worldObj, coords.posX, coords.posY, coords.posZ, side, 0F, 0F, 0F);
-                if (!done) {
-                    item.onItemRightClick(stack, worldObj, player);
-                    done = true;
-                }
+            int x = hit.blockX;
+            int y = hit.blockY;
+            int z = hit.blockZ;
+            // Copied from Minecraft's right click
+            Vec3 hitVec = hit.hitVec;
+            float f = (float) hitVec.xCoord;
+            float f1 = (float) hitVec.yCoord;
+            float f2 = (float) hitVec.zCoord;
+            boolean result = !ForgeEventFactory
+                    .onPlayerInteract(player, PlayerInteractEvent.Action.RIGHT_CLICK_BLOCK, x, y, z, side, worldObj)
+                    .isCanceled();
 
-            } catch (Throwable e) {
-                e.printStackTrace();
-                List list = worldObj.getEntitiesWithinAABB(
-                        EntityPlayer.class,
-                        AxisAlignedBB.getBoundingBox(
-                                xCoord - 8,
-                                yCoord - 8,
-                                zCoord - 8,
-                                xCoord + 8,
-                                yCoord + 8,
-                                zCoord + 8));
-                for (Object player : list) {
-                    ((EntityPlayer) player).addChatComponentMessage(
-                            new ChatComponentText(
-                                    EnumChatFormatting.RED
-                                            + "Something went wrong with a Tool Dynamism Tablet! Check your FML log."));
-                    ((EntityPlayer) player).addChatComponentMessage(
-                            new ChatComponentText(
-                                    EnumChatFormatting.RED + "" + EnumChatFormatting.ITALIC + e.getMessage()));
+            if (result) {
+                // copied from onPlayerRightClick
+                if (onPlayerRightClick(stack, x, y, z, side, f, f1, f2)) {
+                    updateState();
+                    return;
                 }
             }
-        }
 
-        if (done) {
-            stack = player.getCurrentEquippedItem();
-            if (stack == null || stack.stackSize <= 0) setInventorySlotContents(0, null);
-            else if (stack != getStackInSlot(0)) setInventorySlotContents(0, stack);
-            worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+            sendUseItem(stack);
         }
+    }
+
+    public final boolean isIdle() {
+        return swingMod == 0;
+    }
+
+
+    // Copied from Minecraft and PlayerControllerMP
+    private void sendUseItem(ItemStack stack) {
+        if (!ForgeEventFactory
+                .onPlayerInteract(player, PlayerInteractEvent.Action.RIGHT_CLICK_AIR, 0, 0, 0, -1, worldObj)
+                .isCanceled()) {
+            int i = stack.stackSize;
+            ItemStack itemstack1 = stack.useItemRightClick(worldObj, player);
+            if (itemstack1 == stack && itemstack1.stackSize == i) {
+                return;
+            }
+            heldItem = itemstack1;
+
+            if (itemstack1.stackSize <= 0) {
+                heldItem = null;
+                MinecraftForge.EVENT_BUS.post(new PlayerDestroyItemEvent(player, itemstack1));
+            }
+            updateState();
+        }
+    }
+
+    private void updateState() {
+        ItemStack stack = heldItem;
+        if (stack == null || stack.stackSize <= 0) setInventorySlotContents(0, null);
+        worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
         markDirty();
+        player.syncSlots();
+    }
+
+    public void stopSwinging() {
+        swingProgress = 0;
+        swingMod = 0;
+    }
+
+    // copied from PlayerController#onPlayerRightClick
+    private boolean onPlayerRightClick(ItemStack stack, int x, int y, int z, int side, float f, float f1, float f2) {
+        Item item = stack.getItem();
+        if (item != null && item.onItemUseFirst(stack, player, worldObj, x, y, z, side, f, f1, f2)) {
+            return true;
+        }
+
+        Block block = worldObj.getBlock(x, y, z);
+        if (block.onBlockActivated(worldObj, x, y, z, player, side, f, f1, f2)) {
+            return true;
+        }
+
+        if (!stack.tryPlaceItemIntoWorld(player, worldObj, x, y, z, side, f, f1, f2)) {
+            return false;
+        }
+        if (stack.stackSize <= 0) {
+            MinecraftForge.EVENT_BUS.post(new PlayerDestroyItemEvent(player, stack));
+        }
+        return true;
     }
 
     // Copied from ItemInWorldManager, seems to do the trick.
     private void stopBreaking() {
+        player.theItemInWorldManager.updateBlockRemoving();
         isBreaking = false;
-        ChunkCoordinates coords = getTargetLoc();
+        ChunkCoordinates coords = targetLoc;
         worldObj.destroyBlockInWorldPartially(player.getEntityId(), coords.posX, coords.posY, coords.posZ, -1);
     }
 
-    // Copied from ItemInWorldManager, seems to do the trick.
-    private void startBreaking(Block block, int meta) {
-        int side = SIDES[(getBlockMetadata() & 7) - 2].getOpposite().ordinal();
-        ChunkCoordinates coords = getTargetLoc();
+    private void calculateHit() {
+        hit = null;
+        int meta = getBlockMetadata();
+        if (meta == 0) {
+            ThaumicTinkerer.log
+                    .error("Metadata of a Tool Dynamism tablet is in an invalid state. This is a critical error.");
+            return;
+        }
+        int[] increase = LOC_INCREASES[(meta & 7) - 2];
+        int lookX = increase[0];
+        int lookZ = increase[1];
+        targetLoc.posX = xCoord + lookX;
+        targetLoc.posY = yCoord;
+        targetLoc.posZ = zCoord + lookZ;
+        int x = targetLoc.posX;
+        int y = targetLoc.posY;
+        int z = targetLoc.posZ;
+        Block block = worldObj.getBlock(x, y, z);
 
-        PlayerInteractEvent event = ForgeEventFactory.onPlayerInteract(
+        MovingObjectPosition hit = null;
+        Vec3 position = positionVec;
+        position.xCoord = xCoord + 0.5f;
+        position.yCoord = yCoord + 0.5f;
+        position.zCoord = zCoord + 0.5f;
+        if (!worldObj.isAirBlock(x, y, z)) {
+            AxisAlignedBB aabb = block.getSelectedBoundingBoxFromPool(worldObj, x, y, z);
+            if (aabb != null) {
+                tempVec.xCoord = (aabb.maxX + aabb.minX) / 2f;
+                tempVec.yCoord = (aabb.maxY + aabb.minY) / 2f;
+                tempVec.zCoord = (aabb.maxZ + aabb.minZ) / 2f;
+
+                hit = block.collisionRayTrace(worldObj, x, y, z, position, tempVec);
+            }
+        }
+        List<Entity> entities = (List<Entity>) worldObj.getEntitiesWithinAABBExcludingEntity(
                 player,
-                Action.LEFT_CLICK_BLOCK,
-                coords.posX,
-                coords.posY,
-                coords.posZ,
-                side,
-                worldObj);
-        if (event.isCanceled()) {
-            stopBreaking();
-            return;
-        }
+                AxisAlignedBB.getBoundingBox(x, y, z, x + 1, y + 1, z + 1));
+        if (!entities.isEmpty()) {
+            double dist = hit == null ? Double.MAX_VALUE : position.squareDistanceTo(hit.hitVec);
 
-        initialDamage = curblockDamage;
-        float var5 = 1F;
+            Entity targetedEntity = null;
+            Vec3 hitVec = null;
+            for (Entity e : entities) {
+                if (e.canBeCollidedWith()) {
 
-        if (block != null) {
-            if (event.useBlock != Event.Result.DENY)
-                block.onBlockClicked(worldObj, coords.posX, coords.posY, coords.posZ, player);
-            var5 = block.getPlayerRelativeBlockHardness(player, worldObj, coords.posX, coords.posY, coords.posZ);
-        }
+                    float borderSize = e.getCollisionBorderSize();
+                    AxisAlignedBB aabb = e.boundingBox.expand(borderSize, borderSize, borderSize);
+                    MovingObjectPosition intercept = aabb.calculateIntercept(position, getMiddleOfAABB(aabb));
 
-        if (event.useItem == Event.Result.DENY) {
-            stopBreaking();
-            return;
-        }
+                    if (aabb.isVecInside(position)) {
+                        targetedEntity = e;
+                        hitVec = intercept == null ? position : intercept.hitVec;
+                        break;
+                    }
+                    if (intercept != null) {
+                        double entityDist = position.squareDistanceTo(intercept.hitVec);
 
-        if (var5 >= 1F) {
-            tryHarvestBlock(coords.posX, coords.posY, coords.posZ);
-            stopBreaking();
-        } else {
-            int var7 = (int) (var5 * 10);
-            worldObj.destroyBlockInWorldPartially(player.getEntityId(), coords.posX, coords.posY, coords.posZ, var7);
-            durabilityRemainingOnBlock = var7;
-        }
-    }
-
-    // Copied from ItemInWorldManager, seems to do the trick.
-    private void continueBreaking() {
-        ++curblockDamage;
-        int var1;
-        float var4;
-        int var5;
-        ChunkCoordinates coords = getTargetLoc();
-
-        var1 = curblockDamage - initialDamage;
-        Block block = worldObj.getBlock(coords.posX, coords.posY, coords.posZ);
-
-        if (block == Blocks.air) stopBreaking();
-        else {
-            var4 = block.getPlayerRelativeBlockHardness(player, worldObj, coords.posX, coords.posY, coords.posZ) * var1;
-            var5 = (int) (var4 * 10);
-
-            if (var5 != durabilityRemainingOnBlock) {
-                worldObj.destroyBlockInWorldPartially(
-                        player.getEntityId(),
-                        coords.posX,
-                        coords.posY,
-                        coords.posZ,
-                        var5);
-                durabilityRemainingOnBlock = var5;
+                        if (dist > entityDist) {
+                            hitVec = intercept.hitVec;
+                            targetedEntity = e;
+                            dist = entityDist;
+                        }
+                    }
+                }
             }
 
-            if (var4 >= 1F) {
-                tryHarvestBlock(coords.posX, coords.posY, coords.posZ);
-                stopBreaking();
+            if (targetedEntity != null) {
+                hit = new MovingObjectPosition(targetedEntity, hitVec);
             }
         }
+
+        // spotless:off
+        if (hit == null) {
+            // Use the block beneath
+            y--;
+            if (!worldObj.isAirBlock(x, y, z)) {
+                AxisAlignedBB aabb = block.getSelectedBoundingBoxFromPool(worldObj, x, y, z);
+                Vec3 vec = getMiddleOfAABB(aabb);
+                vec.yCoord = (aabb.maxY - y);
+                hit = new MovingObjectPosition(
+                    x, y, z,
+                    ForgeDirection.UP.ordinal(),
+                    vec,
+                    false
+                );
+            }
+        }
+        //spotless:on
+
+        this.hit = hit;
     }
 
-    // Copied from ItemInWorldManager, seems to do the trick.
-    public boolean tryHarvestBlock(int par1, int par2, int par3) {
-        ItemStack stack = getStackInSlot(0);
-        if (stack != null && stack.getItem().onBlockStartBreak(stack, par1, par2, par3, player)) return false;
-
-        Block block = worldObj.getBlock(par1, par2, par3);
-        int var5 = worldObj.getBlockMetadata(par1, par2, par3);
-        // worldObj.playAuxSFXAtEntity(player, 2001, par1, par2, par3, var4 + (var5 << 12));
-        boolean var6;
-
-        boolean var8 = false;
-        if (block != null) var8 = block.canHarvestBlock(player, var5);
-
-        worldObj.loadedEntityList.size();
-        if (stack != null) stack.getItem().onBlockDestroyed(stack, worldObj, block, par1, par2, par3, player);
-
-        var6 = removeBlock(par1, par2, par3);
-        if (var6 && var8) block.harvestBlock(worldObj, player, par1, par2, par3, var5);
-
-        return var6;
-    }
-
-    // Copied from ItemInWorldManager, seems to do the trick.
-    private boolean removeBlock(int par1, int par2, int par3) {
-        Block var4 = worldObj.getBlock(par1, par2, par3);
-        int var5 = worldObj.getBlockMetadata(par1, par2, par3);
-
-        if (var4 != null) var4.onBlockHarvested(worldObj, par1, par2, par3, var5, player);
-
-        boolean var6 = var4 != null && var4.removedByPlayer(worldObj, player, par1, par2, par3);
-
-        if (var4 != null && var6) var4.onBlockDestroyedByPlayer(worldObj, par1, par2, par3, var5);
-
-        return var6;
-    }
-
-    public boolean detect() {
-        ChunkCoordinates coords = getTargetLoc();
-        findEntities(coords);
-        return !worldObj.isAirBlock(coords.posX, coords.posY, coords.posZ) || !detectedEntities.isEmpty();
-    }
-
-    public void findEntities(ChunkCoordinates coords) {
-        AxisAlignedBB boundingBox = AxisAlignedBB.getBoundingBox(
-                coords.posX,
-                coords.posY,
-                coords.posZ,
-                coords.posX + 1,
-                coords.posY + 1,
-                coords.posZ + 1);
-        detectedEntities = worldObj.getEntitiesWithinAABB(Entity.class, boundingBox);
+    private Vec3 getMiddleOfAABB(AxisAlignedBB aabb) {
+        tempVec.xCoord = (aabb.minX + aabb.maxX) / 2f;
+        tempVec.yCoord = (aabb.minY + aabb.maxY) / 2f;
+        tempVec.zCoord = (aabb.minZ + aabb.maxZ) / 2f;
+        return tempVec;
     }
 
     @Override
     public void validate() {
         super.validate();
-        player = new TabletFakePlayer(this);
+        if (!worldObj.isRemote) {
+            if (player == null || player.worldObj != worldObj) {
+                player = new TabletFakePlayer(this);
+            }
+        }
     }
 
     public ChunkCoordinates getTargetLoc() {
-        ChunkCoordinates coords = new ChunkCoordinates(xCoord, yCoord, zCoord);
-
-        int meta = getBlockMetadata();
-        if (meta == 0) {
-            ThaumicTinkerer.log
-                    .error("Metadata of a Tool Dynamism tablet is in an invalid state. This is a critical error.");
-            return coords;
-        }
-        int[] increase = LOC_INCREASES[(meta & 7) - 2];
-        coords.posX += increase[0];
-        coords.posZ += increase[1];
-
-        return coords;
+        return targetLoc;
     }
 
     public boolean getIsBreaking() {
@@ -393,9 +430,10 @@ public class TileAnimationTablet extends TileEntity implements IInventory, IMova
     }
 
     @Override
-    public boolean receiveClientEvent(int par1, int par2) {
-        if (par1 == 0) {
-            initiateSwing();
+    public boolean receiveClientEvent(int id, int type) {
+        if (id == 0) {
+            swingMod = SWING_SPEED;
+            swingProgress = 0;
             return true;
         }
 
@@ -403,82 +441,76 @@ public class TileAnimationTablet extends TileEntity implements IInventory, IMova
     }
 
     @Override
-    public void readFromNBT(NBTTagCompound par1NBTTagCompound) {
-        super.readFromNBT(par1NBTTagCompound);
+    public void readFromNBT(NBTTagCompound tag) {
+        super.readFromNBT(tag);
 
-        swingProgress = par1NBTTagCompound.getInteger(TAG_PROGRESS);
+        swingProgress = tag.getByte(TAG_PROGRESS);
+        swingMod = tag.getByte(TAG_MOD);
 
-        readCustomNBT(par1NBTTagCompound);
+        readCustomNBT(tag);
     }
 
     @Override
-    public void writeToNBT(NBTTagCompound par1NBTTagCompound) {
-        super.writeToNBT(par1NBTTagCompound);
+    public void writeToNBT(NBTTagCompound tag) {
+        super.writeToNBT(tag);
 
-        par1NBTTagCompound.setInteger(TAG_PROGRESS, swingProgress);
-        par1NBTTagCompound.setInteger(TAG_MOD, swingMod);
-        // par1NBTTagCompound.setString(TAG_OWNER,Owner);
-        writeCustomNBT(par1NBTTagCompound);
+        tag.setByte(TAG_PROGRESS, swingProgress);
+        tag.setByte(TAG_MOD, swingMod);
+
+        writeCustomNBT(tag);
     }
 
-    public void readCustomNBT(NBTTagCompound par1NBTTagCompound) {
-        leftClick = par1NBTTagCompound.getBoolean(TAG_LEFT_CLICK);
-        redstone = par1NBTTagCompound.getBoolean(TAG_REDSTONE);
-        NBTTagList var2 = par1NBTTagCompound.getTagList("Items", Constants.NBT.TAG_COMPOUND);
-        inventorySlots = new ItemStack[getSizeInventory()];
-        for (int var3 = 0; var3 < var2.tagCount(); ++var3) {
-            NBTTagCompound var4 = var2.getCompoundTagAt(var3);
-            byte var5 = var4.getByte("Slot");
-            if (var5 >= 0 && var5 < inventorySlots.length) inventorySlots[var5] = ItemStack.loadItemStackFromNBT(var4);
+    // TODO
+    public void readCustomNBT(NBTTagCompound tag) {
+        leftClick = tag.getBoolean(TAG_LEFT_CLICK);
+        redstone = tag.getBoolean(TAG_REDSTONE);
+        NBTTagCompound itemTag = tag.getCompoundTag("Item");
+        if (!itemTag.hasNoTags()) {
+            heldItem = ItemStack.loadItemStackFromNBT(itemTag);
+            return;
+        }
+        // Legacy Compatibility (there is no reason to store it as an array)
+        NBTTagList tagList = tag.getTagList("Items", Constants.NBT.TAG_COMPOUND);
+        if (tagList.tagCount() != 0) {
+            heldItem = ItemStack.loadItemStackFromNBT(tagList.getCompoundTagAt(0));
         }
     }
 
-    public void writeCustomNBT(NBTTagCompound par1NBTTagCompound) {
-        par1NBTTagCompound.setBoolean(TAG_LEFT_CLICK, leftClick);
-        par1NBTTagCompound.setBoolean(TAG_REDSTONE, redstone);
-        NBTTagList var2 = new NBTTagList();
-        for (int var3 = 0; var3 < inventorySlots.length; ++var3) {
-            if (inventorySlots[var3] != null) {
-                NBTTagCompound var4 = new NBTTagCompound();
-                var4.setByte("Slot", (byte) var3);
-                inventorySlots[var3].writeToNBT(var4);
-                var2.appendTag(var4);
-            }
+    public void writeCustomNBT(NBTTagCompound tag) {
+        tag.setBoolean(TAG_LEFT_CLICK, leftClick);
+        tag.setBoolean(TAG_REDSTONE, redstone);
+
+        if (heldItem != null) {
+            tag.setTag("Item", heldItem.writeToNBT(new NBTTagCompound()));
         }
-        par1NBTTagCompound.setTag("Items", var2);
     }
 
     @Override
     public int getSizeInventory() {
-        return inventorySlots.length;
+        return 1;
     }
 
     @Override
     public ItemStack getStackInSlot(int i) {
-        return inventorySlots[i];
+        return i == 0 ? heldItem : null;
     }
 
     @Override
-    public ItemStack decrStackSize(int par1, int par2) {
-        if (inventorySlots[par1] != null) {
+    public ItemStack decrStackSize(int index, int count) {
+        if (index == 0 && heldItem != null) {
             ItemStack stackAt;
 
-            if (inventorySlots[par1].stackSize <= par2) {
-                stackAt = inventorySlots[par1];
-                inventorySlots[par1] = null;
+            if (heldItem.stackSize <= count) {
+                stackAt = heldItem;
+                heldItem = null;
 
-                if (!worldObj.isRemote) worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-
-                return stackAt;
             } else {
-                stackAt = inventorySlots[par1].splitStack(par2);
+                stackAt = heldItem.splitStack(count);
 
-                if (inventorySlots[par1].stackSize == 0) inventorySlots[par1] = null;
-
-                if (!worldObj.isRemote) worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-
-                return stackAt;
+                if (heldItem.stackSize == 0) heldItem = null;
             }
+            if (!worldObj.isRemote) worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+            return stackAt;
         }
 
         return null;
@@ -491,7 +523,8 @@ public class TileAnimationTablet extends TileEntity implements IInventory, IMova
 
     @Override
     public void setInventorySlotContents(int i, ItemStack itemstack) {
-        inventorySlots[i] = itemstack;
+        if (i != 0) return;
+        heldItem = itemstack;
 
         if (!worldObj.isRemote) worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
     }
@@ -530,9 +563,9 @@ public class TileAnimationTablet extends TileEntity implements IInventory, IMova
 
     @Override
     public S35PacketUpdateTileEntity getDescriptionPacket() {
-        NBTTagCompound nbttagcompound = new NBTTagCompound();
-        writeCustomNBT(nbttagcompound);
-        return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, -999, nbttagcompound);
+        NBTTagCompound tag = new NBTTagCompound();
+        writeCustomNBT(tag);
+        return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, -999, tag);
     }
 
     @Override
@@ -556,39 +589,23 @@ public class TileAnimationTablet extends TileEntity implements IInventory, IMova
     @Optional.Method(modid = "ComputerCraft")
     public Object[] callMethod(IComputerAccess computer, ILuaContext context, int method, Object[] arguments)
             throws LuaException {
-        switch (method) {
-            case 0:
-                return new Object[] { redstone };
-            case 1:
-                return setRedstoneImplementation((Boolean) arguments[0]);
-            case 2:
-                return new Object[] { leftClick };
-            case 3:
-                return setLeftClickImplementation((Boolean) arguments[0]);
-            case 4:
-                return new Object[] { getBlockMetadata() - 2 };
-            case 5:
-                return setRotationImplementation((Double) arguments[0]);
-            case 6:
-                return new Object[] { getStackInSlot(0) != null };
-            case 7:
-                return triggerImplementation();
-        }
-        return null;
+        return switch (method) {
+            case 0 -> new Object[] { redstone };
+            case 1 -> setRedstoneImplementation((Boolean) arguments[0]);
+            case 2 -> new Object[] { leftClick };
+            case 3 -> setLeftClickImplementation((Boolean) arguments[0]);
+            case 4 -> new Object[] { getBlockMetadata() - 2 };
+            case 5 -> setRotationImplementation((Double) arguments[0]);
+            case 6 -> new Object[] { heldItem != null };
+            case 7 -> triggerImplementation();
+            default -> null;
+        };
     }
 
     private Object[] triggerImplementation() {
-        if (swingProgress != 0) return new Object[] { false };
+        if (!isIdle()) return new Object[] { false };
 
-        findEntities(getTargetLoc());
         initiateSwing();
-        worldObj.addBlockEvent(
-                xCoord,
-                yCoord,
-                zCoord,
-                ThaumicTinkerer.registry.getFirstBlockFromClass(BlockAnimationTablet.class),
-                0,
-                0);
 
         return new Object[] { true };
     }
@@ -651,26 +668,30 @@ public class TileAnimationTablet extends TileEntity implements IInventory, IMova
 
     @Callback(doc = "function():boolean -- Returns Whether tablet is redstone activated")
     @Optional.Method(modid = "OpenComputers")
-    public Object[] getRedstone(Context context, Arguments args) throws Exception {
+    @SuppressWarnings("unused")
+    public Object[] getRedstone(Context context, Arguments args) {
         return new Object[] { redstone };
     }
 
     @Callback(doc = "function(boolean):Nil -- Sets Whether tablet is redstone activated")
     @Optional.Method(modid = "OpenComputers")
-    public Object[] setRedstone(Context context, Arguments args) throws Exception {
+    @SuppressWarnings("unused")
+    public Object[] setRedstone(Context context, Arguments args) {
         setRedstoneImplementation(args.checkBoolean(0));
         return new Object[] { redstone };
     }
 
     @Callback(doc = "function():boolean -- Returns Whether tablet Left clicks")
     @Optional.Method(modid = "OpenComputers")
-    public Object[] getLeftClick(Context context, Arguments args) throws Exception {
+    @SuppressWarnings("unused")
+    public Object[] getLeftClick(Context context, Arguments args) {
         return new Object[] { leftClick };
     }
 
     @Callback(doc = "function(boolean):Nil -- Sets Whether tablet Left Clicks")
     @Optional.Method(modid = "OpenComputers")
-    public Object[] setLeftClick(Context context, Arguments args) throws Exception {
+    @SuppressWarnings("unused")
+    public Object[] setLeftClick(Context context, Arguments args) {
         setLeftClickImplementation(args.checkBoolean(0));
         return new Object[] { leftClick };
     }
@@ -678,26 +699,30 @@ public class TileAnimationTablet extends TileEntity implements IInventory, IMova
     // TODO {"hasItem", "trigger" };
     @Callback(doc = "function():number -- Returns tablet Rotation")
     @Optional.Method(modid = "OpenComputers")
-    public Object[] getRotation(Context context, Arguments args) throws Exception {
+    @SuppressWarnings("unused")
+    public Object[] getRotation(Context context, Arguments args) {
         return new Object[] { getBlockMetadata() - 2 };
     }
 
     @Callback(doc = "function(number):Nil -- Sets tablet rotation")
     @Optional.Method(modid = "OpenComputers")
-    public Object[] setRotation(Context context, Arguments args) throws Exception {
+    @SuppressWarnings("unused")
+    public Object[] setRotation(Context context, Arguments args) throws LuaException {
         setRotationImplementation((double) args.checkInteger(0));
         return new Object[] { getBlockMetadata() - 2 };
     }
 
     @Callback(doc = "function():boolean -- Returns wether tablet has an item or not")
     @Optional.Method(modid = "OpenComputers")
-    public Object[] hasItem(Context context, Arguments args) throws Exception {
-        return new Object[] { getStackInSlot(0) != null };
+    @SuppressWarnings("unused")
+    public Object[] hasItem(Context context, Arguments args) {
+        return new Object[] { heldItem != null };
     }
 
     @Callback(doc = "function():Nil -- Triggers tablets swing")
     @Optional.Method(modid = "OpenComputers")
-    public Object[] trigger(Context context, Arguments args) throws Exception {
+    @SuppressWarnings("unused")
+    public Object[] trigger(Context context, Arguments args) {
         return triggerImplementation();
     }
 }

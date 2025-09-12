@@ -23,6 +23,7 @@ import thaumic.tinkerer.common.block.tile.kami.TileWarpGate;
 import thaumic.tinkerer.common.block.tile.tablet.TileAnimationTablet;
 import thaumic.tinkerer.common.block.tile.transvector.TileTransvectorInterface;
 import thaumic.tinkerer.common.block.transvector.BlockTransvectorInterface;
+import thaumic.tinkerer.common.registry.TTRegistry;
 
 public class TTinkererProvider implements IWailaDataProvider {
 
@@ -48,7 +49,7 @@ public class TTinkererProvider implements IWailaDataProvider {
     @Override
     public List<String> getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor,
             IWailaConfigHandler config) {
-        if (accessor.getBlock() == ThaumicTinkerer.registry.getFirstBlockFromClass(BlockAnimationTablet.class)) {
+        if (accessor.getBlock() == TTRegistry.dynamismTablet) {
             TileAnimationTablet tileAn = (TileAnimationTablet) accessor.getTileEntity();
             String currentTool;
             ItemStack stack = tileAn.getStackInSlot(0);

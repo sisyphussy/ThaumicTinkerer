@@ -33,8 +33,8 @@ public abstract class BlockModContainer<T extends TileEntity> extends BlockConta
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void registerBlockIcons(IIconRegister par1IconRegister) {
-        blockIcon = IconHelper.forBlock(par1IconRegister, this);
+    public void registerBlockIcons(IIconRegister reg) {
+        blockIcon = IconHelper.forBlock(reg, this);
     }
 
     /**
@@ -45,7 +45,7 @@ public abstract class BlockModContainer<T extends TileEntity> extends BlockConta
     }
 
     @Override
-    public abstract T createNewTileEntity(World world, int var2);
+    public abstract T createNewTileEntity(World world, int meta);
 
     @Override
     public Class<? extends ItemBlock> getItemBlock() {
