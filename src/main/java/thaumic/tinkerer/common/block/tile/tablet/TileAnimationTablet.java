@@ -83,23 +83,6 @@ public class TileAnimationTablet extends TileEntity implements IInventory, IMova
 
     private static Field durabilityRemainingOnBlock;
 
-    public TileAnimationTablet() {
-        if (durabilityRemainingOnBlock == null) {
-            try {
-                Field f;
-                try {
-                    f = ItemInWorldManager.class.getDeclaredField("field_73094_o");
-                } catch (Exception e) {
-                    f = ItemInWorldManager.class.getDeclaredField("durabilityRemainingOnBlock");
-                }
-                f.setAccessible(true);
-                durabilityRemainingOnBlock = f;
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
     @SideOnly(Side.CLIENT)
     public final float getRenderSwingProgress(float partialTicks) {
         return prevSwingProgress + (swingProgress - prevSwingProgress) * partialTicks;
@@ -177,9 +160,30 @@ public class TileAnimationTablet extends TileEntity implements IInventory, IMova
         }
     }
 
-    public void initiateSwing() {
-        // This calls receiveClientEvent on both sides.
-        worldObj.addBlockEvent(xCoord, yCoord, zCoord, TTRegistry.dynamismTablet, 0, 0);
+    @Override
+    public void validate() {
+        super.validate();
+        if (!worldObj.isRemote) {
+            if (player == null) {
+                player = new TabletFakePlayer(this);
+            }
+            player.worldObj = this.worldObj;
+
+            if (durabilityRemainingOnBlock == null) {
+                try {
+                    Field f;
+                    try {
+                        f = ItemInWorldManager.class.getDeclaredField("field_73094_o");
+                    } catch (Exception e) {
+                        f = ItemInWorldManager.class.getDeclaredField("durabilityRemainingOnBlock");
+                    }
+                    f.setAccessible(true);
+                    durabilityRemainingOnBlock = f;
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
     }
 
     public void swingHit(ItemStack stack) {
@@ -187,7 +191,6 @@ public class TileAnimationTablet extends TileEntity implements IInventory, IMova
 
         if (leftClick) {
             if (hit.typeOfHit == MovingObjectPosition.MovingObjectType.ENTITY) {
-                player.getAttributeMap().applyAttributeModifiers(stack.getAttributeModifiers()); // Set attack strength
                 player.attackTargetEntityWithCurrentItem(hit.entityHit);
                 updateState();
             } else if (hit.typeOfHit == MovingObjectPosition.MovingObjectType.BLOCK) {
@@ -268,8 +271,17 @@ public class TileAnimationTablet extends TileEntity implements IInventory, IMova
         worldObj.destroyBlockInWorldPartially(player.getEntityId(), x, y, z, -1);
     }
 
+    /**
+     * Logic: Casts a ray between the player and the middle of the AABB to determine the side and hitVec. Works for both
+     * entities and blocks. Whichever is closer takes priority.
+     * <p>
+     * This is similar to how Minecraft calculates the MovingObjectPosition, but instead of yaw/pitch I use the middle
+     * of the bounding box to cover edge where blocks have a weird bounding box.
+     * <p>
+     * hit.typeOfHit will be MISS if it's targeting the block below (this is done so that placing blocks still properly
+     * works).
+     */
     private void calculateHit() {
-        hit = null;
         int meta = getBlockMetadata();
         if (meta == 0) {
             ThaumicTinkerer.log
@@ -351,18 +363,13 @@ public class TileAnimationTablet extends TileEntity implements IInventory, IMova
         return tempVec;
     }
 
-    @Override
-    public void validate() {
-        super.validate();
-        if (!worldObj.isRemote) {
-            if (player == null || player.worldObj != worldObj) {
-                player = new TabletFakePlayer(this);
-            }
-        }
-    }
-
     public boolean getIsBreaking() {
         return isBreaking;
+    }
+
+    public void initiateSwing() {
+        // This calls receiveClientEvent on both sides.
+        worldObj.addBlockEvent(xCoord, yCoord, zCoord, TTRegistry.dynamismTablet, 0, 0);
     }
 
     @Override
@@ -396,7 +403,6 @@ public class TileAnimationTablet extends TileEntity implements IInventory, IMova
         writeCustomNBT(tag);
     }
 
-    // TODO
     public void readCustomNBT(NBTTagCompound tag) {
         leftClick = tag.getBoolean(TAG_LEFT_CLICK);
         redstone = tag.getBoolean(TAG_REDSTONE);
@@ -410,6 +416,19 @@ public class TileAnimationTablet extends TileEntity implements IInventory, IMova
         if (tagList.tagCount() != 0) {
             heldItem = ItemStack.loadItemStackFromNBT(tagList.getCompoundTagAt(0));
         }
+    }
+
+    @Override
+    public S35PacketUpdateTileEntity getDescriptionPacket() {
+        NBTTagCompound tag = new NBTTagCompound();
+        writeCustomNBT(tag);
+        return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, -999, tag);
+    }
+
+    @Override
+    public void onDataPacket(NetworkManager manager, S35PacketUpdateTileEntity packet) {
+        super.onDataPacket(manager, packet);
+        readCustomNBT(packet.func_148857_g());
     }
 
     public void writeCustomNBT(NBTTagCompound tag) {
@@ -498,19 +517,6 @@ public class TileAnimationTablet extends TileEntity implements IInventory, IMova
     public void closeInventory() {}
 
     @Override
-    public S35PacketUpdateTileEntity getDescriptionPacket() {
-        NBTTagCompound tag = new NBTTagCompound();
-        writeCustomNBT(tag);
-        return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, -999, tag);
-    }
-
-    @Override
-    public void onDataPacket(NetworkManager manager, S35PacketUpdateTileEntity packet) {
-        super.onDataPacket(manager, packet);
-        readCustomNBT(packet.func_148857_g());
-    }
-
-    @Override
     public String getType() {
         return "tt_animationTablet";
     }
@@ -567,6 +573,8 @@ public class TileAnimationTablet extends TileEntity implements IInventory, IMova
         worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
         return null;
     }
+
+    // OC INTEGRATION
 
     @Override
     @Optional.Method(modid = "ComputerCraft")
