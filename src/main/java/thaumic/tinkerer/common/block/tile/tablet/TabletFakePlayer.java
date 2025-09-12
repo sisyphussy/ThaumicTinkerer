@@ -13,7 +13,9 @@ package thaumic.tinkerer.common.block.tile.tablet;
 
 import java.util.UUID;
 
+import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.NetHandlerPlayServer;
 import net.minecraft.network.NetworkManager;
@@ -22,7 +24,11 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.IChatComponent;
 import net.minecraft.world.WorldServer;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.FakePlayer;
+import net.minecraftforge.event.ForgeEventFactory;
+import net.minecraftforge.event.entity.player.PlayerDestroyItemEvent;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 
 import com.mojang.authlib.GameProfile;
 
@@ -70,6 +76,47 @@ public class TabletFakePlayer extends FakePlayer {
 
     public void syncSlots() {
         this.inventory.mainInventory[0] = tablet.heldItem;
+    }
+
+    // Copied from Minecraft and PlayerControllerMP
+    public boolean sendUseItem(ItemStack stack) {
+        if (!ForgeEventFactory.onPlayerInteract(this, PlayerInteractEvent.Action.RIGHT_CLICK_AIR, 0, 0, 0, -1, worldObj)
+                .isCanceled()) {
+            int i = stack.stackSize;
+            ItemStack itemstack1 = stack.useItemRightClick(worldObj, this);
+            if (itemstack1 == stack && itemstack1.stackSize == i) {
+                return false;
+            }
+            inventory.mainInventory[0] = itemstack1;
+
+            if (itemstack1.stackSize <= 0) {
+                inventory.mainInventory[0] = null;
+                MinecraftForge.EVENT_BUS.post(new PlayerDestroyItemEvent(this, itemstack1));
+            }
+            return true;
+        }
+        return false;
+    }
+
+    // copied from PlayerController#onPlayerRightClick
+    public boolean onPlayerRightClick(ItemStack stack, int x, int y, int z, int side, float f, float f1, float f2) {
+        Item item = stack.getItem();
+        if (item != null && item.onItemUseFirst(stack, this, worldObj, x, y, z, side, f, f1, f2)) {
+            return true;
+        }
+
+        Block block = worldObj.getBlock(x, y, z);
+        if (block.onBlockActivated(worldObj, x, y, z, this, side, f, f1, f2)) {
+            return true;
+        }
+
+        if (!stack.tryPlaceItemIntoWorld(this, worldObj, x, y, z, side, f, f1, f2)) {
+            return false;
+        }
+        if (stack.stackSize <= 0) {
+            MinecraftForge.EVENT_BUS.post(new PlayerDestroyItemEvent(this, stack));
+        }
+        return true;
     }
 
     @Override

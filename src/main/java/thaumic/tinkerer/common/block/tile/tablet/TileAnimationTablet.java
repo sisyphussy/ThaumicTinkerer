@@ -18,7 +18,6 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -28,15 +27,12 @@ import net.minecraft.server.management.ItemInWorldManager;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.event.ForgeEventFactory;
-import net.minecraftforge.event.entity.player.PlayerDestroyItemEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 
 import appeng.api.movable.IMovableTile;
@@ -82,11 +78,7 @@ public class TileAnimationTablet extends TileEntity implements IInventory, IMova
     private boolean isBreaking = false;
     private int ticksElapsed;
 
-    // These variables get cached
     private final Vec3 tempVec = Vec3.createVectorHelper(0, 0, 0);
-    private final ChunkCoordinates targetLoc = new ChunkCoordinates(0, 0, 0);
-
-    // These variables are here to prevent unnecessary heap allocations
     private final Vec3 positionVec = Vec3.createVectorHelper(0, 0, 0);
 
     private static Field durabilityRemainingOnBlock;
@@ -158,11 +150,10 @@ public class TileAnimationTablet extends TileEntity implements IInventory, IMova
                     stopBreaking();
                     return;
                 }
-                ChunkCoordinates coords = targetLoc;
                 player.theItemInWorldManager.updateBlockRemoving();
                 int durability = (Integer) durabilityRemainingOnBlock.get(player.theItemInWorldManager);
                 if (durability >= 10) {
-                    this.player.theItemInWorldManager.tryHarvestBlock(coords.posX, coords.posY, coords.posZ);
+                    this.player.theItemInWorldManager.tryHarvestBlock(hit.blockX, hit.blockY, hit.blockZ);
                 }
             }
             if (isIdle() && hit != null && (!redstone || isBreaking)) {
@@ -193,7 +184,6 @@ public class TileAnimationTablet extends TileEntity implements IInventory, IMova
 
     public void swingHit(ItemStack stack) {
         if (hit == null) return;
-        ChunkCoordinates coords = targetLoc;
 
         if (leftClick) {
             if (hit.typeOfHit == MovingObjectPosition.MovingObjectType.ENTITY) {
@@ -202,11 +192,13 @@ public class TileAnimationTablet extends TileEntity implements IInventory, IMova
                 updateState();
             } else if (hit.typeOfHit == MovingObjectPosition.MovingObjectType.BLOCK) {
                 if (!isBreaking) {
-                    Block block = worldObj.getBlock(coords.posX, coords.posY, coords.posZ);
-                    if (!block.isAir(worldObj, coords.posX, coords.posY, coords.posZ)
-                            && block.getBlockHardness(worldObj, coords.posX, coords.posY, coords.posZ) >= 0) {
+                    int x = hit.blockX;
+                    int y = hit.blockY;
+                    int z = hit.blockZ;
+                    Block block = worldObj.getBlock(x, y, z);
+                    if (!block.isAir(worldObj, x, y, z) && block.getBlockHardness(worldObj, x, y, z) >= 0) {
                         isBreaking = true;
-                        player.theItemInWorldManager.onBlockClicked(coords.posX, coords.posY, coords.posZ, hit.sideHit);
+                        player.theItemInWorldManager.onBlockClicked(x, y, z, hit.sideHit);
                         updateState();
                     }
                 }
@@ -224,24 +216,26 @@ public class TileAnimationTablet extends TileEntity implements IInventory, IMova
             int x = hit.blockX;
             int y = hit.blockY;
             int z = hit.blockZ;
-            // Copied from Minecraft's right click
-            Vec3 hitVec = hit.hitVec;
-            float f = (float) hitVec.xCoord;
-            float f1 = (float) hitVec.yCoord;
-            float f2 = (float) hitVec.zCoord;
+
+            // Copied from Minecraft's right click logic
             boolean result = !ForgeEventFactory
                     .onPlayerInteract(player, PlayerInteractEvent.Action.RIGHT_CLICK_BLOCK, x, y, z, side, worldObj)
                     .isCanceled();
 
             if (result) {
-                // copied from onPlayerRightClick
-                if (onPlayerRightClick(stack, x, y, z, side, f, f1, f2)) {
+                Vec3 hitVec = hit.hitVec;
+                float hitX = (float) hitVec.xCoord;
+                float hitY = (float) hitVec.yCoord;
+                float hitZ = (float) hitVec.zCoord;
+                if (player.onPlayerRightClick(stack, x, y, z, side, hitX, hitY, hitZ)) {
                     updateState();
                     return;
                 }
             }
 
-            sendUseItem(stack);
+            if (player.sendUseItem(stack)) {
+                updateState();
+            }
         }
     }
 
@@ -249,29 +243,9 @@ public class TileAnimationTablet extends TileEntity implements IInventory, IMova
         return swingMod == 0;
     }
 
-
-    // Copied from Minecraft and PlayerControllerMP
-    private void sendUseItem(ItemStack stack) {
-        if (!ForgeEventFactory
-                .onPlayerInteract(player, PlayerInteractEvent.Action.RIGHT_CLICK_AIR, 0, 0, 0, -1, worldObj)
-                .isCanceled()) {
-            int i = stack.stackSize;
-            ItemStack itemstack1 = stack.useItemRightClick(worldObj, player);
-            if (itemstack1 == stack && itemstack1.stackSize == i) {
-                return;
-            }
-            heldItem = itemstack1;
-
-            if (itemstack1.stackSize <= 0) {
-                heldItem = null;
-                MinecraftForge.EVENT_BUS.post(new PlayerDestroyItemEvent(player, itemstack1));
-            }
-            updateState();
-        }
-    }
-
     private void updateState() {
-        ItemStack stack = heldItem;
+        ItemStack stack = player.getHeldItem();
+        this.heldItem = stack;
         if (stack == null || stack.stackSize <= 0) setInventorySlotContents(0, null);
         worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
         markDirty();
@@ -283,33 +257,15 @@ public class TileAnimationTablet extends TileEntity implements IInventory, IMova
         swingMod = 0;
     }
 
-    // copied from PlayerController#onPlayerRightClick
-    private boolean onPlayerRightClick(ItemStack stack, int x, int y, int z, int side, float f, float f1, float f2) {
-        Item item = stack.getItem();
-        if (item != null && item.onItemUseFirst(stack, player, worldObj, x, y, z, side, f, f1, f2)) {
-            return true;
-        }
-
-        Block block = worldObj.getBlock(x, y, z);
-        if (block.onBlockActivated(worldObj, x, y, z, player, side, f, f1, f2)) {
-            return true;
-        }
-
-        if (!stack.tryPlaceItemIntoWorld(player, worldObj, x, y, z, side, f, f1, f2)) {
-            return false;
-        }
-        if (stack.stackSize <= 0) {
-            MinecraftForge.EVENT_BUS.post(new PlayerDestroyItemEvent(player, stack));
-        }
-        return true;
-    }
-
     // Copied from ItemInWorldManager, seems to do the trick.
     private void stopBreaking() {
         player.theItemInWorldManager.updateBlockRemoving();
         isBreaking = false;
-        ChunkCoordinates coords = targetLoc;
-        worldObj.destroyBlockInWorldPartially(player.getEntityId(), coords.posX, coords.posY, coords.posZ, -1);
+        int[] increase = LOC_INCREASES[(getBlockMetadata() & 7) - 2];
+        int x = xCoord + increase[0];
+        int y = yCoord;
+        int z = zCoord + increase[1];
+        worldObj.destroyBlockInWorldPartially(player.getEntityId(), x, y, z, -1);
     }
 
     private void calculateHit() {
@@ -321,14 +277,9 @@ public class TileAnimationTablet extends TileEntity implements IInventory, IMova
             return;
         }
         int[] increase = LOC_INCREASES[(meta & 7) - 2];
-        int lookX = increase[0];
-        int lookZ = increase[1];
-        targetLoc.posX = xCoord + lookX;
-        targetLoc.posY = yCoord;
-        targetLoc.posZ = zCoord + lookZ;
-        int x = targetLoc.posX;
-        int y = targetLoc.posY;
-        int z = targetLoc.posZ;
+        int x = xCoord + increase[0];
+        int y = yCoord;
+        int z = zCoord + increase[1];
         Block block = worldObj.getBlock(x, y, z);
 
         MovingObjectPosition hit = null;
@@ -339,11 +290,7 @@ public class TileAnimationTablet extends TileEntity implements IInventory, IMova
         if (!worldObj.isAirBlock(x, y, z)) {
             AxisAlignedBB aabb = block.getSelectedBoundingBoxFromPool(worldObj, x, y, z);
             if (aabb != null) {
-                tempVec.xCoord = (aabb.maxX + aabb.minX) / 2f;
-                tempVec.yCoord = (aabb.maxY + aabb.minY) / 2f;
-                tempVec.zCoord = (aabb.maxZ + aabb.minZ) / 2f;
-
-                hit = block.collisionRayTrace(worldObj, x, y, z, position, tempVec);
+                hit = block.collisionRayTrace(worldObj, x, y, z, position, getMiddleOfAABB(aabb));
             }
         }
         List<Entity> entities = (List<Entity>) worldObj.getEntitiesWithinAABBExcludingEntity(
@@ -383,7 +330,6 @@ public class TileAnimationTablet extends TileEntity implements IInventory, IMova
             }
         }
 
-        // spotless:off
         if (hit == null) {
             // Use the block beneath
             y--;
@@ -391,15 +337,9 @@ public class TileAnimationTablet extends TileEntity implements IInventory, IMova
                 AxisAlignedBB aabb = block.getSelectedBoundingBoxFromPool(worldObj, x, y, z);
                 Vec3 vec = getMiddleOfAABB(aabb);
                 vec.yCoord = (aabb.maxY - y);
-                hit = new MovingObjectPosition(
-                    x, y, z,
-                    ForgeDirection.UP.ordinal(),
-                    vec,
-                    false
-                );
+                hit = new MovingObjectPosition(x, y, z, ForgeDirection.UP.ordinal(), vec, false);
             }
         }
-        //spotless:on
 
         this.hit = hit;
     }
@@ -419,10 +359,6 @@ public class TileAnimationTablet extends TileEntity implements IInventory, IMova
                 player = new TabletFakePlayer(this);
             }
         }
-    }
-
-    public ChunkCoordinates getTargetLoc() {
-        return targetLoc;
     }
 
     public boolean getIsBreaking() {
