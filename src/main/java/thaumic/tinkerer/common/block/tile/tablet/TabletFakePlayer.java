@@ -42,23 +42,25 @@ public final class TabletFakePlayer extends FakePlayer {
                 new GameProfile(UUID.fromString("a8f026a0-135b-11e4-9191-0800200c9a66"), "[ThaumcraftTablet]"));
         this.tablet = tablet;
         this.playerNetServerHandler = new DummyNetHandlerPlayServer(MinecraftServer.getServer(), this);
-        this.inventory.currentItem = 0;
         this.width = 0;
         this.height = 0;
-        this.posX = tablet.xCoord + 0.5f;
-        this.posY = tablet.yCoord + 0.5f;
-        this.posZ = tablet.zCoord + 0.5f;
         this.boundingBox.setBounds(this.posX, this.posY, this.posZ, this.posX, this.posY, this.posZ);
         this.rotationPitch = -15;
     }
 
     @Override
     public void onUpdate() {
+        this.posX = tablet.xCoord + 0.5f;
+        this.posY = tablet.yCoord + 0.5f;
+        this.posZ = tablet.zCoord + 0.5f;
+        this.inventory.currentItem = 0;
         motionX = motionY = motionZ = 0;
+
         this.capabilities.isCreativeMode = false;
 
         int meta = tablet.getBlockMetadata() & 7;
         int rotation = meta == 2 ? 180 : meta == 3 ? 0 : meta == 4 ? 90 : -90;
+
         rotationYaw = rotationYawHead = rotation;
         // Drop everything except for held item
         for (int i = 1; i < inventory.getSizeInventory(); i++) {
