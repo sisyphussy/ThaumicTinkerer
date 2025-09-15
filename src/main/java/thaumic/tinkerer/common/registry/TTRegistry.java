@@ -20,6 +20,7 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import thaumic.tinkerer.client.lib.LibResources;
 import thaumic.tinkerer.common.ThaumicTinkerer;
+import thaumic.tinkerer.common.block.BlockAnimationTablet;
 import thaumic.tinkerer.common.core.handler.ModCreativeTab;
 import thaumic.tinkerer.common.research.IRegisterableResearch;
 
@@ -30,6 +31,8 @@ public class TTRegistry {
 
     private ArrayList<Class> blockClasses = new ArrayList<>();
     private HashMap<Class, ArrayList<Block>> blockRegistry = new HashMap<>();
+
+    public static Block dynamismTablet;
 
     public void registerClasses() {
         try {
@@ -171,6 +174,8 @@ public class TTRegistry {
                 }
             }
         }
+
+        dynamismTablet = ThaumicTinkerer.registry.getFirstBlockFromClass(BlockAnimationTablet.class);
     }
 
     public ArrayList<Item> getItemFromClass(Class clazz) {
