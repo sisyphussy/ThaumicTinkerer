@@ -13,7 +13,6 @@ package thaumic.tinkerer.client.render.tile;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderItem;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
@@ -88,10 +87,8 @@ public class RenderTileAnimationTablet extends TileEntitySpecialRenderer {
             GL11.glTranslatef(0.5F, 0.55F, 0F);
             if (stack.getItem() instanceof ItemBlock) GL11.glScalef(2.5F, 2.5F, 2.5F);
             else GL11.glScalef(1.5F, 1.5F, 1.5F);
-
             RenderItem.renderInFrame = true;
-            Render renderer = RenderManager.instance.getEntityClassRenderObject(EntityItem.class);
-            renderer.doRender(entityitem, 0.0D, 0.0D, 0.0D, 0.0F, 0.0F);
+            RenderManager.instance.renderEntityWithPosYaw(entityitem, 0.0D, 0.0D, 0.0D, 0.0F, 0.0F);
             RenderItem.renderInFrame = false;
 
             GL11.glPopMatrix();

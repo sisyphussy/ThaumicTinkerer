@@ -49,13 +49,13 @@ public final class TabletFakePlayer extends FakePlayer {
         this.posY = tablet.yCoord + 0.5f;
         this.posZ = tablet.zCoord + 0.5f;
         this.boundingBox.setBounds(this.posX, this.posY, this.posZ, this.posX, this.posY, this.posZ);
-        rotationPitch = -15;
-        capabilities.isCreativeMode = false;
+        this.rotationPitch = -15;
     }
 
     @Override
     public void onUpdate() {
         motionX = motionY = motionZ = 0;
+        this.capabilities.isCreativeMode = false;
 
         int meta = tablet.getBlockMetadata() & 7;
         int rotation = meta == 2 ? 180 : meta == 3 ? 0 : meta == 4 ? 90 : -90;

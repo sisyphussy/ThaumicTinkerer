@@ -128,17 +128,20 @@ public class TileAnimationTablet extends TileEntity implements IInventory, IMova
         }
 
         try {
-            int elapsed = MinecraftServer.getServer().getTickCounter();
+            // Prevent
+            final int elapsed = MinecraftServer.getServer().getTickCounter();
             if (elapsed != this.ticksElapsed) {
                 player.onUpdate();
-                calculateHit();
+                this.hit = calculateHit();
                 this.ticksElapsed = elapsed;
             }
             ItemStack stack = heldItem;
             if (stack != null) {
                 swingProgress += swingMod;
                 if (swingProgress >= MAX_DEGREE) {
-                    swingHit(stack);
+                    if (hit != null) {
+                        swingHit(stack, hit);
+                    }
                     swingMod = -SWING_SPEED;
                 } else if (swingProgress <= 0) {
                     stopSwinging();
@@ -200,10 +203,7 @@ public class TileAnimationTablet extends TileEntity implements IInventory, IMova
         }
     }
 
-    public final void swingHit(ItemStack stack) {
-        MovingObjectPosition hit = this.hit;
-        if (hit == null) return;
-
+    public void swingHit(ItemStack stack, MovingObjectPosition hit) {
         if (leftClick) {
             if (hit.typeOfHit == MovingObjectPosition.MovingObjectType.ENTITY) {
                 player.attackTargetEntityWithCurrentItem(hit.entityHit);
@@ -303,13 +303,17 @@ public class TileAnimationTablet extends TileEntity implements IInventory, IMova
      * <p>
      * hit.typeOfHit will be MISS if it's targeting the block below (this is done so that placing blocks still properly
      * works).
+     * <p>
+     * This is an improvement to the old system, because it properly knows whether to hit an entity or block and also
+     * passes in the proper parameters when interacting with a block (this has previously caused some issues with
+     * certain blocks).
      */
-    private void calculateHit() {
+    private MovingObjectPosition calculateHit() {
         int meta = getBlockMetadata();
         if (meta == 0) {
             ThaumicTinkerer.log
                     .error("Metadata of a Tool Dynamism tablet is in an invalid state. This is a critical error.");
-            return;
+            return null;
         }
         int[] increase = LOC_INCREASES[(meta & 7) - 2];
         int x = xCoord + increase[0];
@@ -376,7 +380,7 @@ public class TileAnimationTablet extends TileEntity implements IInventory, IMova
             }
         }
 
-        this.hit = hit;
+        return hit;
     }
 
     private Vec3 getMiddleOfAABB(AxisAlignedBB aabb) {
