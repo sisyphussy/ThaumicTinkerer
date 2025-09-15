@@ -11,18 +11,21 @@
  */
 package thaumic.tinkerer.common.block.tile.tablet;
 
-import java.lang.reflect.Field;
 import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemBlock;
+import net.minecraft.item.ItemReed;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.management.ItemInWorldManager;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
@@ -43,6 +46,7 @@ import dan200.computercraft.api.lua.ILuaContext;
 import dan200.computercraft.api.lua.LuaException;
 import dan200.computercraft.api.peripheral.IComputerAccess;
 import dan200.computercraft.api.peripheral.IPeripheral;
+import gregtech.common.tileentities.machines.basic.MTEWorldAccelerator;
 import li.cil.oc.api.machine.Arguments;
 import li.cil.oc.api.machine.Callback;
 import li.cil.oc.api.machine.Context;
@@ -50,6 +54,7 @@ import li.cil.oc.api.network.SimpleComponent;
 import thaumic.tinkerer.common.ThaumicTinkerer;
 import thaumic.tinkerer.common.lib.LibBlockNames;
 import thaumic.tinkerer.common.registry.TTRegistry;
+import thaumic.tinkerer.mixins.early.AccessorItemInWorldManager;
 
 @Optional.InterfaceList({ @Optional.Interface(iface = "li.cil.oc.api.network.SimpleComponent", modid = "OpenComputers"),
         @Optional.Interface(iface = "dan200.computercraft.api.peripheral.IPeripheral", modid = "ComputerCraft"),
@@ -65,6 +70,7 @@ public class TileAnimationTablet extends TileEntity implements IInventory, IMova
 
     private static final byte SWING_SPEED = 3;
     private static final byte MAX_DEGREE = 45;
+    private static final byte MAX_ITERATIONS = MAX_DEGREE / SWING_SPEED;
     public boolean leftClick = true;
     public boolean redstone = false;
     private byte prevSwingProgress;
@@ -77,11 +83,10 @@ public class TileAnimationTablet extends TileEntity implements IInventory, IMova
     private TabletFakePlayer player;
     private boolean isBreaking = false;
     private int ticksElapsed;
+    private int prevTicksElapsed;
 
     private final Vec3 tempVec = Vec3.createVectorHelper(0, 0, 0);
     private final Vec3 positionVec = Vec3.createVectorHelper(0, 0, 0);
-
-    private static Field durabilityRemainingOnBlock;
 
     @SideOnly(Side.CLIENT)
     public final float getRenderSwingProgress(float partialTicks) {
@@ -89,22 +94,32 @@ public class TileAnimationTablet extends TileEntity implements IInventory, IMova
     }
 
     @SideOnly(Side.CLIENT)
-    public final int getTicksExisted() {
-        return ticksElapsed;
+    public final float getTicksExisted(float partialTicks) {
+        return prevTicksElapsed + (ticksElapsed - prevTicksElapsed) * partialTicks;
+    }
+
+    @SideOnly(Side.CLIENT)
+    public final int getWorldAcceleratorBonus() {
+        return (ticksElapsed - prevTicksElapsed) - 1;
     }
 
     @Override
-    public void updateEntity() {
+    public final void updateEntity() {
         if (worldObj.isRemote) {
-            ticksElapsed++;
             prevSwingProgress = swingProgress;
+            prevTicksElapsed = ticksElapsed;
+            int iterations = ThaumicTinkerer.gtLoaded ? MTEWorldAccelerator.getAccelerationForTEUnsafe(this) + 1 : 1;
+            ticksElapsed += iterations;
             ItemStack stack = heldItem;
             if (stack != null) {
-                swingProgress += swingMod;
-                if (swingProgress >= MAX_DEGREE) {
-                    swingMod = -SWING_SPEED;
-                } else if (swingProgress <= 0) {
-                    stopSwinging();
+                iterations = Math.min(iterations, MAX_ITERATIONS);
+                for (int i = 0; i < iterations; i++) {
+                    swingProgress += swingMod;
+                    if (swingProgress >= MAX_DEGREE) {
+                        swingMod = -SWING_SPEED;
+                    } else if (swingProgress <= 0) {
+                        stopSwinging();
+                    }
                 }
             } else {
                 stopSwinging();
@@ -113,8 +128,12 @@ public class TileAnimationTablet extends TileEntity implements IInventory, IMova
         }
 
         try {
-            player.onUpdate();
-            calculateHit();
+            int elapsed = MinecraftServer.getServer().getTickCounter();
+            if (elapsed != this.ticksElapsed) {
+                player.onUpdate();
+                calculateHit();
+                this.ticksElapsed = elapsed;
+            }
             ItemStack stack = heldItem;
             if (stack != null) {
                 swingProgress += swingMod;
@@ -127,19 +146,24 @@ public class TileAnimationTablet extends TileEntity implements IInventory, IMova
             } else {
                 if (isBreaking) stopBreaking();
                 stopSwinging();
+                return;
             }
             if (isBreaking) {
                 if (hit == null || hit.typeOfHit != MovingObjectPosition.MovingObjectType.BLOCK) {
                     stopBreaking();
                     return;
                 }
-                player.theItemInWorldManager.updateBlockRemoving();
-                int durability = (Integer) durabilityRemainingOnBlock.get(player.theItemInWorldManager);
-                if (durability >= 10) {
-                    this.player.theItemInWorldManager.tryHarvestBlock(hit.blockX, hit.blockY, hit.blockZ);
+                ItemInWorldManager worldManager = player.theItemInWorldManager;
+                worldManager.updateBlockRemoving();
+                if (((AccessorItemInWorldManager) worldManager).getDurabilityRemainingOnBlock() >= 10) {
+                    worldManager.tryHarvestBlock(hit.blockX, hit.blockY, hit.blockZ);
                 }
             }
             if (isIdle() && hit != null && (!redstone || isBreaking)) {
+                if (hit.typeOfHit == MovingObjectPosition.MovingObjectType.MISS
+                        && (leftClick || !canPlaceItem(stack))) {
+                    return;
+                }
                 initiateSwing();
             }
         } catch (Exception e) {
@@ -160,6 +184,11 @@ public class TileAnimationTablet extends TileEntity implements IInventory, IMova
         }
     }
 
+    private boolean canPlaceItem(ItemStack stack) {
+        final Item item = stack.getItem();
+        return item instanceof ItemBlock || item instanceof ItemReed;
+    }
+
     @Override
     public void validate() {
         super.validate();
@@ -168,25 +197,11 @@ public class TileAnimationTablet extends TileEntity implements IInventory, IMova
                 player = new TabletFakePlayer(this);
             }
             player.worldObj = this.worldObj;
-
-            if (durabilityRemainingOnBlock == null) {
-                try {
-                    Field f;
-                    try {
-                        f = ItemInWorldManager.class.getDeclaredField("field_73094_o");
-                    } catch (Exception e) {
-                        f = ItemInWorldManager.class.getDeclaredField("durabilityRemainingOnBlock");
-                    }
-                    f.setAccessible(true);
-                    durabilityRemainingOnBlock = f;
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
         }
     }
 
-    public void swingHit(ItemStack stack) {
+    public final void swingHit(ItemStack stack) {
+        MovingObjectPosition hit = this.hit;
         if (hit == null) return;
 
         if (leftClick) {
@@ -227,10 +242,15 @@ public class TileAnimationTablet extends TileEntity implements IInventory, IMova
 
             if (result) {
                 Vec3 hitVec = hit.hitVec;
-                float hitX = (float) hitVec.xCoord;
-                float hitY = (float) hitVec.yCoord;
-                float hitZ = (float) hitVec.zCoord;
-                if (player.onPlayerRightClick(stack, x, y, z, side, hitX, hitY, hitZ)) {
+                if (player.onPlayerRightClick(
+                        stack,
+                        x,
+                        y,
+                        z,
+                        side,
+                        (float) hitVec.xCoord,
+                        (float) hitVec.yCoord,
+                        (float) hitVec.zCoord)) {
                     updateState();
                     return;
                 }
@@ -248,11 +268,14 @@ public class TileAnimationTablet extends TileEntity implements IInventory, IMova
 
     private void updateState() {
         ItemStack stack = player.getHeldItem();
-        this.heldItem = stack;
-        if (stack == null || stack.stackSize <= 0) setInventorySlotContents(0, null);
-        worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+        if (stack == null || stack.stackSize <= 0) {
+            this.heldItem = null;
+            player.syncSlots();
+        } else {
+            this.heldItem = stack;
+        }
         markDirty();
-        player.syncSlots();
+        worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
     }
 
     public void stopSwinging() {
@@ -363,17 +386,18 @@ public class TileAnimationTablet extends TileEntity implements IInventory, IMova
         return tempVec;
     }
 
-    public boolean getIsBreaking() {
+    public final boolean getIsBreaking() {
         return isBreaking;
     }
 
-    public void initiateSwing() {
-        // This calls receiveClientEvent on both sides.
+    public final void initiateSwing() {
+        swingMod = SWING_SPEED;
         worldObj.addBlockEvent(xCoord, yCoord, zCoord, TTRegistry.dynamismTablet, 0, 0);
     }
 
     @Override
     public boolean receiveClientEvent(int id, int type) {
+        if (!worldObj.isRemote) return true;
         if (id == 0) {
             swingMod = SWING_SPEED;
             swingProgress = 0;
@@ -406,8 +430,8 @@ public class TileAnimationTablet extends TileEntity implements IInventory, IMova
     public void readCustomNBT(NBTTagCompound tag) {
         leftClick = tag.getBoolean(TAG_LEFT_CLICK);
         redstone = tag.getBoolean(TAG_REDSTONE);
-        NBTTagCompound itemTag = tag.getCompoundTag("Item");
-        if (!itemTag.hasNoTags()) {
+        if (tag.hasKey("Item")) {
+            NBTTagCompound itemTag = tag.getCompoundTag("Item");
             heldItem = ItemStack.loadItemStackFromNBT(itemTag);
             return;
         }
@@ -435,9 +459,7 @@ public class TileAnimationTablet extends TileEntity implements IInventory, IMova
         tag.setBoolean(TAG_LEFT_CLICK, leftClick);
         tag.setBoolean(TAG_REDSTONE, redstone);
 
-        if (heldItem != null) {
-            tag.setTag("Item", heldItem.writeToNBT(new NBTTagCompound()));
-        }
+        tag.setTag("Item", heldItem == null ? new NBTTagCompound() : heldItem.writeToNBT(new NBTTagCompound()));
     }
 
     @Override

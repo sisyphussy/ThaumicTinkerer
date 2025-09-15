@@ -137,16 +137,25 @@ public class BlockAnimationTablet extends BlockModContainer {
     @Override
     public void onNeighborBlockChange(World world, int x, int y, int z, Block neighbor) {
         if (world.isRemote) return;
+        TileEntity te = world.getTileEntity(x, y, z);
+        if (te instanceof TileAnimationTablet tablet && tablet.redstone) {
 
-        boolean power = world.isBlockIndirectlyGettingPowered(x, y, z)
-                || world.isBlockIndirectlyGettingPowered(x, y + 1, z);
-        int meta = world.getBlockMetadata(x, y, z);
-        boolean on = (meta & 8) != 0;
+            boolean power = world.isBlockIndirectlyGettingPowered(x, y, z)
+                    || world.isBlockIndirectlyGettingPowered(x, y + 1, z);
+            int meta = world.getBlockMetadata(x, y, z);
+            boolean on = (meta & 8) != 0;
 
-        if (power && !on) {
-            world.scheduleBlockUpdate(x, y, z, this, tickRate(world));
-            world.setBlockMetadataWithNotify(x, y, z, meta | 8, 4);
-        } else if (!power && on) world.setBlockMetadataWithNotify(x, y, z, meta & 7, 4);
+            if (power) {
+                if (!on) {
+                    world.scheduleBlockUpdate(x, y, z, this, tickRate(world));
+                    world.setBlockMetadataWithNotify(x, y, z, meta | 0x8, 4);
+                }
+            } else {
+                if (on) {
+                    world.setBlockMetadataWithNotify(x, y, z, meta & 7, 4);
+                }
+            }
+        }
     }
 
     @Override

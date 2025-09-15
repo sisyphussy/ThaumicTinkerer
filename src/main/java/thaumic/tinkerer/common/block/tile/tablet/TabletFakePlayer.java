@@ -32,7 +32,7 @@ import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 
 import com.mojang.authlib.GameProfile;
 
-public class TabletFakePlayer extends FakePlayer {
+public final class TabletFakePlayer extends FakePlayer {
 
     private final TileAnimationTablet tablet;
 
@@ -49,20 +49,17 @@ public class TabletFakePlayer extends FakePlayer {
         this.posY = tablet.yCoord + 0.5f;
         this.posZ = tablet.zCoord + 0.5f;
         this.boundingBox.setBounds(this.posX, this.posY, this.posZ, this.posX, this.posY, this.posZ);
-
+        rotationPitch = -15;
+        capabilities.isCreativeMode = false;
     }
 
     @Override
     public void onUpdate() {
-        capabilities.isCreativeMode = false;
-
         motionX = motionY = motionZ = 0;
 
         int meta = tablet.getBlockMetadata() & 7;
         int rotation = meta == 2 ? 180 : meta == 3 ? 0 : meta == 4 ? 90 : -90;
         rotationYaw = rotationYawHead = rotation;
-        rotationPitch = -15;
-
         // Drop everything except for held item
         for (int i = 1; i < inventory.getSizeInventory(); i++) {
             ItemStack stack = inventory.getStackInSlot(i);

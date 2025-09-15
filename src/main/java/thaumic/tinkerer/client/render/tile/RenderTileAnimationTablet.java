@@ -54,10 +54,10 @@ public class RenderTileAnimationTablet extends TileEntitySpecialRenderer {
         GL11.glTranslated(d0, d1, d2);
         GL11.glDepthMask(false);
         GL11.glDisable(GL11.GL_LIGHTING);
-        renderOverlay(tile, overlayCenter, -1, false, 0.65, 0.13F, 0F, partialTicks);
-        if (tile.leftClick) renderOverlay(tile, overlayLeft, 1, true, 1, 0.13F, 0F, partialTicks);
-        else renderOverlay(tile, overlayRight, 1, true, 1, 0.131F, 0F, partialTicks);
-        renderOverlay(tile, overlayIndent, 0, false, 0.5F, 0.13F, rotation + 90F, partialTicks);
+        renderOverlay(tile, overlayCenter, -1, false, 0.65, 0.13F, partialTicks);
+        if (tile.leftClick) renderOverlay(tile, overlayLeft, 1, true, 1, 0.13F, partialTicks);
+        else renderOverlay(tile, overlayRight, 1, true, 1, 0.131F, partialTicks);
+        renderIndents(tile, rotation + 90F);
         GL11.glEnable(GL11.GL_LIGHTING);
         GL11.glDepthMask(true);
 
@@ -100,7 +100,7 @@ public class RenderTileAnimationTablet extends TileEntitySpecialRenderer {
     }
 
     private void renderOverlay(TileAnimationTablet tablet, ResourceLocation texture, int rotationMod, boolean useBlend,
-            double size, float height, float forceDeg, float partialTicks) {
+            double size, float height, float partialTicks) {
         Minecraft mc = ClientHelper.minecraft();
         mc.renderEngine.bindTexture(texture);
         GL11.glPushMatrix();
@@ -109,7 +109,7 @@ public class RenderTileAnimationTablet extends TileEntitySpecialRenderer {
             GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         }
         GL11.glTranslatef(0.5F, height, 0.5F);
-        float deg = rotationMod == 0 ? forceDeg : ((tablet.getTicksExisted() + partialTicks) * rotationMod % 360F);
+        float deg = (tablet.getTicksExisted(partialTicks) * rotationMod % 360F);
         GL11.glRotatef(deg, 0F, 1F, 0F);
         Tessellator tess = Tessellator.instance;
         double size1 = size / 2;
@@ -120,6 +120,33 @@ public class RenderTileAnimationTablet extends TileEntitySpecialRenderer {
         tess.addVertexWithUV(size1, 0, size2, 1, 0);
         tess.addVertexWithUV(size2, 0, size2, 0, 0);
         tess.draw();
+        GL11.glPopMatrix();
+    }
+
+    private void renderIndents(TileAnimationTablet tablet, float forceDeg) {
+        Minecraft mc = ClientHelper.minecraft();
+        mc.renderEngine.bindTexture(overlayIndent);
+        GL11.glPushMatrix();
+        GL11.glTranslatef(0.5F, (float) 0.13, 0.5F);
+        GL11.glRotatef(forceDeg, 0F, 1F, 0F);
+        Tessellator tess = Tessellator.instance;
+        final double size1 = 0.25;
+        final double size2 = -0.25;
+        tess.startDrawingQuads();
+        tess.addVertexWithUV(size2, 0, size1, 0, 1);
+        tess.addVertexWithUV(size1, 0, size1, 1, 1);
+        tess.addVertexWithUV(size1, 0, size2, 1, 0);
+        tess.addVertexWithUV(size2, 0, size2, 0, 0);
+        tess.draw();
+        int acceleration = tablet.getWorldAcceleratorBonus();
+        if (acceleration != 0) {
+            GL11.glRotatef(90, -1, 0, 0);
+            GL11.glScalef(0.02f, -0.02f, 0.02f);
+            final String s = 'x' + Integer.toString(acceleration);
+            final int width = mc.fontRenderer.getStringWidth(s);
+            GL11.glTranslatef(-width / 2f, 10f + mc.fontRenderer.FONT_HEIGHT / 2f, 0);
+            mc.fontRenderer.drawString(s, 0, 0, 0xFFFFFF);
+        }
         GL11.glPopMatrix();
     }
 }
