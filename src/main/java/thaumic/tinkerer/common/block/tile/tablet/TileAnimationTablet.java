@@ -45,7 +45,6 @@ import dan200.computercraft.api.lua.ILuaContext;
 import dan200.computercraft.api.lua.LuaException;
 import dan200.computercraft.api.peripheral.IComputerAccess;
 import dan200.computercraft.api.peripheral.IPeripheral;
-import gregtech.common.tileentities.machines.basic.MTEWorldAccelerator;
 import li.cil.oc.api.machine.Arguments;
 import li.cil.oc.api.machine.Callback;
 import li.cil.oc.api.machine.Context;
@@ -102,7 +101,7 @@ public class TileAnimationTablet extends TileEntity implements IInventory, IMova
     }
 
     @Override
-    public final void updateEntity() {
+    public void updateEntity() {
         if (worldObj.isRemote) {
             prevSwingProgress = swingProgress;
             prevTicksElapsed = ticksElapsed;
@@ -127,23 +126,25 @@ public class TileAnimationTablet extends TileEntity implements IInventory, IMova
 
         try {
             player.onUpdate();
-            MovingObjectPosition hit = calculateHit();
+
             ItemStack stack = heldItem;
-            if (stack != null) {
-                swingProgress += swingMod;
-                if (swingProgress >= MAX_DEGREE) {
-                    if (hit != null) {
-                        swingHit(stack, hit);
-                    }
-                    swingMod = -SWING_SPEED;
-                } else if (swingProgress <= 0) {
-                    stopSwinging();
-                }
-            } else {
+            if (stack == null) {
                 if (isBreaking) stopBreaking();
                 stopSwinging();
                 return;
             }
+
+            MovingObjectPosition hit = calculateHit();
+            swingProgress += swingMod;
+            if (swingProgress >= MAX_DEGREE) {
+                if (hit != null) {
+                    swingHit(stack, hit);
+                }
+                swingMod = -SWING_SPEED;
+            } else if (swingProgress <= 0) {
+                stopSwinging();
+            }
+
             if (isBreaking) {
                 if (hit == null || hit.typeOfHit != MovingObjectPosition.MovingObjectType.BLOCK) {
                     stopBreaking();
@@ -155,6 +156,7 @@ public class TileAnimationTablet extends TileEntity implements IInventory, IMova
                     worldManager.tryHarvestBlock(hit.blockX, hit.blockY, hit.blockZ);
                 }
             }
+
             if (isIdle() && hit != null && (!redstone || isBreaking)) {
                 if (hit.typeOfHit == MovingObjectPosition.MovingObjectType.MISS
                         && (leftClick || !canPlaceItem(stack))) {
@@ -196,7 +198,7 @@ public class TileAnimationTablet extends TileEntity implements IInventory, IMova
         }
     }
 
-    public void swingHit(ItemStack stack, MovingObjectPosition hit) {
+    private void swingHit(ItemStack stack, MovingObjectPosition hit) {
         if (leftClick) {
             if (hit.typeOfHit == MovingObjectPosition.MovingObjectType.ENTITY) {
                 player.attackTargetEntityWithCurrentItem(hit.entityHit);
@@ -259,19 +261,11 @@ public class TileAnimationTablet extends TileEntity implements IInventory, IMova
         return swingMod == 0;
     }
 
-    private void updateState() {
-        ItemStack stack = player.getHeldItem();
-        if (stack == null || stack.stackSize <= 0) {
-            this.heldItem = null;
-            player.syncSlots();
-        } else {
-            this.heldItem = stack;
-        }
-        markDirty();
-        worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+    public final boolean getIsBreaking() {
+        return isBreaking;
     }
 
-    public void stopSwinging() {
+    private void stopSwinging() {
         swingProgress = 0;
         swingMod = 0;
     }
@@ -285,6 +279,18 @@ public class TileAnimationTablet extends TileEntity implements IInventory, IMova
         int y = yCoord;
         int z = zCoord + increase[1];
         worldObj.destroyBlockInWorldPartially(player.getEntityId(), x, y, z, -1);
+    }
+
+    private void updateState() {
+        ItemStack stack = player.getHeldItem();
+        if (stack == null || stack.stackSize <= 0) {
+            this.heldItem = null;
+            player.syncSlots();
+        } else {
+            this.heldItem = stack;
+        }
+        markDirty();
+        worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
     }
 
     /**
@@ -383,11 +389,7 @@ public class TileAnimationTablet extends TileEntity implements IInventory, IMova
         return tempVec;
     }
 
-    public final boolean getIsBreaking() {
-        return isBreaking;
-    }
-
-    public final void initiateSwing() {
+    public void initiateSwing() {
         swingMod = SWING_SPEED;
         worldObj.addBlockEvent(xCoord, yCoord, zCoord, TTRegistry.dynamismTablet, 0, 0);
     }
@@ -424,7 +426,7 @@ public class TileAnimationTablet extends TileEntity implements IInventory, IMova
         writeCustomNBT(tag);
     }
 
-    public void readCustomNBT(NBTTagCompound tag) {
+    private void readCustomNBT(NBTTagCompound tag) {
         leftClick = tag.getBoolean(TAG_LEFT_CLICK);
         redstone = tag.getBoolean(TAG_REDSTONE);
         if (tag.hasKey("Item")) {
@@ -452,7 +454,7 @@ public class TileAnimationTablet extends TileEntity implements IInventory, IMova
         readCustomNBT(packet.func_148857_g());
     }
 
-    public void writeCustomNBT(NBTTagCompound tag) {
+    private void writeCustomNBT(NBTTagCompound tag) {
         tag.setBoolean(TAG_LEFT_CLICK, leftClick);
         tag.setBoolean(TAG_REDSTONE, redstone);
 
