@@ -21,6 +21,8 @@ import cpw.mods.fml.relauncher.Side;
 import thaumic.tinkerer.client.lib.LibResources;
 import thaumic.tinkerer.common.ThaumicTinkerer;
 import thaumic.tinkerer.common.core.handler.ModCreativeTab;
+import thaumic.tinkerer.common.item.kami.ItemBlockTalisman;
+import thaumic.tinkerer.common.item.kami.ItemPlacementMirror;
 import thaumic.tinkerer.common.research.IRegisterableResearch;
 
 public class TTRegistry {
@@ -30,6 +32,9 @@ public class TTRegistry {
 
     private ArrayList<Class> blockClasses = new ArrayList<>();
     private HashMap<Class, ArrayList<Block>> blockRegistry = new HashMap<>();
+
+    public static Item itemPlacementMirror;
+    public static Item itemBlackHoleTalisman;
 
     public void registerClasses() {
         try {
@@ -171,6 +176,9 @@ public class TTRegistry {
                 }
             }
         }
+
+        itemBlackHoleTalisman = getFirstItemFromClass(ItemBlockTalisman.class);
+        itemPlacementMirror = getFirstItemFromClass(ItemPlacementMirror.class);
     }
 
     public ArrayList<Item> getItemFromClass(Class clazz) {

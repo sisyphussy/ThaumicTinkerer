@@ -34,6 +34,7 @@ import thaumic.tinkerer.common.item.kami.tool.ToolHandler;
 import thaumic.tinkerer.common.lib.LibItemNames;
 import thaumic.tinkerer.common.lib.LibResearch;
 import thaumic.tinkerer.common.registry.ItemKamiBase;
+import thaumic.tinkerer.common.registry.TTRegistry;
 import thaumic.tinkerer.common.registry.ThaumicTinkererInfusionRecipe;
 import thaumic.tinkerer.common.registry.ThaumicTinkererRecipe;
 import thaumic.tinkerer.common.research.IRegisterableResearch;
@@ -41,9 +42,6 @@ import thaumic.tinkerer.common.research.KamiResearchItem;
 import thaumic.tinkerer.common.research.ResearchHelper;
 
 public class ItemPlacementMirror extends ItemKamiBase {
-
-    @Deprecated
-    private static final String TAG_BLOCK_ID = "blockID";
 
     private static final String TAG_BLOCK_NAME = "blockName";
     private static final String TAG_BLOCK_META = "blockMeta";
@@ -56,40 +54,34 @@ public class ItemPlacementMirror extends ItemKamiBase {
         setMaxStackSize(1);
     }
 
-    public static boolean hasBlocks(ItemStack stack, EntityPlayer player, ChunkCoordinates[] blocks) {
+    public static boolean hasBlocks(EntityPlayer player, Block requiredBlock, int requiredMetadata,
+            int requiredAmount) {
         if (player.capabilities.isCreativeMode) return true;
 
-        int required = blocks.length;
+        Item requiredItem = Item.getItemFromBlock(requiredBlock);
+
         int current = 0;
-        ItemStack reqStack = new ItemStack(getBlock(stack), 1, getBlockMeta(stack));
-        List<ItemStack> talismansToCheck = new ArrayList<>();
         for (int i = 0; i < player.inventory.getSizeInventory(); i++) {
             ItemStack stackInSlot = player.inventory.getStackInSlot(i);
-            if (stackInSlot != null && stackInSlot.getItem() == reqStack.getItem()
-                    && stackInSlot.getItemDamage() == reqStack.getItemDamage()) {
-                current += stackInSlot.stackSize;
-                if (current >= required) return true;
-            }
-            if (stackInSlot != null
-                    && stackInSlot.getItem() == ThaumicTinkerer.registry.getFirstItemFromClass(ItemBlockTalisman.class))
-                talismansToCheck.add(stackInSlot);
-        }
-
-        for (ItemStack talisman : talismansToCheck) {
-            Block block = ItemBlockTalisman.getBlock(talisman);
-            int meta = ItemBlockTalisman.getBlockMeta(talisman);
-
-            if (Item.getItemFromBlock(block) == reqStack.getItem() && meta == reqStack.getItemDamage()) {
-                current += ItemBlockTalisman.getBlockCount(talisman);
-
-                if (current >= required) return true;
+            if (stackInSlot == null) continue;
+            Item itemInSlot = stackInSlot.getItem();
+            if (itemInSlot == requiredItem) {
+                if (stackInSlot.getItemDamage() == requiredMetadata) {
+                    current += stackInSlot.stackSize;
+                    if (current >= requiredAmount) return true;
+                }
+            } else if (itemInSlot == TTRegistry.itemBlackHoleTalisman) {
+                if (ItemBlockTalisman.getBlock(stackInSlot) == requiredBlock
+                        && ItemBlockTalisman.getBlockMeta(stackInSlot) == requiredMetadata) {
+                    current += ItemBlockTalisman.getBlockCount(stackInSlot);
+                    if (current >= requiredAmount) return true;
+                }
             }
         }
-
         return false;
     }
 
-    public static ChunkCoordinates[] getBlocksToPlace(ItemStack stack, EntityPlayer player) {
+    public static List<ChunkCoordinates> getBlocksToPlace(ItemStack stack, EntityPlayer player) {
         List<ChunkCoordinates> coords = new ArrayList<>();
         MovingObjectPosition pos = ToolHandler.raytraceFromEntity(player.worldObj, player, true, 5);
         if (pos != null) {
@@ -124,7 +116,7 @@ public class ItemPlacementMirror extends ItemKamiBase {
             }
         }
 
-        return coords.toArray(new ChunkCoordinates[coords.size()]);
+        return coords;
     }
 
     private static void setSize(ItemStack stack, int size) {
@@ -135,16 +127,8 @@ public class ItemPlacementMirror extends ItemKamiBase {
         return ItemNBTHelper.getInt(stack, TAG_SIZE, 3) | 1;
     }
 
-    @Deprecated
-    public static int getBlockID(ItemStack stack) {
-        return ItemNBTHelper.getInt(stack, TAG_BLOCK_ID, 0);
-    }
-
     public static Block getBlock(ItemStack stack) {
-        Block block = Block.getBlockFromName(getBlockName(stack));
-        if (block == Blocks.air) block = Block.getBlockById(getBlockID(stack));
-
-        return block;
+        return Block.getBlockFromName(getBlockName(stack));
     }
 
     public static String getBlockName(ItemStack stack) {
@@ -182,16 +166,20 @@ public class ItemPlacementMirror extends ItemKamiBase {
     }
 
     public void placeAllBlocks(ItemStack stack, EntityPlayer player) {
-        ChunkCoordinates[] blocksToPlace = getBlocksToPlace(stack, player);
-        if (!hasBlocks(stack, player, blocksToPlace)) return;
+        List<ChunkCoordinates> blocksToPlace = getBlocksToPlace(stack, player);
+        Block requiredBlock = getBlock(stack);
+        if (requiredBlock == null) return;
+        int requiredMetadata = getBlockMeta(stack);
+        if (!hasBlocks(player, requiredBlock, requiredMetadata, blocksToPlace.size())) return;
 
-        ItemStack stackToPlace = new ItemStack(getBlock(stack), 1, getBlockMeta(stack));
-        for (ChunkCoordinates coords : blocksToPlace) placeBlockAndConsume(player, stackToPlace, coords);
+        ItemStack stackToPlace = new ItemStack(requiredBlock, 1, requiredMetadata);
+        for (ChunkCoordinates coords : blocksToPlace) {
+            placeBlockAndConsume(player, stackToPlace, coords);
+        }
         player.worldObj.playSoundAtEntity(player, "thaumcraft:wand", 1F, 1F);
     }
 
     private void placeBlockAndConsume(EntityPlayer player, ItemStack blockToPlace, ChunkCoordinates coords) {
-        if (blockToPlace.getItem() == null) return;
         player.worldObj.setBlock(
                 coords.posX,
                 coords.posY,
@@ -214,7 +202,7 @@ public class ItemPlacementMirror extends ItemKamiBase {
             }
 
             if (stackInSlot != null
-                    && stackInSlot.getItem() == ThaumicTinkerer.registry.getFirstItemFromClass(ItemBlockTalisman.class))
+                    && stackInSlot.getItem() == TTRegistry.itemBlackHoleTalisman)
                 talismansToCheck.add(stackInSlot);
         }
 
