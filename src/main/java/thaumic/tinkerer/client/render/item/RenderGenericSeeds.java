@@ -3,7 +3,6 @@ package thaumic.tinkerer.client.render.item;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ItemRenderer;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.entity.RenderItem;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
@@ -18,8 +17,6 @@ import thaumic.tinkerer.common.item.ItemInfusedSeeds;
  * Created by pixlepix on 8/6/14.
  */
 public class RenderGenericSeeds implements IItemRenderer {
-
-    private static RenderItem renderItem = new RenderItem();
 
     @Override
     public boolean handleRenderType(ItemStack item, ItemRenderType type) {
