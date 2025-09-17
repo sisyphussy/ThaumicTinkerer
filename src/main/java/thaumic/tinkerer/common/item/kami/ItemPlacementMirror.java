@@ -61,6 +61,7 @@ public class ItemPlacementMirror extends ItemKamiBase {
         Item requiredItem = Item.getItemFromBlock(requiredBlock);
 
         int current = 0;
+        List<ItemStack> talismansToCheck = new ArrayList<>();
         for (int i = 0; i < player.inventory.getSizeInventory(); i++) {
             ItemStack stackInSlot = player.inventory.getStackInSlot(i);
             if (stackInSlot == null) continue;
@@ -73,10 +74,14 @@ public class ItemPlacementMirror extends ItemKamiBase {
             } else if (itemInSlot == TTRegistry.itemBlackHoleTalisman) {
                 if (ItemBlockTalisman.getBlock(stackInSlot) == requiredBlock
                         && ItemBlockTalisman.getBlockMeta(stackInSlot) == requiredMetadata) {
-                    current += ItemBlockTalisman.getBlockCount(stackInSlot);
-                    if (current >= requiredAmount) return true;
+                    talismansToCheck.add(stackInSlot);
                 }
             }
+        }
+        for (ItemStack talisman : talismansToCheck) {
+            current += ItemBlockTalisman.getBlockCount(talisman);
+
+            if (current >= requiredAmount) return true;
         }
         return false;
     }
