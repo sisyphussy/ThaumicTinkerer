@@ -25,6 +25,9 @@ public class TTRegistry {
 
     private final HashMap<Class, Block[]> blockRegistry = new HashMap<>();
 
+    public static Item itemPlacementMirror;
+    public static Item itemBlackHoleTalisman;
+
     /**
      * <warning>THIS NO LONGER USES REFLECTION. IF YOU WANT TO ADD A BLOCK/ITEM, ADD THE CLASS HERE.</warning>
      */
@@ -87,11 +90,11 @@ public class TTRegistry {
         loadSimpleItem(thaumic.tinkerer.common.item.foci.ItemFocusHeal.class);
         loadSimpleItem(thaumic.tinkerer.common.item.foci.ItemFocusSmelt.class);
         loadSimpleItem(thaumic.tinkerer.common.item.foci.ItemFocusTelekinesis.class);
-        loadSimpleItem(thaumic.tinkerer.common.item.kami.ItemBlockTalisman.class);
+        itemBlackHoleTalisman = loadSimpleItem(thaumic.tinkerer.common.item.kami.ItemBlockTalisman.class);
         loadSimpleItem(thaumic.tinkerer.common.item.kami.ItemCatAmulet.class);
         loadSimpleItem(thaumic.tinkerer.common.item.kami.ItemIchorPouch.class);
         loadSimpleItem(thaumic.tinkerer.common.item.kami.ItemKamiResource.class);
-        loadSimpleItem(thaumic.tinkerer.common.item.kami.ItemPlacementMirror.class);
+        itemPlacementMirror = loadSimpleItem(thaumic.tinkerer.common.item.kami.ItemPlacementMirror.class);
         loadSimpleItem(thaumic.tinkerer.common.item.kami.ItemProtoclay.class);
         loadSimpleItem(thaumic.tinkerer.common.item.kami.ItemSkyPearl.class);
         loadSimpleItem(thaumic.tinkerer.common.item.kami.armor.ItemGemBoots.class);
