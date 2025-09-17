@@ -1,10 +1,6 @@
 package thaumic.tinkerer.common.registry;
 
-import java.io.IOException;
-import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Modifier;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -13,15 +9,14 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.tileentity.TileEntity;
 
-import com.google.common.reflect.ClassPath;
+import org.apache.logging.log4j.Level;
 
 import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import thaumic.tinkerer.client.lib.LibResources;
 import thaumic.tinkerer.common.core.handler.ModCreativeTab;
-import thaumic.tinkerer.common.item.kami.ItemBlockTalisman;
-import thaumic.tinkerer.common.item.kami.ItemPlacementMirror;
 import thaumic.tinkerer.common.research.IRegisterableResearch;
 
 public class TTRegistry {
@@ -30,86 +25,179 @@ public class TTRegistry {
 
     private final HashMap<Class, Block[]> blockRegistry = new HashMap<>();
 
-    public static Item itemPlacementMirror;
-    public static Item itemBlackHoleTalisman;
-
-    @SuppressWarnings("UnstableApiUsage")
+    /**
+     * <warning>THIS NO LONGER USES REFLECTION. IF YOU WANT TO ADD A BLOCK/ITEM, ADD THE CLASS HERE.</warning>
+     */
     public void preInit() {
-        try {
-            ClassPath classPath = ClassPath.from(this.getClass().getClassLoader());
-            for (ClassPath.ClassInfo classInfo : classPath
-                    .getTopLevelClassesRecursive("thaumic.tinkerer.common.block")) {
-                Class<?> clazz = classInfo.load();
-                if (ITTinkererBlock.class.isAssignableFrom(clazz) && !Modifier.isAbstract(clazz.getModifiers())) {
-                    loadBlock(clazz);
-                }
-            }
-            for (ClassPath.ClassInfo classInfo : classPath
-                    .getTopLevelClassesRecursive("thaumic.tinkerer.common.item")) {
-                Class<?> clazz = classInfo.load();
-                if (ITTinkererItem.class.isAssignableFrom(clazz) && !ItemBlock.class.isAssignableFrom(clazz)
-                        && !Modifier.isAbstract(clazz.getModifiers())) {
-                    loadItem(clazz);
-                }
-            }
-            for (Block[] blocks : blockRegistry.values()) {
-                for (Block block : blocks) {
-                    registerBlock(block, (ITTinkererBlock) block);
-                }
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        loadSimpleBlock(thaumic.tinkerer.common.block.BlockAnimationTablet.class);
+        loadSimpleBlock(thaumic.tinkerer.common.block.BlockAspectAnalyzer.class);
+        loadSimpleBlock(thaumic.tinkerer.common.block.BlockEnchanter.class);
+        loadSimpleBlock(thaumic.tinkerer.common.block.BlockForcefield.class);
+        loadSimpleBlock(thaumic.tinkerer.common.block.BlockFunnel.class);
+        loadSimpleBlock(thaumic.tinkerer.common.block.BlockGaseousLight.class);
+        loadSimpleBlock(thaumic.tinkerer.common.block.BlockGaseousShadow.class);
+        loadSimpleBlock(thaumic.tinkerer.common.block.BlockGolemConnector.class);
+        loadSimpleBlock(thaumic.tinkerer.common.block.BlockInfusedFarmland.class);
+        loadSimpleBlock(thaumic.tinkerer.common.block.BlockInfusedGrain.class);
+        loadSimpleBlock(thaumic.tinkerer.common.block.BlockMagnet.class);
+        loadSimpleBlock(thaumic.tinkerer.common.block.BlockNitorGas.class);
+        loadSimpleBlock(thaumic.tinkerer.common.block.BlockPlatform.class);
+        loadSimpleBlock(thaumic.tinkerer.common.block.BlockRPlacer.class);
+        loadSimpleBlock(thaumic.tinkerer.common.block.BlockRepairer.class);
+        loadSimpleBlock(thaumic.tinkerer.common.block.BlockSummon.class);
+        loadMetaBlock(thaumic.tinkerer.common.block.BlockTravelSlab.class);
+        loadSimpleBlock(thaumic.tinkerer.common.block.BlockTravelStairs.class);
+        loadMetaBlock(thaumic.tinkerer.common.block.BlockWardSlab.class);
+        loadSimpleBlock(thaumic.tinkerer.common.block.fire.BlockFireAir.class);
+        loadSimpleBlock(thaumic.tinkerer.common.block.fire.BlockFireChaos.class);
+        loadSimpleBlock(thaumic.tinkerer.common.block.fire.BlockFireEarth.class);
+        loadSimpleBlock(thaumic.tinkerer.common.block.fire.BlockFireIgnis.class);
+        loadSimpleBlock(thaumic.tinkerer.common.block.fire.BlockFireOrder.class);
+        loadSimpleBlock(thaumic.tinkerer.common.block.fire.BlockFireWater.class);
+        loadSimpleBlock(thaumic.tinkerer.common.block.kami.BlockBedrockPortal.class);
+        loadSimpleBlock(thaumic.tinkerer.common.block.kami.BlockWarpGate.class);
+        loadSimpleBlock(thaumic.tinkerer.common.block.mobilizer.BlockMobilizer.class);
+        loadSimpleBlock(thaumic.tinkerer.common.block.mobilizer.BlockMobilizerRelay.class);
+        loadSimpleBlock(thaumic.tinkerer.common.block.quartz.BlockDarkQuartz.class);
+        loadMetaBlock(thaumic.tinkerer.common.block.quartz.BlockDarkQuartzSlab.class);
+        loadSimpleBlock(thaumic.tinkerer.common.block.quartz.BlockDarkQuartzStairs.class);
+        loadSimpleBlock(thaumic.tinkerer.common.block.transvector.BlockTransvectorDislocator.class);
+        loadSimpleBlock(thaumic.tinkerer.common.block.transvector.BlockTransvectorInterface.class);
+        loadSimpleItem(thaumic.tinkerer.common.item.ItemBloodSword.class);
+        loadSimpleItem(thaumic.tinkerer.common.item.ItemBrightNitor.class);
+        loadSimpleItem(thaumic.tinkerer.common.item.ItemCleansingTalisman.class);
+        loadSimpleItem(thaumic.tinkerer.common.item.ItemConnector.class);
+        loadMetaItem(thaumic.tinkerer.common.item.ItemGas.class);
+        loadSimpleItem(thaumic.tinkerer.common.item.ItemGasRemover.class);
+        loadSimpleItem(thaumic.tinkerer.common.item.ItemInfusedGrain.class);
+        loadSimpleItem(thaumic.tinkerer.common.item.ItemInfusedInkwell.class);
+        loadSimpleItem(thaumic.tinkerer.common.item.ItemInfusedPotion.class);
+        loadSimpleItem(thaumic.tinkerer.common.item.ItemInfusedSeeds.class);
+        loadSimpleItem(thaumic.tinkerer.common.item.ItemMobAspect.class);
+        loadSimpleItem(thaumic.tinkerer.common.item.ItemMobDisplay.class);
+        loadSimpleItem(thaumic.tinkerer.common.item.ItemRevealingHelm.class);
+        loadSimpleItem(thaumic.tinkerer.common.item.ItemShareBook.class);
+        loadSimpleItem(thaumic.tinkerer.common.item.ItemSoulMould.class);
+        loadSimpleItem(thaumic.tinkerer.common.item.ItemSpellCloth.class);
+        loadSimpleItem(thaumic.tinkerer.common.item.ItemXPTalisman.class);
+        loadSimpleItem(thaumic.tinkerer.common.item.foci.ItemFocusDeflect.class);
+        loadSimpleItem(thaumic.tinkerer.common.item.foci.ItemFocusDislocation.class);
+        loadSimpleItem(thaumic.tinkerer.common.item.foci.ItemFocusEnderChest.class);
+        loadSimpleItem(thaumic.tinkerer.common.item.foci.ItemFocusFlight.class);
+        loadSimpleItem(thaumic.tinkerer.common.item.foci.ItemFocusHeal.class);
+        loadSimpleItem(thaumic.tinkerer.common.item.foci.ItemFocusSmelt.class);
+        loadSimpleItem(thaumic.tinkerer.common.item.foci.ItemFocusTelekinesis.class);
+        loadSimpleItem(thaumic.tinkerer.common.item.kami.ItemBlockTalisman.class);
+        loadSimpleItem(thaumic.tinkerer.common.item.kami.ItemCatAmulet.class);
+        loadSimpleItem(thaumic.tinkerer.common.item.kami.ItemIchorPouch.class);
+        loadSimpleItem(thaumic.tinkerer.common.item.kami.ItemKamiResource.class);
+        loadSimpleItem(thaumic.tinkerer.common.item.kami.ItemPlacementMirror.class);
+        loadSimpleItem(thaumic.tinkerer.common.item.kami.ItemProtoclay.class);
+        loadSimpleItem(thaumic.tinkerer.common.item.kami.ItemSkyPearl.class);
+        loadSimpleItem(thaumic.tinkerer.common.item.kami.armor.ItemGemBoots.class);
+        loadSimpleItem(thaumic.tinkerer.common.item.kami.armor.ItemGemChest.class);
+        loadSimpleItem(thaumic.tinkerer.common.item.kami.armor.ItemGemHelm.class);
+        loadSimpleItem(thaumic.tinkerer.common.item.kami.armor.ItemGemLegs.class);
+        loadMetaItem(thaumic.tinkerer.common.item.kami.armor.ItemIchorclothArmor.class);
+        loadSimpleItem(thaumic.tinkerer.common.item.kami.foci.ItemFocusRecall.class);
+        loadSimpleItem(thaumic.tinkerer.common.item.kami.foci.ItemFocusShadowbeam.class);
+        loadSimpleItem(thaumic.tinkerer.common.item.kami.foci.ItemFocusXPDrain.class);
+        loadSimpleItem(thaumic.tinkerer.common.item.kami.tool.ItemIchorAxe.class);
+        loadSimpleItem(thaumic.tinkerer.common.item.kami.tool.ItemIchorAxeAdv.class);
+        loadSimpleItem(thaumic.tinkerer.common.item.kami.tool.ItemIchorPick.class);
+        loadSimpleItem(thaumic.tinkerer.common.item.kami.tool.ItemIchorPickAdv.class);
+        loadSimpleItem(thaumic.tinkerer.common.item.kami.tool.ItemIchorShovel.class);
+        loadSimpleItem(thaumic.tinkerer.common.item.kami.tool.ItemIchorShovelAdv.class);
+        loadSimpleItem(thaumic.tinkerer.common.item.kami.tool.ItemIchorSword.class);
+        loadSimpleItem(thaumic.tinkerer.common.item.kami.tool.ItemIchorSwordAdv.class);
+        loadSimpleItem(thaumic.tinkerer.common.item.quartz.ItemDarkQuartz.class);
 
-        itemBlackHoleTalisman = getFirstItemFromClass(ItemBlockTalisman.class);
-        itemPlacementMirror = getFirstItemFromClass(ItemPlacementMirror.class);
+        for (Block[] blocks : blockRegistry.values()) {
+            for (Block block : blocks) {
+                registerBlock(block, (ITTinkererBlock) block);
+            }
+        }
     }
 
-    public void registerResearch(ITTinkererRegisterable nextItem) {
+    public void init() {
+        for (Item[] itemArrayList : itemRegistry.values()) {
+            for (Item item : itemArrayList) {
+                registerRecipe((ITTinkererRegisterable) item);
+
+                if (!(item instanceof ItemBlock)) {
+                    GameRegistry.registerItem(item, ((ITTinkererItem) item).getItemName());
+
+                    if (((ITTinkererItem) item).shouldDisplayInTab()
+                            && FMLCommonHandler.instance().getSide() == Side.CLIENT) {
+                        ModCreativeTab.INSTANCE.addItem(item);
+                    }
+                }
+            }
+        }
+
+        for (Block[] blockArrayList : blockRegistry.values()) {
+            for (Block block : blockArrayList) {
+                registerRecipe((ITTinkererRegisterable) block);
+            }
+        }
+        ModCreativeTab.INSTANCE.addAllItemsAndBlocks();
+    }
+
+    private void registerResearch(ITTinkererRegisterable nextItem) {
         IRegisterableResearch registerableResearch = nextItem.getResearchItem();
         if (registerableResearch != null) {
             registerableResearch.registerResearch();
         }
     }
 
-    public void registerRecipe(ITTinkererRegisterable nextItem) {
+    private void registerRecipe(ITTinkererRegisterable nextItem) {
         ThaumicTinkererRecipe thaumicTinkererRecipe = nextItem.getRecipeItem();
         if (thaumicTinkererRecipe != null) {
             thaumicTinkererRecipe.registerRecipe();
         }
     }
 
-    private void loadBlock(Class<?> clazz) {
+    private Block loadSimpleBlock(Class<?> clazz) {
+        try {
+            final Block newBlock = (Block) clazz.newInstance();
+            final ITTinkererBlock ittBlock = (ITTinkererBlock) newBlock;
+            if (ittBlock.shouldRegister()) {
+                newBlock.setBlockName(ittBlock.getBlockName());
+                blockRegistry.put(clazz, new Block[] { newBlock });
+
+                Class<? extends ItemBlock> itemBlock = ittBlock.getItemBlock();
+                if (itemBlock != null) {
+                    Item newItem = itemBlock.getConstructor(Block.class).newInstance(newBlock);
+                    newItem.setUnlocalizedName(((ITTinkererItem) newItem).getItemName());
+                    itemRegistry.put(itemBlock, new Item[] { newItem });
+                }
+                return newBlock;
+            }
+        } catch (InstantiationException | InvocationTargetException | NoSuchMethodException
+                | IllegalAccessException e) {
+            e.printStackTrace();
+            FMLLog.log(Level.WARN, "Failed to load Block " + clazz.getSimpleName() + ". This shouldn't happen!");
+        }
+
+        return null;
+    }
+
+    private Block[] loadMetaBlock(Class<?> clazz) {
         try {
             final Block newBlock = (Block) clazz.newInstance();
             final ITTinkererBlock ittBlock = (ITTinkererBlock) newBlock;
             if (ittBlock.shouldRegister()) {
                 newBlock.setBlockName(ittBlock.getBlockName());
 
-                ArrayList<Object> specialParameters = ittBlock.getSpecialParameters();
-                int capacity = 1;
-                if (specialParameters != null) {
-                    capacity += specialParameters.size();
-                }
+                Block[] metaBlocks = ittBlock.getMetaBlocks();
 
-                Block[] blockList = new Block[capacity];
+                Block[] blockList = new Block[1 + metaBlocks.length];
                 blockList[0] = newBlock;
 
-                if (specialParameters != null) {
-                    Class<?>[] parameterTypes;
-                    int index = 1;
-                    for (Object param : specialParameters) {
-
-                        for (Constructor<?> constructor : clazz.getConstructors()) {
-                            parameterTypes = constructor.getParameterTypes();
-                            if (parameterTypes.length > 0 && parameterTypes[0].isAssignableFrom(param.getClass())) {
-                                Block nextBlock = (Block) clazz.getConstructor(param.getClass()).newInstance(param);
-                                nextBlock.setBlockName(((ITTinkererBlock) nextBlock).getBlockName());
-                                blockList[index++] = nextBlock;
-                                break;
-                            }
-                        }
-                    }
+                int index = 1;
+                for (Block metaBlock : ittBlock.getMetaBlocks()) {
+                    metaBlock.setBlockName(((ITTinkererBlock) metaBlock).getBlockName());
+                    blockList[index++] = metaBlock;
                 }
                 blockRegistry.put(clazz, blockList);
 
@@ -119,50 +207,59 @@ public class TTRegistry {
                     newItem.setUnlocalizedName(((ITTinkererItem) newItem).getItemName());
                     itemRegistry.put(itemBlock, new Item[] { newItem });
                 }
+
+                return blockList;
             }
         } catch (InstantiationException | InvocationTargetException | NoSuchMethodException
                 | IllegalAccessException e) {
             e.printStackTrace();
+            FMLLog.log(Level.WARN, "Failed to load Block " + clazz.getSimpleName() + ". This shouldn't happen!");
         }
+        return null;
     }
 
-    private void loadItem(Class<?> clazz) {
+    private Item loadSimpleItem(Class<?> clazz) {
+        try {
+            final Item newItem = (Item) clazz.newInstance();
+            final ITTinkererItem ittItem = (ITTinkererItem) newItem;
+            if (ittItem.shouldRegister()) {
+                newItem.setUnlocalizedName(ittItem.getItemName());
+                itemRegistry.put(clazz, new Item[] { newItem });
+
+                return newItem;
+            }
+        } catch (InstantiationException | IllegalAccessException e) {
+            e.printStackTrace();
+            FMLLog.log(Level.WARN, "Failed to load Item " + clazz.getSimpleName() + ". This shouldn't happen!");
+        }
+        return null;
+    }
+
+    private Item[] loadMetaItem(Class<?> clazz) {
         try {
             final Item newItem = (Item) clazz.newInstance();
             final ITTinkererItem ittItem = (ITTinkererItem) newItem;
             if (ittItem.shouldRegister()) {
                 newItem.setUnlocalizedName(ittItem.getItemName());
 
-                ArrayList<Object> specialParameters = ittItem.getSpecialParameters();
+                Item[] metaItems = ittItem.getMetaItems();
 
-                int capacity = 1;
-                if (specialParameters != null) {
-                    capacity += specialParameters.size();
-                }
-
-                Item[] itemList = new Item[capacity];
+                Item[] itemList = new Item[1 + metaItems.length];
                 itemList[0] = newItem;
 
-                if (specialParameters != null) {
-                    int index = 1;
-                    Class<?>[] parameterTypes;
-                    for (Object param : specialParameters) {
-                        for (Constructor<?> constructor : clazz.getConstructors()) {
-                            parameterTypes = constructor.getParameterTypes();
-                            if (parameterTypes.length > 0 && parameterTypes[0].isAssignableFrom(param.getClass())) {
-                                Item nextItem = (Item) constructor.newInstance(param);
-                                nextItem.setUnlocalizedName(ittItem.getItemName());
-                                itemList[index++] = nextItem;
-                                break;
-                            }
-                        }
-                    }
+                int index = 1;
+                for (Item metaItem : metaItems) {
+                    metaItem.setUnlocalizedName(((ITTinkererItem) metaItem).getItemName());
+                    itemList[index++] = metaItem;
                 }
                 itemRegistry.put(clazz, itemList);
+                return itemList;
             }
-        } catch (InstantiationException | InvocationTargetException | IllegalAccessException e) {
+        } catch (InstantiationException | IllegalAccessException e) {
             e.printStackTrace();
+            FMLLog.log(Level.WARN, "Failed to load Item " + clazz.getSimpleName() + ". This shouldn't happen!");
         }
+        return null;
     }
 
     private void registerBlock(Block block, ITTinkererBlock ittBlock) {
@@ -238,30 +335,6 @@ public class TTRegistry {
     public Block getFirstBlockFromClass(Class clazz) {
         final Block[] blocks = blockRegistry.get(clazz);
         return blocks != null ? blocks[0] : null;
-    }
-
-    public void init() {
-        for (Item[] itemArrayList : itemRegistry.values()) {
-            for (Item item : itemArrayList) {
-                registerRecipe((ITTinkererRegisterable) item);
-
-                if (!(item instanceof ItemBlock)) {
-                    GameRegistry.registerItem(item, ((ITTinkererItem) item).getItemName());
-
-                    if (((ITTinkererItem) item).shouldDisplayInTab()
-                            && FMLCommonHandler.instance().getSide() == Side.CLIENT) {
-                        ModCreativeTab.INSTANCE.addItem(item);
-                    }
-                }
-            }
-        }
-
-        for (Block[] blockArrayList : blockRegistry.values()) {
-            for (Block block : blockArrayList) {
-                registerRecipe((ITTinkererRegisterable) block);
-            }
-        }
-        ModCreativeTab.INSTANCE.addAllItemsAndBlocks();
     }
 
     public void postInit() {
