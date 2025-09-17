@@ -166,10 +166,10 @@ public class ItemPlacementMirror extends ItemKamiBase {
     }
 
     public void placeAllBlocks(ItemStack stack, EntityPlayer player) {
-        List<ChunkCoordinates> blocksToPlace = getBlocksToPlace(stack, player);
         Block requiredBlock = getBlock(stack);
         if (requiredBlock == null) return;
         int requiredMetadata = getBlockMeta(stack);
+        List<ChunkCoordinates> blocksToPlace = getBlocksToPlace(stack, player);
         if (!hasBlocks(player, requiredBlock, requiredMetadata, blocksToPlace.size())) return;
 
         ItemStack stackToPlace = new ItemStack(requiredBlock, 1, requiredMetadata);
