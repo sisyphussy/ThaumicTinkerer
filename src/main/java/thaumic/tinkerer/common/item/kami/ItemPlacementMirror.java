@@ -206,8 +206,7 @@ public class ItemPlacementMirror extends ItemKamiBase {
                 return;
             }
 
-            if (stackInSlot != null
-                    && stackInSlot.getItem() == TTRegistry.itemBlackHoleTalisman)
+            if (stackInSlot != null && stackInSlot.getItem() == TTRegistry.itemBlackHoleTalisman)
                 talismansToCheck.add(stackInSlot);
         }
 
