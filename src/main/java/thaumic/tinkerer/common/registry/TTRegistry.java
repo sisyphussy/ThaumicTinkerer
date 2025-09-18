@@ -1,6 +1,5 @@
 package thaumic.tinkerer.common.registry;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -70,7 +69,7 @@ public class TTRegistry {
         loadSimpleItem(thaumic.tinkerer.common.item.ItemBrightNitor.class);
         loadSimpleItem(thaumic.tinkerer.common.item.ItemCleansingTalisman.class);
         loadSimpleItem(thaumic.tinkerer.common.item.ItemConnector.class);
-        loadMetaItem(thaumic.tinkerer.common.item.ItemGas.class); //Note: this has to load AFTER BlockGaseousLight
+        loadMetaItem(thaumic.tinkerer.common.item.ItemGas.class); // Note: this has to load AFTER BlockGaseousLight
         loadSimpleItem(thaumic.tinkerer.common.item.ItemGasRemover.class);
         loadSimpleItem(thaumic.tinkerer.common.item.ItemInfusedGrain.class);
         loadSimpleItem(thaumic.tinkerer.common.item.ItemInfusedInkwell.class);
@@ -114,12 +113,6 @@ public class TTRegistry {
         loadSimpleItem(thaumic.tinkerer.common.item.kami.tool.ItemIchorSword.class);
         loadSimpleItem(thaumic.tinkerer.common.item.kami.tool.ItemIchorSwordAdv.class);
         loadSimpleItem(thaumic.tinkerer.common.item.quartz.ItemDarkQuartz.class);
-
-        for (Block[] blocks : blockRegistry.values()) {
-            for (Block block : blocks) {
-                registerBlock(block, (ITTinkererBlock) block);
-            }
-        }
     }
 
     public void init() {
@@ -167,6 +160,7 @@ public class TTRegistry {
             if (ittBlock.shouldRegister()) {
                 newBlock.setBlockName(ittBlock.getBlockName());
                 blockRegistry.put(clazz, new Block[] { newBlock });
+                registerBlock(newBlock, ittBlock);
 
                 Class<? extends ItemBlock> itemBlock = ittBlock.getItemBlock();
                 if (itemBlock != null) {
@@ -194,14 +188,17 @@ public class TTRegistry {
                 Block[] metaBlocks = ittBlock.getMetaBlocks();
 
                 Block[] blockList = new Block[1 + metaBlocks.length];
+                blockRegistry.put(clazz, blockList);
                 blockList[0] = newBlock;
 
                 int index = 1;
+                registerBlock(newBlock, ittBlock);
                 for (Block metaBlock : metaBlocks) {
-                    metaBlock.setBlockName(((ITTinkererBlock) metaBlock).getBlockName());
+                    ITTinkererBlock metaIttBlock = (ITTinkererBlock) metaBlock;
+                    metaBlock.setBlockName(metaIttBlock.getBlockName());
                     blockList[index++] = metaBlock;
+                    registerBlock(metaBlock, metaIttBlock);
                 }
-                blockRegistry.put(clazz, blockList);
 
                 Class<? extends ItemBlock> itemBlock = ittBlock.getItemBlock();
                 if (itemBlock != null) {
