@@ -9,15 +9,15 @@ import net.minecraft.tileentity.TileEntity;
  */
 public interface ITTinkererBlock extends ITTinkererRegisterable {
 
-    public String getBlockName();
+    String getBlockName();
 
-    public boolean shouldRegister();
+    boolean shouldRegister();
 
-    public boolean shouldDisplayInTab();
+    boolean shouldDisplayInTab();
 
-    public Class<? extends ItemBlock> getItemBlock();
+    Class<? extends ItemBlock> getItemBlock();
 
-    public Class<? extends TileEntity> getTileEntity();
+    Class<? extends TileEntity> getTileEntity();
 
     default Block[] getMetaBlocks() {
         throw new IllegalArgumentException();

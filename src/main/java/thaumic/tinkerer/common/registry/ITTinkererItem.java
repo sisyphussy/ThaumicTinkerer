@@ -7,11 +7,11 @@ import net.minecraft.item.Item;
  */
 public interface ITTinkererItem extends ITTinkererRegisterable {
 
-    public String getItemName();
+    String getItemName();
 
-    public boolean shouldRegister();
+    boolean shouldRegister();
 
-    public boolean shouldDisplayInTab();
+    boolean shouldDisplayInTab();
 
     default Item[] getMetaItems() {
         throw new IllegalArgumentException();

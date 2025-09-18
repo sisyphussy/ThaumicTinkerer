@@ -70,7 +70,7 @@ public class TTRegistry {
         loadSimpleItem(thaumic.tinkerer.common.item.ItemBrightNitor.class);
         loadSimpleItem(thaumic.tinkerer.common.item.ItemCleansingTalisman.class);
         loadSimpleItem(thaumic.tinkerer.common.item.ItemConnector.class);
-        loadMetaItem(thaumic.tinkerer.common.item.ItemGas.class);
+        loadMetaItem(thaumic.tinkerer.common.item.ItemGas.class); //Note: this has to load AFTER BlockGaseousLight
         loadSimpleItem(thaumic.tinkerer.common.item.ItemGasRemover.class);
         loadSimpleItem(thaumic.tinkerer.common.item.ItemInfusedGrain.class);
         loadSimpleItem(thaumic.tinkerer.common.item.ItemInfusedInkwell.class);
@@ -176,8 +176,7 @@ public class TTRegistry {
                 }
                 return newBlock;
             }
-        } catch (InstantiationException | InvocationTargetException | NoSuchMethodException
-                | IllegalAccessException e) {
+        } catch (Exception e) {
             e.printStackTrace();
             FMLLog.log(Level.WARN, "Failed to load Block " + clazz.getSimpleName() + ". This shouldn't happen!");
         }
@@ -198,7 +197,7 @@ public class TTRegistry {
                 blockList[0] = newBlock;
 
                 int index = 1;
-                for (Block metaBlock : ittBlock.getMetaBlocks()) {
+                for (Block metaBlock : metaBlocks) {
                     metaBlock.setBlockName(((ITTinkererBlock) metaBlock).getBlockName());
                     blockList[index++] = metaBlock;
                 }
@@ -213,8 +212,7 @@ public class TTRegistry {
 
                 return blockList;
             }
-        } catch (InstantiationException | InvocationTargetException | NoSuchMethodException
-                | IllegalAccessException e) {
+        } catch (Exception e) {
             e.printStackTrace();
             FMLLog.log(Level.WARN, "Failed to load Block " + clazz.getSimpleName() + ". This shouldn't happen!");
         }
@@ -231,7 +229,7 @@ public class TTRegistry {
 
                 return newItem;
             }
-        } catch (InstantiationException | IllegalAccessException e) {
+        } catch (Exception e) {
             e.printStackTrace();
             FMLLog.log(Level.WARN, "Failed to load Item " + clazz.getSimpleName() + ". This shouldn't happen!");
         }
@@ -258,7 +256,7 @@ public class TTRegistry {
                 itemRegistry.put(clazz, itemList);
                 return itemList;
             }
-        } catch (InstantiationException | IllegalAccessException e) {
+        } catch (Exception e) {
             e.printStackTrace();
             FMLLog.log(Level.WARN, "Failed to load Item " + clazz.getSimpleName() + ". This shouldn't happen!");
         }
