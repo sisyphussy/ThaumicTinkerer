@@ -2,7 +2,6 @@ package thaumic.tinkerer.client.render.item;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.Render;
-import net.minecraft.client.renderer.entity.RenderItem;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
@@ -15,8 +14,6 @@ import thaumic.tinkerer.common.core.helper.EnumMobAspect;
 import thaumic.tinkerer.common.item.ItemMobDisplay;
 
 public class RenderMobDisplay implements IItemRenderer {
-
-    private static RenderItem renderItem = new RenderItem();
 
     @Override
     public boolean handleRenderType(ItemStack itemStack, ItemRenderType itemRenderType) {
