@@ -327,7 +327,7 @@ public class TileAnimationTablet extends TileEntity implements IInventory, IMova
         position.yCoord = yCoord + 0.5f;
         position.zCoord = zCoord + 0.5f;
         if (!worldObj.isAirBlock(x, y, z)) {
-            AxisAlignedBB aabb = block.getSelectedBoundingBoxFromPool(worldObj, x, y, z);
+            AxisAlignedBB aabb = block.getCollisionBoundingBoxFromPool(worldObj, x, y, z);
             if (aabb != null) {
                 hit = block.collisionRayTrace(worldObj, x, y, z, position, getMiddleOfAABB(aabb));
             }
@@ -342,7 +342,6 @@ public class TileAnimationTablet extends TileEntity implements IInventory, IMova
             Vec3 hitVec = null;
             for (Entity e : entities) {
                 if (e.canBeCollidedWith()) {
-
                     float borderSize = e.getCollisionBorderSize();
                     AxisAlignedBB aabb = e.boundingBox.expand(borderSize, borderSize, borderSize);
                     MovingObjectPosition intercept = aabb.calculateIntercept(position, getMiddleOfAABB(aabb));
@@ -373,10 +372,12 @@ public class TileAnimationTablet extends TileEntity implements IInventory, IMova
             // Use the block beneath
             y--;
             if (!worldObj.isAirBlock(x, y, z)) {
-                AxisAlignedBB aabb = block.getSelectedBoundingBoxFromPool(worldObj, x, y, z);
-                Vec3 vec = getMiddleOfAABB(aabb);
-                vec.yCoord = (aabb.maxY - y);
-                hit = new MovingObjectPosition(x, y, z, ForgeDirection.UP.ordinal(), vec, false);
+                AxisAlignedBB aabb = block.getCollisionBoundingBoxFromPool(worldObj, x, y, z);
+                if (aabb != null) {
+                    Vec3 vec = getMiddleOfAABB(aabb);
+                    vec.yCoord = (aabb.maxY - y);
+                    hit = new MovingObjectPosition(x, y, z, ForgeDirection.UP.ordinal(), vec, false);
+                }
             }
         }
 
