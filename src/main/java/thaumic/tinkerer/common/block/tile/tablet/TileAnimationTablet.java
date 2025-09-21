@@ -106,7 +106,8 @@ public class TileAnimationTablet extends TileEntity implements IInventory, IMova
         if (worldObj.isRemote) {
             prevSwingProgress = swingProgress;
             prevTicksElapsed = ticksElapsed;
-            int iterations = ThaumicTinkerer.gtLoaded ? MTEWorldAccelerator.getAccelerationForTEUnsafe(this) + 1 : 1;
+            //int iterations = ThaumicTinkerer.gtLoaded ? MTEWorldAccelerator.getAccelerationForTEUnsafe(this) + 1 : 1;
+            int iterations = 1;
             ticksElapsed += iterations;
             ItemStack stack = heldItem;
             if (stack != null) {

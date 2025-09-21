@@ -18,6 +18,8 @@ import thaumic.tinkerer.client.lib.LibResources;
 import thaumic.tinkerer.common.ThaumicTinkerer;
 import thaumic.tinkerer.common.block.BlockAnimationTablet;
 import thaumic.tinkerer.common.core.handler.ModCreativeTab;
+import thaumic.tinkerer.common.item.kami.ItemBlockTalisman;
+import thaumic.tinkerer.common.item.kami.ItemPlacementMirror;
 import thaumic.tinkerer.common.research.IRegisterableResearch;
 
 public class TTRegistry {
