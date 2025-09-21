@@ -15,6 +15,8 @@ import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import thaumic.tinkerer.client.lib.LibResources;
+import thaumic.tinkerer.common.ThaumicTinkerer;
+import thaumic.tinkerer.common.block.BlockAnimationTablet;
 import thaumic.tinkerer.common.core.handler.ModCreativeTab;
 import thaumic.tinkerer.common.research.IRegisterableResearch;
 
@@ -24,6 +26,7 @@ public class TTRegistry {
 
     private final HashMap<Class, Block[]> blockRegistry = new HashMap<>();
 
+    public static Block dynamismTablet;
     public static Item itemPlacementMirror;
     public static Item itemBlackHoleTalisman;
 
@@ -283,6 +286,9 @@ public class TTRegistry {
                 ModCreativeTab.INSTANCE.addBlock(block);
             }
         }
+        dynamismTablet = ThaumicTinkerer.registry.getFirstBlockFromClass(BlockAnimationTablet.class);
+        itemBlackHoleTalisman = getFirstItemFromClass(ItemBlockTalisman.class);
+        itemPlacementMirror = getFirstItemFromClass(ItemPlacementMirror.class);
     }
 
     public Item[] getItemArrayFromClass(Class clazz) {
