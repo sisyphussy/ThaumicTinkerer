@@ -45,7 +45,6 @@ import dan200.computercraft.api.lua.ILuaContext;
 import dan200.computercraft.api.lua.LuaException;
 import dan200.computercraft.api.peripheral.IComputerAccess;
 import dan200.computercraft.api.peripheral.IPeripheral;
-import gregtech.common.tileentities.machines.basic.MTEWorldAccelerator;
 import li.cil.oc.api.machine.Arguments;
 import li.cil.oc.api.machine.Callback;
 import li.cil.oc.api.machine.Context;
@@ -106,7 +105,8 @@ public class TileAnimationTablet extends TileEntity implements IInventory, IMova
         if (worldObj.isRemote) {
             prevSwingProgress = swingProgress;
             prevTicksElapsed = ticksElapsed;
-            int iterations = ThaumicTinkerer.gtLoaded ? MTEWorldAccelerator.getAccelerationForTEUnsafe(this) + 1 : 1;
+            // int iterations = ThaumicTinkerer.gtLoaded ? MTEWorldAccelerator.getAccelerationForTEUnsafe(this) + 1 : 1;
+            int iterations = 1;
             ticksElapsed += iterations;
             ItemStack stack = heldItem;
             if (stack != null) {
