@@ -165,7 +165,7 @@ public class TileAnimationTablet extends TileEntity implements IInventory, IMova
                 }
                 initiateSwing();
             }
-        } catch (Exception e) {
+        } catch (Throwable e) {
             e.printStackTrace();
             List<EntityPlayer> list = worldObj.getEntitiesWithinAABB(
                     EntityPlayer.class,
@@ -327,6 +327,7 @@ public class TileAnimationTablet extends TileEntity implements IInventory, IMova
         position.yCoord = yCoord + 0.5f;
         position.zCoord = zCoord + 0.5f;
         if (!worldObj.isAirBlock(x, y, z)) {
+            block.setBlockBoundsBasedOnState(worldObj, x, y, z);
             AxisAlignedBB aabb = block.getCollisionBoundingBoxFromPool(worldObj, x, y, z);
             if (aabb != null) {
                 hit = block.collisionRayTrace(worldObj, x, y, z, position, getMiddleOfAABB(aabb));
@@ -373,6 +374,8 @@ public class TileAnimationTablet extends TileEntity implements IInventory, IMova
             // Use the block beneath
             y--;
             if (!worldObj.isAirBlock(x, y, z)) {
+                block = worldObj.getBlock(x, y, z);
+                block.setBlockBoundsBasedOnState(worldObj, x, y, z);
                 AxisAlignedBB aabb = block.getCollisionBoundingBoxFromPool(worldObj, x, y, z);
                 if (aabb != null) {
                     Vec3 vec = getMiddleOfAABB(aabb);
