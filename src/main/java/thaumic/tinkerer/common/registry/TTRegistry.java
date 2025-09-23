@@ -1,5 +1,6 @@
 package thaumic.tinkerer.common.registry;
 
+import java.lang.reflect.Modifier;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -9,6 +10,7 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.tileentity.TileEntity;
 
 import org.apache.logging.log4j.Level;
+import org.spongepowered.libraries.com.google.common.reflect.ClassPath;
 
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.FMLLog;
@@ -33,91 +35,91 @@ public class TTRegistry {
     public static Item itemBlackHoleTalisman;
 
     /**
-     * <warning>THIS NO LONGER USES REFLECTION. IF YOU WANT TO ADD A BLOCK/ITEM, ADD THE CLASS HERE.</warning>
+     * <strong>THIS NO LONGER USES REFLECTION. IF YOU WANT TO ADD A BLOCK/ITEM, ADD THE CLASS HERE.</strong>
      */
     public void preInit() {
-        loadSimpleBlock(thaumic.tinkerer.common.block.BlockAnimationTablet.class);
-        loadSimpleBlock(thaumic.tinkerer.common.block.BlockAspectAnalyzer.class);
-        loadSimpleBlock(thaumic.tinkerer.common.block.BlockEnchanter.class);
-        loadSimpleBlock(thaumic.tinkerer.common.block.BlockForcefield.class);
-        loadSimpleBlock(thaumic.tinkerer.common.block.BlockFunnel.class);
-        loadSimpleBlock(thaumic.tinkerer.common.block.BlockGaseousLight.class);
-        loadSimpleBlock(thaumic.tinkerer.common.block.BlockGaseousShadow.class);
-        loadSimpleBlock(thaumic.tinkerer.common.block.BlockGolemConnector.class);
-        loadSimpleBlock(thaumic.tinkerer.common.block.BlockInfusedFarmland.class);
-        loadSimpleBlock(thaumic.tinkerer.common.block.BlockInfusedGrain.class);
-        loadSimpleBlock(thaumic.tinkerer.common.block.BlockMagnet.class);
-        loadSimpleBlock(thaumic.tinkerer.common.block.BlockNitorGas.class);
-        loadSimpleBlock(thaumic.tinkerer.common.block.BlockPlatform.class);
-        loadSimpleBlock(thaumic.tinkerer.common.block.BlockRPlacer.class);
-        loadSimpleBlock(thaumic.tinkerer.common.block.BlockRepairer.class);
-        loadSimpleBlock(thaumic.tinkerer.common.block.BlockSummon.class);
-        loadMetaBlock(thaumic.tinkerer.common.block.BlockTravelSlab.class);
-        loadSimpleBlock(thaumic.tinkerer.common.block.BlockTravelStairs.class);
-        loadMetaBlock(thaumic.tinkerer.common.block.BlockWardSlab.class);
-        loadSimpleBlock(thaumic.tinkerer.common.block.fire.BlockFireAir.class);
-        loadSimpleBlock(thaumic.tinkerer.common.block.fire.BlockFireChaos.class);
-        loadSimpleBlock(thaumic.tinkerer.common.block.fire.BlockFireEarth.class);
-        loadSimpleBlock(thaumic.tinkerer.common.block.fire.BlockFireIgnis.class);
-        loadSimpleBlock(thaumic.tinkerer.common.block.fire.BlockFireOrder.class);
-        loadSimpleBlock(thaumic.tinkerer.common.block.fire.BlockFireWater.class);
-        loadSimpleBlock(thaumic.tinkerer.common.block.kami.BlockBedrockPortal.class);
-        loadSimpleBlock(thaumic.tinkerer.common.block.kami.BlockWarpGate.class);
-        loadSimpleBlock(thaumic.tinkerer.common.block.mobilizer.BlockMobilizer.class);
-        loadSimpleBlock(thaumic.tinkerer.common.block.mobilizer.BlockMobilizerRelay.class);
-        loadSimpleBlock(thaumic.tinkerer.common.block.quartz.BlockDarkQuartz.class);
-        loadMetaBlock(thaumic.tinkerer.common.block.quartz.BlockDarkQuartzSlab.class);
-        loadSimpleBlock(thaumic.tinkerer.common.block.quartz.BlockDarkQuartzStairs.class);
-        loadSimpleBlock(thaumic.tinkerer.common.block.transvector.BlockTransvectorDislocator.class);
-        loadSimpleBlock(thaumic.tinkerer.common.block.transvector.BlockTransvectorInterface.class);
-        loadSimpleItem(thaumic.tinkerer.common.item.ItemBloodSword.class);
-        loadSimpleItem(thaumic.tinkerer.common.item.ItemBrightNitor.class);
-        loadSimpleItem(thaumic.tinkerer.common.item.ItemCleansingTalisman.class);
-        loadSimpleItem(thaumic.tinkerer.common.item.ItemConnector.class);
-        loadMetaItem(thaumic.tinkerer.common.item.ItemGas.class); // Note: this has to load AFTER BlockGaseousLight
-        loadSimpleItem(thaumic.tinkerer.common.item.ItemGasRemover.class);
-        loadSimpleItem(thaumic.tinkerer.common.item.ItemInfusedGrain.class);
-        loadSimpleItem(thaumic.tinkerer.common.item.ItemInfusedInkwell.class);
-        loadSimpleItem(thaumic.tinkerer.common.item.ItemInfusedPotion.class);
-        loadSimpleItem(thaumic.tinkerer.common.item.ItemInfusedSeeds.class);
-        loadSimpleItem(thaumic.tinkerer.common.item.ItemMobAspect.class);
-        loadSimpleItem(thaumic.tinkerer.common.item.ItemMobDisplay.class);
-        loadSimpleItem(thaumic.tinkerer.common.item.ItemRevealingHelm.class);
-        loadSimpleItem(thaumic.tinkerer.common.item.ItemShareBook.class);
-        loadSimpleItem(thaumic.tinkerer.common.item.ItemSoulMould.class);
-        loadSimpleItem(thaumic.tinkerer.common.item.ItemSpellCloth.class);
-        loadSimpleItem(thaumic.tinkerer.common.item.ItemXPTalisman.class);
-        loadSimpleItem(thaumic.tinkerer.common.item.foci.ItemFocusDeflect.class);
-        loadSimpleItem(thaumic.tinkerer.common.item.foci.ItemFocusDislocation.class);
-        loadSimpleItem(thaumic.tinkerer.common.item.foci.ItemFocusEnderChest.class);
-        loadSimpleItem(thaumic.tinkerer.common.item.foci.ItemFocusFlight.class);
-        loadSimpleItem(thaumic.tinkerer.common.item.foci.ItemFocusHeal.class);
-        loadSimpleItem(thaumic.tinkerer.common.item.foci.ItemFocusSmelt.class);
-        loadSimpleItem(thaumic.tinkerer.common.item.foci.ItemFocusTelekinesis.class);
-        itemBlackHoleTalisman = loadSimpleItem(thaumic.tinkerer.common.item.kami.ItemBlockTalisman.class);
-        loadSimpleItem(thaumic.tinkerer.common.item.kami.ItemCatAmulet.class);
-        loadSimpleItem(thaumic.tinkerer.common.item.kami.ItemIchorPouch.class);
-        loadSimpleItem(thaumic.tinkerer.common.item.kami.ItemKamiResource.class);
-        itemPlacementMirror = loadSimpleItem(thaumic.tinkerer.common.item.kami.ItemPlacementMirror.class);
-        loadSimpleItem(thaumic.tinkerer.common.item.kami.ItemProtoclay.class);
-        loadSimpleItem(thaumic.tinkerer.common.item.kami.ItemSkyPearl.class);
-        loadSimpleItem(thaumic.tinkerer.common.item.kami.armor.ItemGemBoots.class);
-        loadSimpleItem(thaumic.tinkerer.common.item.kami.armor.ItemGemChest.class);
-        loadSimpleItem(thaumic.tinkerer.common.item.kami.armor.ItemGemHelm.class);
-        loadSimpleItem(thaumic.tinkerer.common.item.kami.armor.ItemGemLegs.class);
-        loadMetaItem(thaumic.tinkerer.common.item.kami.armor.ItemIchorclothArmor.class);
-        loadSimpleItem(thaumic.tinkerer.common.item.kami.foci.ItemFocusRecall.class);
-        loadSimpleItem(thaumic.tinkerer.common.item.kami.foci.ItemFocusShadowbeam.class);
-        loadSimpleItem(thaumic.tinkerer.common.item.kami.foci.ItemFocusXPDrain.class);
-        loadSimpleItem(thaumic.tinkerer.common.item.kami.tool.ItemIchorAxe.class);
-        loadSimpleItem(thaumic.tinkerer.common.item.kami.tool.ItemIchorAxeAdv.class);
-        loadSimpleItem(thaumic.tinkerer.common.item.kami.tool.ItemIchorPick.class);
-        loadSimpleItem(thaumic.tinkerer.common.item.kami.tool.ItemIchorPickAdv.class);
-        loadSimpleItem(thaumic.tinkerer.common.item.kami.tool.ItemIchorShovel.class);
-        loadSimpleItem(thaumic.tinkerer.common.item.kami.tool.ItemIchorShovelAdv.class);
-        loadSimpleItem(thaumic.tinkerer.common.item.kami.tool.ItemIchorSword.class);
-        loadSimpleItem(thaumic.tinkerer.common.item.kami.tool.ItemIchorSwordAdv.class);
-        loadSimpleItem(thaumic.tinkerer.common.item.quartz.ItemDarkQuartz.class);
+        dynamismTablet = loadSimpleBlock(new thaumic.tinkerer.common.block.BlockAnimationTablet());
+        loadSimpleBlock(new thaumic.tinkerer.common.block.BlockAspectAnalyzer());
+        loadSimpleBlock(new thaumic.tinkerer.common.block.BlockEnchanter());
+        loadSimpleBlock(new thaumic.tinkerer.common.block.BlockForcefield());
+        loadSimpleBlock(new thaumic.tinkerer.common.block.BlockFunnel());
+        loadSimpleBlock(new thaumic.tinkerer.common.block.BlockGaseousLight());
+        loadSimpleBlock(new thaumic.tinkerer.common.block.BlockGaseousShadow());
+        loadSimpleBlock(new thaumic.tinkerer.common.block.BlockGolemConnector());
+        loadSimpleBlock(new thaumic.tinkerer.common.block.BlockInfusedFarmland());
+        loadSimpleBlock(new thaumic.tinkerer.common.block.BlockInfusedGrain());
+        loadSimpleBlock(new thaumic.tinkerer.common.block.BlockMagnet());
+        loadSimpleBlock(new thaumic.tinkerer.common.block.BlockNitorGas());
+        loadSimpleBlock(new thaumic.tinkerer.common.block.BlockPlatform());
+        loadSimpleBlock(new thaumic.tinkerer.common.block.BlockRepairer());
+        loadSimpleBlock(new thaumic.tinkerer.common.block.BlockRPlacer());
+        loadSimpleBlock(new thaumic.tinkerer.common.block.BlockSummon());
+        loadMetaBlock(new thaumic.tinkerer.common.block.BlockTravelSlab());
+        loadSimpleBlock(new thaumic.tinkerer.common.block.BlockTravelStairs());
+        loadMetaBlock(new thaumic.tinkerer.common.block.BlockWardSlab());
+        loadSimpleBlock(new thaumic.tinkerer.common.block.fire.BlockFireAir());
+        loadSimpleBlock(new thaumic.tinkerer.common.block.fire.BlockFireChaos());
+        loadSimpleBlock(new thaumic.tinkerer.common.block.fire.BlockFireEarth());
+        loadSimpleBlock(new thaumic.tinkerer.common.block.fire.BlockFireIgnis());
+        loadSimpleBlock(new thaumic.tinkerer.common.block.fire.BlockFireOrder());
+        loadSimpleBlock(new thaumic.tinkerer.common.block.fire.BlockFireWater());
+        loadSimpleBlock(new thaumic.tinkerer.common.block.kami.BlockBedrockPortal());
+        loadSimpleBlock(new thaumic.tinkerer.common.block.kami.BlockWarpGate());
+        loadSimpleBlock(new thaumic.tinkerer.common.block.mobilizer.BlockMobilizer());
+        loadSimpleBlock(new thaumic.tinkerer.common.block.mobilizer.BlockMobilizerRelay());
+        loadSimpleBlock(new thaumic.tinkerer.common.block.quartz.BlockDarkQuartz());
+        loadMetaBlock(new thaumic.tinkerer.common.block.quartz.BlockDarkQuartzSlab());
+        loadSimpleBlock(new thaumic.tinkerer.common.block.quartz.BlockDarkQuartzStairs());
+        loadSimpleBlock(new thaumic.tinkerer.common.block.transvector.BlockTransvectorDislocator());
+        loadSimpleBlock(new thaumic.tinkerer.common.block.transvector.BlockTransvectorInterface());
+        loadSimpleItem(new thaumic.tinkerer.common.item.foci.ItemFocusDeflect());
+        loadSimpleItem(new thaumic.tinkerer.common.item.foci.ItemFocusDislocation());
+        loadSimpleItem(new thaumic.tinkerer.common.item.foci.ItemFocusEnderChest());
+        loadSimpleItem(new thaumic.tinkerer.common.item.foci.ItemFocusFlight());
+        loadSimpleItem(new thaumic.tinkerer.common.item.foci.ItemFocusHeal());
+        loadSimpleItem(new thaumic.tinkerer.common.item.foci.ItemFocusSmelt());
+        loadSimpleItem(new thaumic.tinkerer.common.item.foci.ItemFocusTelekinesis());
+        loadSimpleItem(new thaumic.tinkerer.common.item.ItemBloodSword());
+        loadSimpleItem(new thaumic.tinkerer.common.item.ItemBrightNitor());
+        loadSimpleItem(new thaumic.tinkerer.common.item.ItemCleansingTalisman());
+        loadSimpleItem(new thaumic.tinkerer.common.item.ItemConnector());
+        loadMetaItem(new thaumic.tinkerer.common.item.ItemGas());
+        loadSimpleItem(new thaumic.tinkerer.common.item.ItemGasRemover());
+        loadSimpleItem(new thaumic.tinkerer.common.item.ItemInfusedGrain());
+        loadSimpleItem(new thaumic.tinkerer.common.item.ItemInfusedInkwell());
+        loadSimpleItem(new thaumic.tinkerer.common.item.ItemInfusedPotion());
+        loadSimpleItem(new thaumic.tinkerer.common.item.ItemInfusedSeeds());
+        loadSimpleItem(new thaumic.tinkerer.common.item.ItemMobAspect());
+        loadSimpleItem(new thaumic.tinkerer.common.item.ItemMobDisplay());
+        loadSimpleItem(new thaumic.tinkerer.common.item.ItemRevealingHelm());
+        loadSimpleItem(new thaumic.tinkerer.common.item.ItemShareBook());
+        loadSimpleItem(new thaumic.tinkerer.common.item.ItemSoulMould());
+        loadSimpleItem(new thaumic.tinkerer.common.item.ItemSpellCloth());
+        loadSimpleItem(new thaumic.tinkerer.common.item.ItemXPTalisman());
+        loadSimpleItem(new thaumic.tinkerer.common.item.kami.armor.ItemGemBoots());
+        loadSimpleItem(new thaumic.tinkerer.common.item.kami.armor.ItemGemChest());
+        loadSimpleItem(new thaumic.tinkerer.common.item.kami.armor.ItemGemHelm());
+        loadSimpleItem(new thaumic.tinkerer.common.item.kami.armor.ItemGemLegs());
+        loadMetaItem(new thaumic.tinkerer.common.item.kami.armor.ItemIchorclothArmor());
+        loadSimpleItem(new thaumic.tinkerer.common.item.kami.foci.ItemFocusRecall());
+        loadSimpleItem(new thaumic.tinkerer.common.item.kami.foci.ItemFocusShadowbeam());
+        loadSimpleItem(new thaumic.tinkerer.common.item.kami.foci.ItemFocusXPDrain());
+        itemBlackHoleTalisman = loadSimpleItem(new thaumic.tinkerer.common.item.kami.ItemBlockTalisman());
+        loadSimpleItem(new thaumic.tinkerer.common.item.kami.ItemCatAmulet());
+        loadSimpleItem(new thaumic.tinkerer.common.item.kami.ItemIchorPouch());
+        loadSimpleItem(new thaumic.tinkerer.common.item.kami.ItemKamiResource());
+        itemPlacementMirror = loadSimpleItem(new thaumic.tinkerer.common.item.kami.ItemPlacementMirror());
+        loadSimpleItem(new thaumic.tinkerer.common.item.kami.ItemProtoclay());
+        loadSimpleItem(new thaumic.tinkerer.common.item.kami.ItemSkyPearl());
+        loadSimpleItem(new thaumic.tinkerer.common.item.kami.tool.ItemIchorAxe());
+        loadSimpleItem(new thaumic.tinkerer.common.item.kami.tool.ItemIchorAxeAdv());
+        loadSimpleItem(new thaumic.tinkerer.common.item.kami.tool.ItemIchorPick());
+        loadSimpleItem(new thaumic.tinkerer.common.item.kami.tool.ItemIchorPickAdv());
+        loadSimpleItem(new thaumic.tinkerer.common.item.kami.tool.ItemIchorShovel());
+        loadSimpleItem(new thaumic.tinkerer.common.item.kami.tool.ItemIchorShovelAdv());
+        loadSimpleItem(new thaumic.tinkerer.common.item.kami.tool.ItemIchorSword());
+        loadSimpleItem(new thaumic.tinkerer.common.item.kami.tool.ItemIchorSwordAdv());
+        loadSimpleItem(new thaumic.tinkerer.common.item.quartz.ItemDarkQuartz());
     }
 
     public void init() {
@@ -158,13 +160,12 @@ public class TTRegistry {
         }
     }
 
-    private Block loadSimpleBlock(Class<?> clazz) {
+    private Block loadSimpleBlock(Block newBlock) {
         try {
-            final Block newBlock = (Block) clazz.newInstance();
             final ITTinkererBlock ittBlock = (ITTinkererBlock) newBlock;
             if (ittBlock.shouldRegister()) {
                 newBlock.setBlockName(ittBlock.getBlockName());
-                blockRegistry.put(clazz, new Block[] { newBlock });
+                blockRegistry.put(newBlock.getClass(), new Block[] { newBlock });
                 registerBlock(newBlock, ittBlock);
 
                 Class<? extends ItemBlock> itemBlock = ittBlock.getItemBlock();
@@ -177,15 +178,14 @@ public class TTRegistry {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            FMLLog.log(Level.WARN, "Failed to load Block " + clazz.getSimpleName() + ". This shouldn't happen!");
+            FMLLog.log(Level.WARN, "Failed to load Block " + newBlock.getClass().getSimpleName() + ". This shouldn't happen!");
         }
 
         return null;
     }
 
-    private Block[] loadMetaBlock(Class<?> clazz) {
+    private Block[] loadMetaBlock(Block newBlock) {
         try {
-            final Block newBlock = (Block) clazz.newInstance();
             final ITTinkererBlock ittBlock = (ITTinkererBlock) newBlock;
             if (ittBlock.shouldRegister()) {
                 newBlock.setBlockName(ittBlock.getBlockName());
@@ -193,7 +193,7 @@ public class TTRegistry {
                 Block[] metaBlocks = ittBlock.getMetaBlocks();
 
                 Block[] blockList = new Block[1 + metaBlocks.length];
-                blockRegistry.put(clazz, blockList);
+                blockRegistry.put(newBlock.getClass(), blockList);
                 blockList[0] = newBlock;
 
                 int index = 1;
@@ -216,31 +216,29 @@ public class TTRegistry {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            FMLLog.log(Level.WARN, "Failed to load Block " + clazz.getSimpleName() + ". This shouldn't happen!");
+            FMLLog.log(Level.WARN, "Failed to load Block " + newBlock.getClass().getSimpleName() + ". This shouldn't happen!");
         }
         return null;
     }
 
-    private Item loadSimpleItem(Class<?> clazz) {
+    private Item loadSimpleItem(Item newItem) {
         try {
-            final Item newItem = (Item) clazz.newInstance();
             final ITTinkererItem ittItem = (ITTinkererItem) newItem;
             if (ittItem.shouldRegister()) {
                 newItem.setUnlocalizedName(ittItem.getItemName());
-                itemRegistry.put(clazz, new Item[] { newItem });
+                itemRegistry.put(newItem.getClass(), new Item[] { newItem });
 
                 return newItem;
             }
         } catch (Exception e) {
             e.printStackTrace();
-            FMLLog.log(Level.WARN, "Failed to load Item " + clazz.getSimpleName() + ". This shouldn't happen!");
+            FMLLog.log(Level.WARN, "Failed to load Item " + newItem.getClass().getSimpleName() + ". This shouldn't happen!");
         }
         return null;
     }
 
-    private Item[] loadMetaItem(Class<?> clazz) {
+    private Item[] loadMetaItem(Item newItem) {
         try {
-            final Item newItem = (Item) clazz.newInstance();
             final ITTinkererItem ittItem = (ITTinkererItem) newItem;
             if (ittItem.shouldRegister()) {
                 newItem.setUnlocalizedName(ittItem.getItemName());
@@ -255,12 +253,12 @@ public class TTRegistry {
                     metaItem.setUnlocalizedName(((ITTinkererItem) metaItem).getItemName());
                     itemList[index++] = metaItem;
                 }
-                itemRegistry.put(clazz, itemList);
+                itemRegistry.put(newItem.getClass(), itemList);
                 return itemList;
             }
         } catch (Exception e) {
             e.printStackTrace();
-            FMLLog.log(Level.WARN, "Failed to load Item " + clazz.getSimpleName() + ". This shouldn't happen!");
+            FMLLog.log(Level.WARN, "Failed to load Item " + newItem.getClass().getSimpleName() + ". This shouldn't happen!");
         }
         return null;
     }
@@ -288,9 +286,6 @@ public class TTRegistry {
                 ModCreativeTab.INSTANCE.addBlock(block);
             }
         }
-        dynamismTablet = ThaumicTinkerer.registry.getFirstBlockFromClass(BlockAnimationTablet.class);
-        itemBlackHoleTalisman = getFirstItemFromClass(ItemBlockTalisman.class);
-        itemPlacementMirror = getFirstItemFromClass(ItemPlacementMirror.class);
     }
 
     public Item[] getItemArrayFromClass(Class clazz) {

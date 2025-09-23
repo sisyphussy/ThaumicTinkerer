@@ -20,6 +20,6 @@ public interface ITTinkererBlock extends ITTinkererRegisterable {
     Class<? extends TileEntity> getTileEntity();
 
     default Block[] getMetaBlocks() {
-        throw new IllegalArgumentException();
+        return null;
     }
 }
